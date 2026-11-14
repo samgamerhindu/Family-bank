@@ -1,0 +1,2773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hiremath Family Bank — Family Financial Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            canvas: '#F7F7F7',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #F7F7F7;
+      font-family: 'Inter', sans-serif;
+      color: #111827;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Orange-to-Pink-to-Purple Mesh Gradient Waves */
+    .mesh-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .mesh-blob-1 {
+      position: absolute;
+      top: -12%;
+      left: -8%;
+      width: 52vw;
+      height: 52vw;
+      max-width: 680px;
+      max-height: 680px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(251,146,60,0.32) 0%, rgba(244,114,182,0.22) 48%, rgba(168,85,247,0) 75%);
+      filter: blur(55px);
+      animation: floatBlob1 18s ease-in-out infinite alternate;
+    }
+    .mesh-blob-2 {
+      position: absolute;
+      top: 28%;
+      right: -10%;
+      width: 55vw;
+      height: 55vw;
+      max-width: 720px;
+      max-height: 720px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(236,72,153,0.28) 0%, rgba(168,85,247,0.24) 50%, rgba(251,146,60,0) 78%);
+      filter: blur(65px);
+      animation: floatBlob2 22s ease-in-out infinite alternate;
+    }
+    .mesh-blob-3 {
+      position: absolute;
+      bottom: -15%;
+      left: 22%;
+      width: 60vw;
+      height: 45vw;
+      max-width: 800px;
+      max-height: 560px;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(168,85,247,0.24) 0%, rgba(249,115,22,0.18) 52%, rgba(255,255,255,0) 80%);
+      filter: blur(60px);
+      animation: floatBlob3 20s ease-in-out infinite alternate;
+    }
+    @keyframes floatBlob1 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 35px) scale(1.08); }
+    }
+    @keyframes floatBlob2 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-45px, 30px) scale(1.06); }
+    }
+    @keyframes floatBlob3 {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -35px) scale(1.05); }
+    }
+
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.45);
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(107, 114, 128, 0.7);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(229, 231, 235, 0.85);
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-pink-500 selection:text-white">
+  <!-- Ambient Mesh Gradient Background -->
+  <div class="mesh-bg" aria-hidden="true">
+    <div class="mesh-blob-1"></div>
+    <div class="mesh-blob-2"></div>
+    <div class="mesh-blob-3"></div>
+  </div>
+
+  <!-- Toast Notification Banner Container -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- Main Application Root -->
+  <div id="app" class="relative z-10 min-h-screen flex flex-col">
+    <!-- Loading State -->
+    <div class="flex-1 flex flex-col items-center justify-center p-6">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-orange-500 via-pink-500 to-purple-600 animate-spin shadow-lg mb-4"></div>
+      <p class="text-sm font-semibold text-gray-700 tracking-wide">Connecting to Hiremath Family Vault...</p>
+    </div>
+  </div>
+
+  <!-- Modal Layer -->
+  <div id="modal-root" class="relative z-40"></div>
+
+  <!-- Slide-over Drawers Layer (Notifications & Group Chat) -->
+  <div id="drawer-root" class="relative z-40"></div>
+
+  <!-- Firebase & Application Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      updateDoc,
+      addDoc,
+      deleteDoc,
+      onSnapshot,
+      collection,
+      getDocs,
+      writeBatch
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+// --- 1. FIREBASE INITIALIZATION ---
+const appId = 'hiremath-family-bank';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCpwSvjUwF7WYrikCgWMWFvd7LUW0T94Nc",
+  authDomain: "hiremath-family-bank.firebaseapp.com",
+  projectId: "hiremath-family-bank",
+  storageBucket: "hiremath-family-bank.firebasestorage.app",
+  messagingSenderId: "73384343536",
+  appId: "1:73384343536:web:979a846f57b7b848aacf35",
+  measurementId: "G-PQRSHM28ZS"
+};
+    let app = null;
+    let auth = null;
+    let db = null;
+    let currentUser = null;
+
+    // --- 2. CENTRALIZED APPLICATION STATE ---
+    const state = {
+      isCloudReady: false,
+      activeAccountId: null, // 'bank_head', 'banker_1', 'banker_2', 'banker_3'
+      viewMode: 'portal', // 'portal' | 'terminal'
+      revealedSecrets: {}, // { [accountId]: boolean }
+      settings: {
+        treasuryReserve: 500000, // ₹5,00,000 initial central reserve
+        rewardRate: 0.50,        // ₹0.50 per reward point
+        bankName: 'Hiremath Family Bank'
+      },
+      accounts: {
+        bank_head: {
+          id: 'bank_head',
+          role: 'Bank Head',
+          isAdmin: true,
+          isConfigured: false,
+          displayName: 'Bank Head (Admin)',
+          passkey: '',
+          cardNumber: '',
+          pin: '',
+          avatarType: 'emoji',
+          avatarValue: '👑',
+          balance: 0,
+          rewardPoints: 0,
+          creditCard: null
+        },
+        banker_1: {
+          id: 'banker_1',
+          role: 'Banker 1',
+          isAdmin: false,
+          isConfigured: false,
+          displayName: 'Banker 1',
+          passkey: '',
+          cardNumber: '',
+          pin: '',
+          avatarType: 'emoji',
+          avatarValue: '🦁',
+          balance: 0,
+          rewardPoints: 0,
+          creditCard: null
+        },
+        banker_2: {
+          id: 'banker_2',
+          role: 'Banker 2',
+          isAdmin: false,
+          isConfigured: false,
+          displayName: 'Banker 2',
+          passkey: '',
+          cardNumber: '',
+          pin: '',
+          avatarType: 'emoji',
+          avatarValue: '🦊',
+          balance: 0,
+          rewardPoints: 0,
+          creditCard: null
+        },
+        banker_3: {
+          id: 'banker_3',
+          role: 'Banker 3',
+          isAdmin: false,
+          isConfigured: false,
+          displayName: 'Banker 3',
+          passkey: '',
+          cardNumber: '',
+          pin: '',
+          avatarType: 'emoji',
+          avatarValue: '🐼',
+          balance: 0,
+          rewardPoints: 0,
+          creditCard: null
+        }
+      },
+      requests: [],      // Pending & historical approval items
+      transactions: [],  // Ledger log
+      messages: [],      // Family Group Chat messages
+      // UI Drawers & Terminal state
+      isNotifOpen: false,
+      isChatOpen: false,
+      terminalSession: {
+        authenticatedAccountId: null,
+        cardInput: '',
+        pinInput: '',
+        error: ''
+      }
+    };
+
+    const AVATAR_EMOJIS = ['👑', '🦁', '🦊', '🐼', '🐯', '🦄', '🦅', '🐬', '🚀', '💎', '🌟', '🔥', '🍀', '🎯', '🎨', '⚡'];
+
+    // --- 3. FORMATTING & HELPERS ---
+    function formatINR(amount) {
+      const num = Number(amount) || 0;
+      return new Intl.NumberFormat('en-IN', {
+        style: 'currency',
+        currency: 'INR',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(num);
+    }
+
+    function formatTime(isoString) {
+      if (!isoString) return '';
+      const date = new Date(isoString);
+      return date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) +
+             ' · ' +
+             date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    }
+
+    function escapeHTML(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function renderAvatar(account, sizeClasses = 'w-12 h-12 text-2xl') {
+      if (!account) {
+        return `<div class="${sizeClasses} rounded-full bg-gray-200 flex items-center justify-center font-bold text-gray-600">?</div>`;
+      }
+      if (account.avatarType === 'url' && account.avatarValue) {
+        const fallbackEmoji = account.isAdmin ? '👑' : '👤';
+        return `
+          <div class="${sizeClasses} rounded-full overflow-hidden bg-gradient-to-tr from-orange-100 to-purple-100 border border-white shadow-sm flex items-center justify-center shrink-0">
+            <img src="${escapeHTML(account.avatarValue)}"
+                 alt="${escapeHTML(account.displayName)}"
+                 class="w-full h-full object-cover"
+                 onerror="this.style.display='none'; this.parentElement.innerHTML='<span>${fallbackEmoji}</span>';" />
+          </div>
+        `;
+      }
+      return `
+        <div class="${sizeClasses} rounded-full bg-gradient-to-tr from-orange-100 via-pink-100 to-purple-100 border border-white shadow-sm flex items-center justify-center shrink-0 select-none">
+          <span>${escapeHTML(account.avatarValue || '👤')}</span>
+        </div>
+      `;
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+
+      const styles = {
+        success: 'bg-gray-900 text-white border-emerald-500/40',
+        error: 'bg-red-950 text-red-50 border-red-500/40',
+        info: 'bg-gray-900 text-white border-pink-500/40'
+      };
+      const icons = {
+        success: '✅',
+        error: '⚠️',
+        info: '✨'
+      };
+
+      const toast = document.createElement('div');
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl border backdrop-blur-md text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0 ${styles[type] || styles.info}`;
+      toast.innerHTML = `
+        <span class="text-base">${icons[type] || icons.info}</span>
+        <span class="flex-1 leading-snug">${escapeHTML(message)}</span>
+      `;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3600);
+    }
+
+    // --- 4. FIRESTORE PATH HELPERS (STRICT RULE 1) ---
+    function getPublicDocRef(collectionName, docId) {
+      return doc(db, 'artifacts', appId, 'public', 'data', collectionName, docId);
+    }
+
+    function getPublicCollectionRef(collectionName) {
+      return collection(db, 'artifacts', appId, 'public', 'data', collectionName);
+    }
+
+    // --- 5. FIRESTORE SYNC & SEEDING ---
+    async function seedInitialDataIfNeeded() {
+      if (!currentUser || !db) return;
+      try {
+        const settingsRef = getPublicDocRef('hfb_settings', 'global');
+        const settingsSnap = await getDoc(settingsRef);
+        if (!settingsSnap.exists()) {
+          await setDoc(settingsRef, {
+            treasuryReserve: 500000,
+            rewardRate: 0.50,
+            bankName: 'Hiremath Family Bank'
+          });
+        }
+
+        const defaultAccounts = [
+          {
+            id: 'bank_head',
+            role: 'Bank Head',
+            isAdmin: true,
+            isConfigured: false,
+            displayName: 'Bank Head (Admin)',
+            passkey: '',
+            cardNumber: '',
+            pin: '',
+            avatarType: 'emoji',
+            avatarValue: '👑',
+            balance: 0,
+            rewardPoints: 0,
+            creditCard: null
+          },
+          {
+            id: 'banker_1',
+            role: 'Banker 1',
+            isAdmin: false,
+            isConfigured: false,
+            displayName: 'Banker 1',
+            passkey: '',
+            cardNumber: '',
+            pin: '',
+            avatarType: 'emoji',
+            avatarValue: '🦁',
+            balance: 0,
+            rewardPoints: 0,
+            creditCard: null
+          },
+          {
+            id: 'banker_2',
+            role: 'Banker 2',
+            isAdmin: false,
+            isConfigured: false,
+            displayName: 'Banker 2',
+            passkey: '',
+            cardNumber: '',
+            pin: '',
+            avatarType: 'emoji',
+            avatarValue: '🦊',
+            balance: 0,
+            rewardPoints: 0,
+            creditCard: null
+          },
+          {
+            id: 'banker_3',
+            role: 'Banker 3',
+            isAdmin: false,
+            isConfigured: false,
+            displayName: 'Banker 3',
+            passkey: '',
+            cardNumber: '',
+            pin: '',
+            avatarType: 'emoji',
+            avatarValue: '🐼',
+            balance: 0,
+            rewardPoints: 0,
+            creditCard: null
+          }
+        ];
+
+        for (const acc of defaultAccounts) {
+          const accRef = getPublicDocRef('hfb_accounts', acc.id);
+          const accSnap = await getDoc(accRef);
+          if (!accSnap.exists()) {
+            await setDoc(accRef, acc);
+          }
+        }
+      } catch (err) {
+        console.error("Error seeding initial data:", err);
+      }
+    }
+
+    function attachRealtimeListeners() {
+      if (!currentUser || !db) return;
+
+      // 1. Settings listener
+      onSnapshot(
+        getPublicDocRef('hfb_settings', 'global'),
+        (snap) => {
+          if (snap.exists()) {
+            state.settings = { ...state.settings, ...snap.data() };
+            render();
+          }
+        },
+        (err) => console.error("Settings listener error:", err)
+      );
+
+      // 2. Accounts listener
+      onSnapshot(
+        getPublicCollectionRef('hfb_accounts'),
+        (snapshot) => {
+          snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            if (data && data.id) {
+              state.accounts[data.id] = data;
+            }
+          });
+          state.isCloudReady = true;
+          render();
+        },
+        (err) => console.error("Accounts listener error:", err)
+      );
+
+      // 3. Requests / Notifications listener (sort in JS memory per Rule 2)
+      onSnapshot(
+        getPublicCollectionRef('hfb_requests'),
+        (snapshot) => {
+          const items = [];
+          snapshot.forEach((docSnap) => {
+            items.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          items.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+          state.requests = items;
+          render();
+          if (state.isNotifOpen) renderNotifDrawer();
+        },
+        (err) => console.error("Requests listener error:", err)
+      );
+
+      // 4. Transactions listener
+      onSnapshot(
+        getPublicCollectionRef('hfb_transactions'),
+        (snapshot) => {
+          const txs = [];
+          snapshot.forEach((docSnap) => {
+            txs.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          txs.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+          state.transactions = txs;
+          render();
+        },
+        (err) => console.error("Transactions listener error:", err)
+      );
+
+      // 5. Group Chat Messages listener
+      onSnapshot(
+        getPublicCollectionRef('hfb_messages'),
+        (snapshot) => {
+          const msgs = [];
+          snapshot.forEach((docSnap) => {
+            msgs.push({ id: docSnap.id, ...docSnap.data() });
+          });
+          msgs.sort((a, b) => new Date(a.createdAt || 0) - new Date(b.createdAt || 0));
+          state.messages = msgs;
+          if (state.isChatOpen) renderChatDrawer();
+        },
+        (err) => console.error("Messages listener error:", err)
+      );
+    }
+
+    async function initFirebase() {
+      if (!firebaseConfig) {
+        showToast("Firebase config missing. Running offline preview.", "error");
+        state.isCloudReady = true;
+        render();
+        return;
+      }
+
+      try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        // Rule 3: Authenticate FIRST and await before any Firestore queries
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        currentUser = auth.currentUser;
+        if (!currentUser) {
+          await new Promise((resolve) => {
+            const unsub = onAuthStateChanged(auth, (user) => {
+              if (user) {
+                currentUser = user;
+                unsub();
+                resolve();
+              }
+            });
+          });
+        }
+
+        await seedInitialDataIfNeeded();
+        attachRealtimeListeners();
+      } catch (err) {
+        console.error("Firebase init failed:", err);
+        showToast("Cloud connection error: " + err.message, "error");
+        state.isCloudReady = true;
+        render();
+      }
+    }
+
+    // --- 6. CORE BANKING ACTIONS (FIRESTORE MUTATIONS) ---
+    async function logTransaction(txData) {
+      if (!currentUser || !db) return;
+      await addDoc(getPublicCollectionRef('hfb_transactions'), {
+        ...txData,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    // Demo Reset / Quick Seed for testing
+    async function resetEntireBankDemo() {
+      if (!currentUser || !db) return;
+      try {
+        const batch = writeBatch(db);
+        batch.set(getPublicDocRef('hfb_settings', 'global'), {
+          treasuryReserve: 500000,
+          rewardRate: 0.50,
+          bankName: 'Hiremath Family Bank'
+        });
+
+        const defaults = [
+          { id: 'bank_head', role: 'Bank Head', isAdmin: true, isConfigured: false, displayName: 'Bank Head (Admin)', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '👑', balance: 0, rewardPoints: 0, creditCard: null },
+          { id: 'banker_1', role: 'Banker 1', isAdmin: false, isConfigured: false, displayName: 'Banker 1', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🦁', balance: 0, rewardPoints: 0, creditCard: null },
+          { id: 'banker_2', role: 'Banker 2', isAdmin: false, isConfigured: false, displayName: 'Banker 2', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🦊', balance: 0, rewardPoints: 0, creditCard: null },
+          { id: 'banker_3', role: 'Banker 3', isAdmin: false, isConfigured: false, displayName: 'Banker 3', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🐼', balance: 0, rewardPoints: 0, creditCard: null }
+        ];
+        defaults.forEach(acc => batch.set(getPublicDocRef('hfb_accounts', acc.id), acc));
+
+        // Clear requests, transactions, messages
+        const [reqSnap, txSnap, msgSnap] = await Promise.all([
+          getDocs(getPublicCollectionRef('hfb_requests')),
+          getDocs(getPublicCollectionRef('hfb_transactions')),
+          getDocs(getPublicCollectionRef('hfb_messages'))
+        ]);
+        reqSnap.forEach(d => batch.delete(d.ref));
+        txSnap.forEach(d => batch.delete(d.ref));
+        msgSnap.forEach(d => batch.delete(d.ref));
+
+        await batch.commit();
+        state.activeAccountId = null;
+        closeModal();
+        showToast("Vault reset to factory defaults.", "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Reset failed: " + err.message, "error");
+      }
+    }
+
+    // Seed pre-configured demo family accounts for instant testing
+    async function seedQuickDemoAccounts() {
+      if (!currentUser || !db) return;
+      try {
+        const batch = writeBatch(db);
+        batch.set(getPublicDocRef('hfb_settings', 'global'), {
+          treasuryReserve: 475000,
+          rewardRate: 0.50,
+          bankName: 'Hiremath Family Bank'
+        });
+
+        const demoAccounts = [
+          {
+            id: 'bank_head', role: 'Bank Head', isAdmin: true, isConfigured: true,
+            displayName: 'Rajesh Hiremath', passkey: 'admin123', cardNumber: '1001', pin: '1111',
+            avatarType: 'emoji', avatarValue: '👑', balance: 0, rewardPoints: 0, creditCard: null
+          },
+          {
+            id: 'banker_1', role: 'Banker 1', isAdmin: false, isConfigured: true,
+            displayName: 'Aarav Hiremath', passkey: 'aarav1', cardNumber: '2002', pin: '2222',
+            avatarType: 'emoji', avatarValue: '🦁', balance: 15000, rewardPoints: 240,
+            creditCard: {
+              status: 'active',
+              limit: 25000,
+              used: 3200,
+              cardNumber: '8842',
+              approvedAt: new Date().toISOString()
+            }
+          },
+          {
+            id: 'banker_2', role: 'Banker 2', isAdmin: false, isConfigured: true,
+            displayName: 'Ananya Hiremath', passkey: 'ananya2', cardNumber: '3003', pin: '3333',
+            avatarType: 'emoji', avatarValue: '🦊', balance: 10000, rewardPoints: 120,
+            creditCard: null
+          },
+          {
+            id: 'banker_3', role: 'Banker 3', isAdmin: false, isConfigured: true,
+            displayName: 'Rohan Hiremath', passkey: 'rohan3', cardNumber: '4004', pin: '4444',
+            avatarType: 'emoji', avatarValue: '🐼', balance: 5000, rewardPoints: 50,
+            creditCard: null
+          }
+        ];
+        demoAccounts.forEach(acc => batch.set(getPublicDocRef('hfb_accounts', acc.id), acc));
+        await batch.commit();
+
+        await logTransaction({
+          type: 'TREASURY_CREDIT',
+          fromId: 'treasury',
+          toId: 'banker_1',
+          amount: 15000,
+          note: 'Initial Family Allowance Allocation'
+        });
+
+        await addDoc(getPublicCollectionRef('hfb_messages'), {
+          senderId: 'bank_head',
+          type: 'text',
+          text: 'Welcome to Hiremath Family Bank! All accounts are live and synced across devices.',
+          createdAt: new Date().toISOString()
+        });
+
+        closeModal();
+        showToast("Demo family accounts loaded! (Passkeys visible in Bank Head)", "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Quick demo seed failed: " + err.message, "error");
+      }
+    }
+
+    // First-Time Setup Save
+    async function saveAccountSetup(accountId, formData) {
+      if (!currentUser || !db) return;
+      const existingAccs = Object.values(state.accounts);
+      const duplicateCard = existingAccs.find(
+        a => a.id !== accountId && a.isConfigured && a.cardNumber === formData.cardNumber
+      );
+      if (duplicateCard) {
+        showToast(`Card #${formData.cardNumber} is already assigned to ${duplicateCard.displayName}. Choose another 4-digit number.`, "error");
+        return;
+      }
+
+      try {
+        await updateDoc(getPublicDocRef('hfb_accounts', accountId), {
+          isConfigured: true,
+          displayName: formData.displayName.trim(),
+          passkey: formData.passkey.trim(),
+          cardNumber: formData.cardNumber.trim(),
+          pin: formData.pin.trim(),
+          avatarType: formData.avatarType,
+          avatarValue: formData.avatarValue
+        });
+        state.activeAccountId = accountId;
+        closeModal();
+        showToast(`Welcome aboard, ${formData.displayName}!`, "success");
+        render();
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to save profile: " + err.message, "error");
+      }
+    }
+
+    // Bank Head: Add Funds from Treasury Reserve
+    async function handleAddFundsFromTreasury(targetAccountId, amount, passkeyInput) {
+      const bankHead = state.accounts.bank_head;
+      if (passkeyInput !== bankHead.passkey) {
+        showToast("Invalid Bank Head passkey. Authorization denied.", "error");
+        return false;
+      }
+      const val = parseFloat(amount);
+      if (isNaN(val) || val <= 0) {
+        showToast("Enter a valid positive INR amount.", "error");
+        return false;
+      }
+      if (val > state.settings.treasuryReserve) {
+        showToast("Insufficient Central Treasury Reserve.", "error");
+        return false;
+      }
+
+      const target = state.accounts[targetAccountId];
+      if (!target) return false;
+
+      try {
+        const batch = writeBatch(db);
+        batch.update(getPublicDocRef('hfb_settings', 'global'), {
+          treasuryReserve: Number((state.settings.treasuryReserve - val).toFixed(2))
+        });
+        batch.update(getPublicDocRef('hfb_accounts', targetAccountId), {
+          balance: Number((target.balance + val).toFixed(2))
+        });
+        await batch.commit();
+
+        await logTransaction({
+          type: 'TREASURY_CREDIT',
+          fromId: 'treasury',
+          toId: targetAccountId,
+          amount: val,
+          note: `Central Treasury Disbursement to ${target.displayName}`
+        });
+
+        showToast(`Credited ${formatINR(val)} to ${target.displayName}`, "success");
+        return true;
+      } catch (err) {
+        console.error(err);
+        showToast("Transfer error: " + err.message, "error");
+        return false;
+      }
+    }
+
+    // Bank Head: Reallocate Funds between Bankers
+    async function handleReallocateFunds(fromId, toId, amount) {
+      if (fromId === toId) {
+        showToast("Source and destination accounts must be different.", "error");
+        return false;
+      }
+      const val = parseFloat(amount);
+      if (isNaN(val) || val <= 0) {
+        showToast("Enter a valid positive amount.", "error");
+        return false;
+      }
+      const source = state.accounts[fromId];
+      const dest = state.accounts[toId];
+      if (!source || !dest) return false;
+      if (source.balance < val) {
+        showToast(`${source.displayName} has insufficient funds (${formatINR(source.balance)}).`, "error");
+        return false;
+      }
+
+      try {
+        const batch = writeBatch(db);
+        batch.update(getPublicDocRef('hfb_accounts', fromId), {
+          balance: Number((source.balance - val).toFixed(2))
+        });
+        batch.update(getPublicDocRef('hfb_accounts', toId), {
+          balance: Number((dest.balance + val).toFixed(2))
+        });
+        await batch.commit();
+
+        await logTransaction({
+          type: 'REALLOCATION',
+          fromId,
+          toId,
+          amount: val,
+          note: `Admin Fund Reallocation: ${source.displayName} → ${dest.displayName}`
+        });
+
+        showToast(`Reallocated ${formatINR(val)} from ${source.displayName} to ${dest.displayName}`, "success");
+        return true;
+      } catch (err) {
+        console.error(err);
+        showToast("Reallocation error: " + err.message, "error");
+        return false;
+      }
+    }
+
+    // Bank Head: Update Reward Exchange Rate
+    async function handleUpdateRewardRate(newRate) {
+      const rate = parseFloat(newRate);
+      if (isNaN(rate) || rate <= 0) {
+        showToast("Enter a valid positive INR rate per point.", "error");
+        return;
+      }
+      try {
+        await updateDoc(getPublicDocRef('hfb_settings', 'global'), {
+          rewardRate: Number(rate.toFixed(2))
+        });
+        showToast(`Reward exchange rate updated to ${formatINR(rate)} / pt`, "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to update rate: " + err.message, "error");
+      }
+    }
+
+    // Banker: Apply for Credit Card
+    async function handleApplyCreditCard(accountId, desiredLimit, reason) {
+      const limit = parseFloat(desiredLimit);
+      if (isNaN(limit) || limit < 500) {
+        showToast("Minimum requested credit limit is ₹500.", "error");
+        return;
+      }
+      const existingPending = state.requests.find(
+        r => r.type === 'CREDIT_CARD_APP' && r.fromId === accountId && r.status === 'pending'
+      );
+      if (existingPending) {
+        showToast("You already have a pending Credit Card application.", "info");
+        return;
+      }
+
+      try {
+        await addDoc(getPublicCollectionRef('hfb_requests'), {
+          type: 'CREDIT_CARD_APP',
+          fromId: accountId,
+          toId: 'bank_head',
+          amount: limit,
+          note: reason.trim() || 'Family Virtual Credit Card Request',
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+        showToast("Credit Card application sent to Bank Head!", "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Application error: " + err.message, "error");
+      }
+    }
+
+    // Banker: Spend on Active Virtual Credit Card
+    async function handleCreditCardSpend(accountId, amount, merchant) {
+      const acc = state.accounts[accountId];
+      if (!acc || !acc.creditCard || acc.creditCard.status !== 'active') return;
+      const val = parseFloat(amount);
+      if (isNaN(val) || val <= 0) {
+        showToast("Enter a valid spend amount.", "error");
+        return;
+      }
+      const available = acc.creditCard.limit - acc.creditCard.used;
+      if (val > available) {
+        showToast(`Exceeds available credit limit (${formatINR(available)}).`, "error");
+        return;
+      }
+
+      // Earn 1 Reward Point per ₹25 spent (minimum 1 pt if >= ₹10)
+      const pointsEarned = Math.max(1, Math.floor(val / 25));
+
+      try {
+        await updateDoc(getPublicDocRef('hfb_accounts', accountId), {
+          'creditCard.used': Number((acc.creditCard.used + val).toFixed(2)),
+          rewardPoints: (acc.rewardPoints || 0) + pointsEarned
+        });
+
+        await logTransaction({
+          type: 'CREDIT_SPEND',
+          fromId: accountId,
+          toId: 'merchant',
+          amount: val,
+          note: `Credit Card Spend: ${merchant.trim() || 'POS Purchase'} (+${pointsEarned} pts)`
+        });
+
+        showToast(`Paid ${formatINR(val)} via Credit Card · Earned +${pointsEarned} Reward Pts!`, "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Transaction failed: " + err.message, "error");
+      }
+    }
+
+    // Banker: Pay Off Credit Card Dues from Main Balance
+    async function handlePayCreditCardBill(accountId, amount) {
+      const acc = state.accounts[accountId];
+      if (!acc || !acc.creditCard) return;
+      const val = parseFloat(amount);
+      if (isNaN(val) || val <= 0) {
+        showToast("Enter a valid repayment amount.", "error");
+        return;
+      }
+      if (val > acc.creditCard.used) {
+        showToast(`Repayment cannot exceed current dues (${formatINR(acc.creditCard.used)}).`, "error");
+        return;
+      }
+      if (val > acc.balance) {
+        showToast("Insufficient main account balance.", "error");
+        return;
+      }
+
+      try {
+        await updateDoc(getPublicDocRef('hfb_accounts', accountId), {
+          balance: Number((acc.balance - val).toFixed(2)),
+          'creditCard.used': Number((acc.creditCard.used - val).toFixed(2))
+        });
+
+        await logTransaction({
+          type: 'CREDIT_BILL_PAY',
+          fromId: accountId,
+          toId: 'credit_card',
+          amount: val,
+          note: 'Virtual Credit Card Bill Settlement'
+        });
+
+        showToast(`Paid ${formatINR(val)} toward Credit Card bill!`, "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Payment failed: " + err.message, "error");
+      }
+    }
+
+    // Banker: Redeem Reward Points into Cash (INR)
+    async function handleRedeemRewards(accountId) {
+      const acc = state.accounts[accountId];
+      if (!acc || !acc.rewardPoints || acc.rewardPoints <= 0) {
+        showToast("No reward points available to redeem.", "info");
+        return;
+      }
+      const points = acc.rewardPoints;
+      const cashValue = Number((points * state.settings.rewardRate).toFixed(2));
+
+      try {
+        await updateDoc(getPublicDocRef('hfb_accounts', accountId), {
+          balance: Number((acc.balance + cashValue).toFixed(2)),
+          rewardPoints: 0
+        });
+
+        await logTransaction({
+          type: 'REWARD_REDEEM',
+          fromId: 'rewards_vault',
+          toId: accountId,
+          amount: cashValue,
+          note: `Redeemed ${points} Reward Points @ ${formatINR(state.settings.rewardRate)}/pt`
+        });
+
+        showToast(`Converted ${points} pts into ${formatINR(cashValue)} cash!`, "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Redemption error: " + err.message, "error");
+      }
+    }
+
+    // P2P Money Request
+    async function handleCreateP2PRequest(fromId, toId, amount, note) {
+      const val = parseFloat(amount);
+      if (isNaN(val) || val <= 0) {
+        showToast("Enter a valid positive amount.", "error");
+        return false;
+      }
+      if (fromId === toId) {
+        showToast("You cannot request money from yourself.", "error");
+        return false;
+      }
+      try {
+        await addDoc(getPublicCollectionRef('hfb_requests'), {
+          type: 'P2P_REQUEST',
+          fromId,
+          toId,
+          amount: val,
+          note: note.trim() || 'Family Money Request',
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+        showToast(`Requested ${formatINR(val)} from ${state.accounts[toId]?.displayName}`, "success");
+        return true;
+      } catch (err) {
+        console.error(err);
+        showToast("Request failed: " + err.message, "error");
+        return false;
+      }
+    }
+
+    // Group Chat: Send Text or Broadcast "Ask All" Money Request
+    async function handleSendGroupMessage(senderId, text, isMoneyRequest = false, requestAmount = 0) {
+      if (!currentUser || !db) return;
+      try {
+        if (isMoneyRequest) {
+          const val = parseFloat(requestAmount);
+          if (isNaN(val) || val <= 0) {
+            showToast("Enter a valid amount for the group request.", "error");
+            return false;
+          }
+          const noteText = text.trim() || 'Group Money Request';
+          // Create a shared request record
+          const reqDoc = await addDoc(getPublicCollectionRef('hfb_requests'), {
+            type: 'GROUP_REQUEST',
+            fromId: senderId,
+            toId: 'ALL',
+            amount: val,
+            note: noteText,
+            status: 'pending',
+            createdAt: new Date().toISOString()
+          });
+
+          // Post interactive request card in Group Chat
+          await addDoc(getPublicCollectionRef('hfb_messages'), {
+            senderId,
+            type: 'money_request',
+            requestId: reqDoc.id,
+            amount: val,
+            text: noteText,
+            status: 'pending',
+            paidBy: null,
+            createdAt: new Date().toISOString()
+          });
+          showToast(`Broadcasted ${formatINR(val)} request to family chat!`, "success");
+          return true;
+        } else {
+          if (!text.trim()) return false;
+          await addDoc(getPublicCollectionRef('hfb_messages'), {
+            senderId,
+            type: 'text',
+            text: text.trim(),
+            createdAt: new Date().toISOString()
+          });
+          return true;
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("Message failed: " + err.message, "error");
+        return false;
+      }
+    }
+
+    // Virtual ATM / POS Terminal Debit Request
+    async function handleCreatePOSDebit(accountId, amount, merchant) {
+      const val = parseFloat(amount);
+      if (isNaN(val) || val <= 0) {
+        showToast("Enter a valid debit amount.", "error");
+        return false;
+      }
+      const acc = state.accounts[accountId];
+      if (!acc) return false;
+      if (val > acc.balance) {
+        showToast(`Insufficient account balance (${formatINR(acc.balance)}).`, "error");
+        return false;
+      }
+
+      try {
+        await addDoc(getPublicCollectionRef('hfb_requests'), {
+          type: 'POS_DEBIT',
+          fromId: accountId,
+          toId: 'bank_head',
+          amount: val,
+          note: merchant.trim() || 'ATM / POS Terminal Withdrawal',
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        });
+        showToast(`POS Debit of ${formatINR(val)} submitted to Bank Head for approval!`, "success");
+        return true;
+      } catch (err) {
+        console.error(err);
+        showToast("Terminal request failed: " + err.message, "error");
+        return false;
+      }
+    }
+
+    // Notification Approval / Decline Engine
+    async function handleResolveRequest(requestId, decision, approvedLimitOverride = null) {
+      const req = state.requests.find(r => r.id === requestId);
+      if (!req || req.status !== 'pending') return;
+
+      const resolverId = state.activeAccountId;
+      const resolver = state.accounts[resolverId];
+      if (!resolver) return;
+
+      try {
+        if (decision === 'declined') {
+          await updateDoc(getPublicDocRef('hfb_requests', requestId), {
+            status: 'declined',
+            resolvedBy: resolverId,
+            resolvedAt: new Date().toISOString()
+          });
+
+          // If it's a group request, also update the chat message card
+          if (req.type === 'GROUP_REQUEST') {
+            const linkedMsg = state.messages.find(m => m.requestId === requestId);
+            if (linkedMsg) {
+              await updateDoc(getPublicDocRef('hfb_messages', linkedMsg.id), {
+                status: 'declined'
+              });
+            }
+          }
+
+          showToast("Request declined.", "info");
+          return;
+        }
+
+        // DECISION === 'approved'
+        if (req.type === 'CREDIT_CARD_APP') {
+          const applicant = state.accounts[req.fromId];
+          if (!applicant) return;
+          const finalLimit = approvedLimitOverride ? parseFloat(approvedLimitOverride) : req.amount;
+          if (isNaN(finalLimit) || finalLimit <= 0) {
+            showToast("Invalid credit limit.", "error");
+            return;
+          }
+          const randomVirtualCard = String(Math.floor(5000 + Math.random() * 4999));
+
+          const batch = writeBatch(db);
+          batch.update(getPublicDocRef('hfb_accounts', req.fromId), {
+            creditCard: {
+              status: 'active',
+              limit: finalLimit,
+              used: 0,
+              cardNumber: randomVirtualCard,
+              approvedAt: new Date().toISOString()
+            }
+          });
+          batch.update(getPublicDocRef('hfb_requests', requestId), {
+            status: 'approved',
+            amount: finalLimit,
+            resolvedBy: resolverId,
+            resolvedAt: new Date().toISOString()
+          });
+          await batch.commit();
+
+          await logTransaction({
+            type: 'CREDIT_APPROVED',
+            fromId: 'bank_head',
+            toId: req.fromId,
+            amount: finalLimit,
+            note: `Virtual Credit Card Approved (Limit: ${formatINR(finalLimit)})`
+          });
+
+          showToast(`Approved Virtual Credit Card for ${applicant.displayName}!`, "success");
+        }
+        else if (req.type === 'POS_DEBIT') {
+          const cardHolder = state.accounts[req.fromId];
+          if (!cardHolder) return;
+          if (cardHolder.balance < req.amount) {
+            showToast(`${cardHolder.displayName} no longer has sufficient balance.`, "error");
+            return;
+          }
+
+          const batch = writeBatch(db);
+          batch.update(getPublicDocRef('hfb_accounts', req.fromId), {
+            balance: Number((cardHolder.balance - req.amount).toFixed(2))
+          });
+          batch.update(getPublicDocRef('hfb_requests', requestId), {
+            status: 'approved',
+            resolvedBy: resolverId,
+            resolvedAt: new Date().toISOString()
+          });
+          await batch.commit();
+
+          await logTransaction({
+            type: 'POS_DEBIT',
+            fromId: req.fromId,
+            toId: 'pos_terminal',
+            amount: req.amount,
+            note: `POS / ATM Approved: ${req.note}`
+          });
+
+          showToast(`Approved ${formatINR(req.amount)} POS debit for ${cardHolder.displayName}`, "success");
+        }
+        else if (req.type === 'P2P_REQUEST' || req.type === 'GROUP_REQUEST') {
+          const requester = state.accounts[req.fromId];
+          if (!requester) return;
+
+          // If Bank Head fulfills a request, they can pay from Treasury Reserve or their balance if available
+          const isBankHeadPayingFromTreasury = resolver.isAdmin && resolver.balance < req.amount;
+          if (!isBankHeadPayingFromTreasury && resolver.balance < req.amount) {
+            showToast(`Insufficient balance (${formatINR(resolver.balance)}) to pay ${formatINR(req.amount)}.`, "error");
+            return;
+          }
+          if (isBankHeadPayingFromTreasury && state.settings.treasuryReserve < req.amount) {
+            showToast("Insufficient Treasury Reserve.", "error");
+            return;
+          }
+
+          const batch = writeBatch(db);
+          if (isBankHeadPayingFromTreasury) {
+            batch.update(getPublicDocRef('hfb_settings', 'global'), {
+              treasuryReserve: Number((state.settings.treasuryReserve - req.amount).toFixed(2))
+            });
+          } else {
+            batch.update(getPublicDocRef('hfb_accounts', resolverId), {
+              balance: Number((resolver.balance - req.amount).toFixed(2))
+            });
+          }
+
+          batch.update(getPublicDocRef('hfb_accounts', req.fromId), {
+            balance: Number((requester.balance + req.amount).toFixed(2))
+          });
+
+          batch.update(getPublicDocRef('hfb_requests', requestId), {
+            status: 'approved',
+            resolvedBy: resolverId,
+            resolvedAt: new Date().toISOString()
+          });
+          await batch.commit();
+
+          if (req.type === 'GROUP_REQUEST') {
+            const linkedMsg = state.messages.find(m => m.requestId === requestId);
+            if (linkedMsg) {
+              await updateDoc(getPublicDocRef('hfb_messages', linkedMsg.id), {
+                status: 'approved',
+                paidBy: resolverId
+              });
+            }
+          }
+
+          await logTransaction({
+            type: 'P2P_TRANSFER',
+            fromId: isBankHeadPayingFromTreasury ? 'treasury' : resolverId,
+            toId: req.fromId,
+            amount: req.amount,
+            note: `${req.note} (Paid by ${resolver.displayName})`
+          });
+
+          showToast(`Paid ${formatINR(req.amount)} to ${requester.displayName}!`, "success");
+        }
+      } catch (err) {
+        console.error(err);
+        showToast("Action failed: " + err.message, "error");
+      }
+    }
+
+    // --- 7. NOTIFICATION FILTERING FOR ACTIVE USER ---
+    function getPendingNotificationsForActiveUser() {
+      const uid = state.activeAccountId;
+      if (!uid) return [];
+      return state.requests.filter(r => {
+        if (r.status !== 'pending') return false;
+        if (r.fromId === uid) return false; // Don't show self-requests as actionable approvals
+        if (r.toId === uid) return true;
+        if (r.toId === 'ALL') return true;
+        return false;
+      });
+    }
+
+    // --- 8. MODALS (SETUP, PASSKEY LOGIN, P2P REQUEST, DEMO SETTINGS) ---
+    function closeModal() {
+      const root = document.getElementById('modal-root');
+      if (root) root.innerHTML = '';
+    }
+
+    function openAccountEntryModal(accountId) {
+      const acc = state.accounts[accountId];
+      if (!acc) return;
+
+      if (!acc.isConfigured) {
+        openFirstTimeSetupModal(accountId);
+      } else {
+        openPasskeyLoginModal(accountId);
+      }
+    }
+
+    function openFirstTimeSetupModal(accountId) {
+      const acc = state.accounts[accountId];
+      let selectedAvatarType = 'emoji';
+      let selectedEmoji = acc.avatarValue || '🦁';
+
+      const root = document.getElementById('modal-root');
+      root.innerHTML = `
+        <div class="fixed inset-0 bg-gray-950/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 my-auto">
+            <div class="flex items-center justify-between mb-5">
+              <div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-orange-500/15 via-pink-500/15 to-purple-500/15 text-pink-700 border border-pink-200/60">
+                  First-Time Account Setup
+                </span>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900 mt-2">Configure ${escapeHTML(acc.role)}</h2>
+              </div>
+              <button type="button" id="close-setup-btn" class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition">✕</button>
+            </div>
+
+            <form id="setup-form" class="space-y-4">
+              <!-- Avatar Selector -->
+              <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200/70">
+                <div class="flex items-center justify-between mb-3">
+                  <label class="text-xs font-bold uppercase tracking-wider text-gray-500">Profile Avatar (PFP)</label>
+                  <div class="flex gap-1 bg-white p-1 rounded-xl border border-gray-200 text-xs font-semibold">
+                    <button type="button" id="tab-emoji" class="px-2.5 py-1 rounded-lg bg-gray-900 text-white transition">Emoji</button>
+                    <button type="button" id="tab-url" class="px-2.5 py-1 rounded-lg text-gray-600 hover:text-gray-900 transition">Image URL / Upload</button>
+                  </div>
+                </div>
+
+                <div id="emoji-picker-panel" class="grid grid-cols-8 gap-2">
+                  ${AVATAR_EMOJIS.map(em => `
+                    <button type="button" data-emoji="${em}" class="emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition ${em === selectedEmoji ? 'bg-pink-100 border-pink-500 scale-105' : 'bg-white border-gray-200 hover:bg-gray-100'}">
+                      ${em}
+                    </button>
+                  `).join('')}
+                </div>
+
+                <div id="url-picker-panel" class="hidden space-y-2.5">
+                  <input type="url" id="setup-avatar-url" placeholder="https://example.com/photo.jpg"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white" />
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <span>Or pick a photo from device:</span>
+                    <label class="cursor-pointer px-3 py-1.5 rounded-xl bg-white border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50">
+                      Choose Image
+                      <input type="file" id="setup-avatar-file" accept="image/*" class="hidden" />
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Display Name</label>
+                  <input type="text" id="setup-name" required placeholder="e.g., Aarav Hiremath"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Account Passkey</label>
+                  <input type="text" id="setup-passkey" required minlength="3" placeholder="Create secret passkey"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">4-Digit Card Number</label>
+                  <input type="text" id="setup-card" required pattern="\\d{4}" maxlength="4" inputmode="numeric" placeholder="e.g., 4821"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">4-Digit ATM/POS PIN</label>
+                  <input type="password" id="setup-pin" required pattern="\\d{4}" maxlength="4" inputmode="numeric" placeholder="••••"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                </div>
+              </div>
+
+              <div class="pt-2 flex items-center justify-end gap-3">
+                <button type="button" id="cancel-setup-btn" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100 transition">Cancel</button>
+                <button type="submit" class="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:opacity-95 shadow-md transition">
+                  Activate Account
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('close-setup-btn').onclick = closeModal;
+      document.getElementById('cancel-setup-btn').onclick = closeModal;
+
+      const tabEmoji = document.getElementById('tab-emoji');
+      const tabUrl = document.getElementById('tab-url');
+      const emojiPanel = document.getElementById('emoji-picker-panel');
+      const urlPanel = document.getElementById('url-picker-panel');
+
+      tabEmoji.onclick = () => {
+        selectedAvatarType = 'emoji';
+        tabEmoji.className = 'px-2.5 py-1 rounded-lg bg-gray-900 text-white transition';
+        tabUrl.className = 'px-2.5 py-1 rounded-lg text-gray-600 hover:text-gray-900 transition';
+        emojiPanel.classList.remove('hidden');
+        urlPanel.classList.add('hidden');
+      };
+
+      tabUrl.onclick = () => {
+        selectedAvatarType = 'url';
+        tabUrl.className = 'px-2.5 py-1 rounded-lg bg-gray-900 text-white transition';
+        tabEmoji.className = 'px-2.5 py-1 rounded-lg text-gray-600 hover:text-gray-900 transition';
+        urlPanel.classList.remove('hidden');
+        emojiPanel.classList.add('hidden');
+      };
+
+      document.querySelectorAll('.emoji-choice').forEach(btn => {
+        btn.onclick = () => {
+          selectedEmoji = btn.dataset.emoji;
+          document.querySelectorAll('.emoji-choice').forEach(b => {
+            b.className = 'emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition bg-white border-gray-200 hover:bg-gray-100';
+          });
+          btn.className = 'emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition bg-pink-100 border-pink-500 scale-105';
+        };
+      });
+
+      // Handle local image file by resizing down to a compact avatar URL
+      document.getElementById('setup-avatar-file').onchange = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const size = 128;
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            const minSide = Math.min(img.width, img.height);
+            const sx = (img.width - minSide) / 2;
+            const sy = (img.height - minSide) / 2;
+            ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+            document.getElementById('setup-avatar-url').value = canvas.toDataURL('image/jpeg', 0.8);
+            showToast("Photo prepared for avatar!", "success");
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      };
+
+      document.getElementById('setup-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const displayName = document.getElementById('setup-name').value;
+        const passkey = document.getElementById('setup-passkey').value;
+        const cardNumber = document.getElementById('setup-card').value;
+        const pin = document.getElementById('setup-pin').value;
+        const urlVal = document.getElementById('setup-avatar-url').value.trim();
+
+        if (!/^\d{4}$/.test(cardNumber) || !/^\d{4}$/.test(pin)) {
+          showToast("Card number and PIN must each be 4 digits.", "error");
+          return;
+        }
+
+        const avatarValue = selectedAvatarType === 'url' && urlVal ? urlVal : selectedEmoji;
+        const finalType = selectedAvatarType === 'url' && urlVal ? 'url' : 'emoji';
+
+        await saveAccountSetup(accountId, {
+          displayName,
+          passkey,
+          cardNumber,
+          pin,
+          avatarType: finalType,
+          avatarValue
+        });
+      };
+    }
+
+    function openPasskeyLoginModal(accountId) {
+      const acc = state.accounts[accountId];
+      const root = document.getElementById('modal-root');
+      root.innerHTML = `
+        <div class="fixed inset-0 bg-gray-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-gray-100 text-center">
+            <div class="flex justify-end">
+              <button type="button" id="close-login-btn" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500">✕</button>
+            </div>
+            <div class="flex justify-center mb-3">
+              ${renderAvatar(acc, 'w-16 h-16 text-3xl')}
+            </div>
+            <span class="inline-block px-3 py-0.5 rounded-full text-xs font-semibold bg-pink-50 text-pink-700 border border-pink-200/70 mb-1">
+              ${escapeHTML(acc.role)}
+            </span>
+            <h3 class="text-xl font-extrabold text-gray-900">${escapeHTML(acc.displayName)}</h3>
+            <p class="text-xs text-gray-500 mt-1 mb-5">Enter your secret account passkey to unlock vault</p>
+
+            <form id="login-form" class="space-y-4">
+              <input type="password" id="login-passkey" required autofocus placeholder="Enter Passkey"
+                     class="w-full px-4 py-3 rounded-2xl border border-gray-300 text-center font-semibold tracking-wider text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              <button type="submit" class="w-full py-3 rounded-2xl font-bold text-sm text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:opacity-95 shadow-md transition">
+                Unlock Vault →
+              </button>
+            </form>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('close-login-btn').onclick = closeModal;
+      document.getElementById('login-form').onsubmit = (e) => {
+        e.preventDefault();
+        const entered = document.getElementById('login-passkey').value;
+        if (entered === acc.passkey) {
+          state.activeAccountId = accountId;
+          state.viewMode = 'portal';
+          closeModal();
+          showToast(`Signed in as ${acc.displayName}`, "success");
+          render();
+        } else {
+          showToast("Incorrect passkey. Please try again.", "error");
+        }
+      };
+    }
+
+    function openP2PRequestModal() {
+      const uid = state.activeAccountId;
+      const otherAccounts = Object.values(state.accounts).filter(a => a.id !== uid);
+
+      const root = document.getElementById('modal-root');
+      root.innerHTML = `
+        <div class="fixed inset-0 bg-gray-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-pink-600">Peer-to-Peer Transfer</span>
+                <h3 class="text-xl font-extrabold text-gray-900">Request Money</h3>
+              </div>
+              <button type="button" id="close-p2p-btn" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500">✕</button>
+            </div>
+
+            <form id="p2p-form" class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Request From</label>
+                <select id="p2p-target" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm font-medium bg-white focus:outline-none focus:ring-2 focus:ring-pink-500">
+                  ${otherAccounts.map(a => `
+                    <option value="${a.id}">${escapeHTML(a.displayName)} (${escapeHTML(a.role)})</option>
+                  `).join('')}
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Amount (₹ INR)</label>
+                <input type="number" id="p2p-amount" required min="1" step="0.01" placeholder="500.00"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-700 mb-1">Reason / Note</label>
+                <input type="text" id="p2p-note" placeholder="e.g., Books, Lunch, Movie tickets"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              </div>
+              <div class="flex justify-end gap-2 pt-2">
+                <button type="button" id="cancel-p2p-btn" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-100">Cancel</button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 shadow-md">
+                  Send Request
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('close-p2p-btn').onclick = closeModal;
+      document.getElementById('cancel-p2p-btn').onclick = closeModal;
+      document.getElementById('p2p-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const toId = document.getElementById('p2p-target').value;
+        const amount = document.getElementById('p2p-amount').value;
+        const note = document.getElementById('p2p-note').value;
+        const ok = await handleCreateP2PRequest(uid, toId, amount, note);
+        if (ok) closeModal();
+      };
+    }
+
+    function openDemoSettingsModal() {
+      const root = document.getElementById('modal-root');
+      root.innerHTML = `
+        <div class="fixed inset-0 bg-gray-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-lg font-extrabold text-gray-900">Vault Administration & Testing</h3>
+              <button type="button" id="close-demo-btn" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500">✕</button>
+            </div>
+            <p class="text-xs text-gray-600 leading-relaxed mb-5">
+              Use these utilities to quickly populate all 4 Hiremath family accounts with realistic demo credentials, or wipe the cloud vault back to unconfigured ₹0.00 accounts.
+            </p>
+            <div class="space-y-3">
+              <button type="button" id="btn-seed-demo" class="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 text-white font-bold text-sm shadow-md hover:opacity-95 transition">
+                ✨ Load Pre-Configured Demo Family
+              </button>
+              <button type="button" id="btn-reset-demo" class="w-full py-3 px-4 rounded-2xl bg-red-50 text-red-700 border border-red-200 font-bold text-sm hover:bg-red-100 transition">
+                🔄 Reset Vault to Factory Defaults (₹0.00)
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('close-demo-btn').onclick = closeModal;
+      document.getElementById('btn-seed-demo').onclick = seedQuickDemoAccounts;
+      document.getElementById('btn-reset-demo').onclick = resetEntireBankDemo;
+    }
+
+    // --- 9. SLIDE-OVER DRAWERS (NOTIFICATION CENTER & GROUP CHAT) ---
+    function toggleNotifDrawer(forceState = null) {
+      state.isNotifOpen = forceState !== null ? forceState : !state.isNotifOpen;
+      if (state.isNotifOpen) {
+        state.isChatOpen = false;
+        renderNotifDrawer();
+      } else {
+        document.getElementById('drawer-root').innerHTML = '';
+      }
+    }
+
+    function toggleChatDrawer(forceState = null) {
+      state.isChatOpen = forceState !== null ? forceState : !state.isChatOpen;
+      if (state.isChatOpen) {
+        state.isNotifOpen = false;
+        renderChatDrawer();
+      } else {
+        document.getElementById('drawer-root').innerHTML = '';
+      }
+    }
+
+    function renderNotifDrawer() {
+      const root = document.getElementById('drawer-root');
+      if (!state.isNotifOpen) {
+        root.innerHTML = '';
+        return;
+      }
+
+      const pending = getPendingNotificationsForActiveUser();
+      const recentResolved = state.requests.filter(r => r.status !== 'pending').slice(0, 8);
+
+      root.innerHTML = `
+        <div class="fixed inset-0 bg-gray-950/40 backdrop-blur-xs flex justify-end">
+          <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col border-l border-gray-200">
+            <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-orange-50/60 via-pink-50/60 to-purple-50/60">
+              <div>
+                <h3 class="text-lg font-extrabold text-gray-900">Notification Center</h3>
+                <p class="text-xs text-gray-500">${pending.length} pending approval${pending.length === 1 ? '' : 's'}</p>
+              </div>
+              <button type="button" id="close-notif-drawer" class="w-9 h-9 rounded-full bg-white border border-gray-200 hover:bg-gray-100 flex items-center justify-center text-gray-600">✕</button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-5 space-y-6">
+              <!-- Pending Items -->
+              <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Action Required</h4>
+                ${pending.length === 0 ? `
+                  <div class="p-6 rounded-2xl bg-gray-50 border border-dashed border-gray-200 text-center">
+                    <p class="text-2xl mb-1">🎉</p>
+                    <p class="text-sm font-semibold text-gray-700">All caught up!</p>
+                    <p class="text-xs text-gray-500 mt-0.5">No pending approvals in your queue.</p>
+                  </div>
+                ` : `
+                  <div class="space-y-3">
+                    ${pending.map(req => {
+                      const sender = state.accounts[req.fromId];
+                      const badgeMap = {
+                        CREDIT_CARD_APP: { label: 'Credit Card App', cls: 'bg-purple-100 text-purple-700' },
+                        POS_DEBIT: { label: 'ATM / POS Debit', cls: 'bg-orange-100 text-orange-700' },
+                        P2P_REQUEST: { label: 'Money Request', cls: 'bg-pink-100 text-pink-700' },
+                        GROUP_REQUEST: { label: 'Group Ask All', cls: 'bg-blue-100 text-blue-700' }
+                      };
+                      const badge = badgeMap[req.type] || { label: 'Request', cls: 'bg-gray-100 text-gray-700' };
+
+                      return `
+                        <div class="p-4 rounded-2xl bg-white border border-gray-200 shadow-xs space-y-3">
+                          <div class="flex items-start gap-3">
+                            ${renderAvatar(sender, 'w-10 h-10 text-lg')}
+                            <div class="flex-1 min-w-0">
+                              <div class="flex items-center justify-between gap-2">
+                                <span class="font-bold text-sm text-gray-900 truncate">${escapeHTML(sender?.displayName || 'Family Member')}</span>
+                                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold ${badge.cls}">${badge.label}</span>
+                              </div>
+                              <p class="text-base font-extrabold font-mono text-gray-900 mt-0.5">${formatINR(req.amount)}</p>
+                              <p class="text-xs text-gray-600 mt-0.5">${escapeHTML(req.note)}</p>
+                              <p class="text-[11px] text-gray-400 mt-1">${formatTime(req.createdAt)}</p>
+                            </div>
+                          </div>
+
+                          ${req.type === 'CREDIT_CARD_APP' ? `
+                            <div class="flex items-center gap-2 pt-1">
+                              <label class="text-xs font-semibold text-gray-600 shrink-0">Approved Limit ₹:</label>
+                              <input type="number" id="cc-limit-${req.id}" value="${req.amount}" min="500" step="500"
+                                     class="w-full px-2.5 py-1.5 rounded-xl border border-gray-300 font-mono text-xs" />
+                            </div>
+                          ` : ''}
+
+                          <div class="grid grid-cols-2 gap-2 pt-1">
+                            <button type="button" data-action="decline" data-req-id="${req.id}"
+                                    class="notif-action-btn py-2 px-3 rounded-xl text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 transition">
+                              Decline
+                            </button>
+                            <button type="button" data-action="approve" data-req-id="${req.id}" data-req-type="${req.type}"
+                                    class="notif-action-btn py-2 px-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:opacity-95 shadow-xs transition">
+                              ${req.type === 'CREDIT_CARD_APP' ? 'Approve Card' : 'Accept & Pay'}
+                            </button>
+                          </div>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                `}
+              </div>
+
+              <!-- Recent History -->
+              ${recentResolved.length > 0 ? `
+                <div>
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-3">Recent Decisions</h4>
+                  <div class="space-y-2">
+                    ${recentResolved.map(r => {
+                      const sender = state.accounts[r.fromId];
+                      return `
+                        <div class="p-3 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-between text-xs">
+                          <div class="min-w-0 pr-2">
+                            <p class="font-semibold text-gray-800 truncate">${escapeHTML(sender?.displayName)} · ${formatINR(r.amount)}</p>
+                            <p class="text-gray-500 truncate">${escapeHTML(r.note)}</p>
+                          </div>
+                          <span class="px-2.5 py-1 rounded-full font-bold capitalize shrink-0 ${r.status === 'approved' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
+                            ${r.status}
+                          </span>
+                        </div>
+                      `;
+                    }).join('')}
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('close-notif-drawer').onclick = () => toggleNotifDrawer(false);
+      document.querySelectorAll('.notif-action-btn').forEach(btn => {
+        btn.onclick = async () => {
+          const reqId = btn.dataset.reqId;
+          const action = btn.dataset.action;
+          const reqType = btn.dataset.reqType;
+          let overrideLimit = null;
+          if (action === 'approve' && reqType === 'CREDIT_CARD_APP') {
+            const inp = document.getElementById(`cc-limit-${reqId}`);
+            if (inp) overrideLimit = inp.value;
+          }
+          await handleResolveRequest(reqId, action === 'approve' ? 'approved' : 'declined', overrideLimit);
+        };
+      });
+    }
+
+    let chatAskAllMode = false;
+    function renderChatDrawer() {
+      const root = document.getElementById('drawer-root');
+      if (!state.isChatOpen) {
+        root.innerHTML = '';
+        return;
+      }
+
+      const uid = state.activeAccountId;
+
+      root.innerHTML = `
+        <div class="fixed inset-0 bg-gray-950/40 backdrop-blur-xs flex justify-end">
+          <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col border-l border-gray-200">
+            <!-- Header -->
+            <div class="p-4 sm:p-5 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 text-white">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl">💬</div>
+                <div>
+                  <h3 class="text-base font-extrabold">Hiremath Family Chat</h3>
+                  <p class="text-xs text-white/85">Live family feed & group requests</p>
+                </div>
+              </div>
+              <button type="button" id="close-chat-drawer" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white">✕</button>
+            </div>
+
+            <!-- Messages Stream -->
+            <div id="chat-messages-box" class="flex-1 overflow-y-auto p-4 space-y-3 bg-[#F7F7F7]">
+              ${state.messages.length === 0 ? `
+                <div class="text-center py-12 px-4">
+                  <p class="text-3xl mb-2">👋</p>
+                  <p class="text-sm font-bold text-gray-700">Start the Hiremath Family conversation</p>
+                  <p class="text-xs text-gray-500 mt-1">Send a message or tap "Ask All" below to broadcast a money request to everyone.</p>
+                </div>
+              ` : state.messages.map(msg => {
+                const sender = state.accounts[msg.senderId];
+                const isMine = msg.senderId === uid;
+
+                if (msg.type === 'money_request') {
+                  const canPay = !isMine && msg.status === 'pending';
+                  const payer = msg.paidBy ? state.accounts[msg.paidBy] : null;
+                  return `
+                    <div class="flex items-start gap-2.5 ${isMine ? 'flex-row-reverse' : ''}">
+                      ${renderAvatar(sender, 'w-8 h-8 text-sm')}
+                      <div class="max-w-[82%] rounded-2xl p-3.5 bg-white border-2 border-pink-200 shadow-sm">
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                          <span class="text-xs font-bold text-gray-900">${escapeHTML(sender?.displayName || 'Family')}</span>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-100 text-pink-700">ASK ALL REQUEST</span>
+                        </div>
+                        <p class="text-lg font-extrabold font-mono text-gray-900">${formatINR(msg.amount)}</p>
+                        <p class="text-xs text-gray-600 mt-0.5">${escapeHTML(msg.text)}</p>
+                        <div class="mt-2.5 pt-2 border-t border-gray-100 flex items-center justify-between gap-2">
+                          <span class="text-[10px] text-gray-400">${formatTime(msg.createdAt)}</span>
+                          ${msg.status === 'approved' ? `
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-700">
+                              ✓ Paid by ${escapeHTML(payer?.displayName || 'Family')}
+                            </span>
+                          ` : msg.status === 'declined' ? `
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-red-100 text-red-700">Declined</span>
+                          ` : canPay ? `
+                            <button type="button" data-req-id="${msg.requestId}"
+                                    class="chat-pay-btn px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 shadow-xs hover:opacity-95 transition">
+                              Pay ${formatINR(msg.amount)}
+                            </button>
+                          ` : `
+                            <span class="text-[11px] font-semibold text-amber-600">Awaiting family member...</span>
+                          `}
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                }
+
+                return `
+                  <div class="flex items-end gap-2.5 ${isMine ? 'flex-row-reverse' : ''}">
+                    ${renderAvatar(sender, 'w-8 h-8 text-sm')}
+                    <div class="max-w-[78%] rounded-2xl px-3.5 py-2.5 shadow-2xs ${isMine ? 'bg-gray-900 text-white rounded-br-sm' : 'bg-white text-gray-900 border border-gray-200/80 rounded-bl-sm'}">
+                      ${!isMine ? `<p class="text-[11px] font-bold text-pink-600 mb-0.5">${escapeHTML(sender?.displayName || 'Member')}</p>` : ''}
+                      <p class="text-sm leading-snug break-words">${escapeHTML(msg.text)}</p>
+                      <p class="text-[10px] mt-1 ${isMine ? 'text-gray-400 text-right' : 'text-gray-400'}">${formatTime(msg.createdAt)}</p>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            <!-- Composer -->
+            <div class="p-3.5 bg-white border-t border-gray-200">
+              <div class="flex items-center justify-between mb-2">
+                <button type="button" id="toggle-ask-all-btn"
+                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition ${chatAskAllMode ? 'bg-pink-600 text-white shadow-xs' : 'bg-pink-50 text-pink-700 border border-pink-200 hover:bg-pink-100'}">
+                  <span>💸</span>
+                  <span>${chatAskAllMode ? 'Cancel Ask All' : 'Ask All (Broadcast Request)'}</span>
+                </button>
+                <span class="text-[11px] text-gray-400">Real-time sync</span>
+              </div>
+
+              <form id="chat-form" class="space-y-2">
+                ${chatAskAllMode ? `
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm font-bold text-gray-700 pl-1">₹</span>
+                    <input type="number" id="chat-req-amount" required min="1" step="0.01" placeholder="Amount to request (INR)"
+                           class="w-full px-3 py-2 rounded-xl border border-pink-300 bg-pink-50/40 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                  </div>
+                ` : ''}
+                <div class="flex items-center gap-2">
+                  <input type="text" id="chat-input" placeholder="${chatAskAllMode ? 'What is this money request for?' : 'Message Hiremath family...'}"
+                         class="flex-1 px-3.5 py-2.5 rounded-2xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                  <button type="submit" class="px-4 py-2.5 rounded-2xl font-bold text-sm text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 hover:opacity-95 shadow-xs transition">
+                    ${chatAskAllMode ? 'Broadcast' : 'Send'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const box = document.getElementById('chat-messages-box');
+      if (box) box.scrollTop = box.scrollHeight;
+
+      document.getElementById('close-chat-drawer').onclick = () => toggleChatDrawer(false);
+      document.getElementById('toggle-ask-all-btn').onclick = () => {
+        chatAskAllMode = !chatAskAllMode;
+        renderChatDrawer();
+      };
+
+      document.querySelectorAll('.chat-pay-btn').forEach(btn => {
+        btn.onclick = async () => {
+          const reqId = btn.dataset.reqId;
+          await handleResolveRequest(reqId, 'approved');
+        };
+      });
+
+      document.getElementById('chat-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const text = document.getElementById('chat-input').value;
+        const amountEl = document.getElementById('chat-req-amount');
+        const amount = amountEl ? amountEl.value : 0;
+
+        const ok = await handleSendGroupMessage(uid, text, chatAskAllMode, amount);
+        if (ok) {
+          chatAskAllMode = false;
+          renderChatDrawer();
+        }
+      };
+    }
+
+    // --- 10. VIEW RENDERERS ---
+    function renderTopNav() {
+      const activeAcc = state.activeAccountId ? state.accounts[state.activeAccountId] : null;
+      const pendingCount = activeAcc ? getPendingNotificationsForActiveUser().length : 0;
+
+      return `
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200/80">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+            <!-- Brand Pill -->
+            <div class="flex items-center gap-3">
+              <button type="button" id="nav-home-btn" class="flex items-center gap-2.5 group text-left">
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-orange-500 via-pink-500 to-purple-600 flex items-center justify-center text-white font-extrabold shadow-sm group-hover:scale-105 transition">
+                  H
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-extrabold text-sm sm:text-base tracking-tight text-gray-900">Hiremath Family Bank</span>
+                    <span class="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE SYNC
+                    </span>
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            <!-- Right Controls -->
+            <div class="flex items-center gap-2 sm:gap-3">
+              <!-- ATM / POS Terminal Toggle -->
+              <button type="button" id="nav-terminal-btn"
+                      class="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold border transition ${state.viewMode === 'terminal' ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'}">
+                <span>🏧</span>
+                <span class="hidden sm:inline">${state.viewMode === 'terminal' ? 'Back to Portal' : 'ATM / POS Terminal'}</span>
+                <span class="sm:hidden">ATM</span>
+              </button>
+
+              ${activeAcc ? `
+                <!-- Group Chat Drawer Button -->
+                <button type="button" id="nav-chat-btn"
+                        class="relative inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 transition">
+                  <span>💬</span>
+                  <span class="hidden md:inline">Family Chat</span>
+                </button>
+
+                <!-- Notification Bell -->
+                <button type="button" id="nav-notif-btn" aria-label="Notifications"
+                        class="relative w-10 h-10 rounded-full bg-white border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-gray-700 transition">
+                  <span class="text-base">🔔</span>
+                  ${pendingCount > 0 ? `
+                    <span class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-gradient-to-r from-orange-500 to-pink-600 text-white text-[11px] font-extrabold flex items-center justify-center shadow-xs">
+                      ${pendingCount}
+                    </span>
+                  ` : ''}
+                </button>
+
+                <!-- Active User Pill & Switch -->
+                <div class="flex items-center gap-2 pl-2 pr-1.5 py-1 rounded-full bg-gray-100 border border-gray-200">
+                  ${renderAvatar(activeAcc, 'w-7 h-7 text-sm')}
+                  <span class="hidden sm:inline text-xs font-bold text-gray-800 max-w-[100px] truncate">${escapeHTML(activeAcc.displayName)}</span>
+                  <button type="button" id="nav-switch-user-btn" title="Switch Account"
+                          class="px-2.5 py-1 rounded-full bg-white text-[11px] font-bold text-gray-700 hover:text-pink-600 shadow-2xs transition">
+                    Switch
+                  </button>
+                </div>
+              ` : `
+                <button type="button" id="nav-demo-btn"
+                        class="px-3 py-2 rounded-full text-xs font-bold bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 transition">
+                  ⚙️ Vault Setup
+                </button>
+              `}
+            </div>
+          </div>
+        </header>
+      `;
+    }
+
+    // Landing Account Selector View
+    function renderLandingScreen() {
+      const accountList = ['bank_head', 'banker_1', 'banker_2', 'banker_3'].map(id => state.accounts[id]);
+
+      return `
+        <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex flex-col justify-center">
+          <div class="text-center max-w-2xl mx-auto mb-10">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-pink-200/80 shadow-2xs mb-4">
+              <span class="w-2 h-2 rounded-full bg-gradient-to-r from-orange-500 to-purple-600"></span>
+              <span class="text-xs font-bold tracking-wide uppercase text-gray-700">Hiremath Family Financial Network</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-gray-900 leading-tight">
+              Family Banking, <span class="bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 bg-clip-text text-transparent">Synchronized.</span>
+            </h1>
+            <p class="text-sm sm:text-base text-gray-600 mt-3">
+              Select your family account below to access your vault, manage virtual cards, or approve pending family transactions.
+            </p>
+          </div>
+
+          <!-- 4 Family Account Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            ${accountList.map(acc => `
+              <button type="button" data-account-id="${acc.id}"
+                      class="account-select-card group text-left glass-card rounded-3xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r ${acc.isAdmin ? 'from-orange-500 via-pink-500 to-purple-600' : 'from-gray-200 via-gray-300 to-gray-200 group-hover:from-orange-400 group-hover:to-purple-500'} transition-all"></div>
+
+                <div>
+                  <div class="flex items-center justify-between mb-4">
+                    ${renderAvatar(acc, 'w-14 h-14 text-2xl')}
+                    <span class="px-3 py-1 rounded-full text-xs font-bold ${acc.isAdmin ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-700'}">
+                      ${escapeHTML(acc.role)}
+                    </span>
+                  </div>
+
+                  <h2 class="text-lg font-extrabold text-gray-900 group-hover:text-pink-600 transition truncate">
+                    ${escapeHTML(acc.displayName)}
+                  </h2>
+                  <p class="text-xs text-gray-500 mt-1">
+                    ${acc.isConfigured
+                      ? `Card •••• ${escapeHTML(acc.cardNumber)}`
+                      : 'Unconfigured · Tap for first-time setup'}
+                  </p>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                  ${acc.isConfigured ? `
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active Vault
+                    </span>
+                    <span class="text-xs font-bold text-gray-900 group-hover:translate-x-0.5 transition">Sign In →</span>
+                  ` : `
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-600">
+                      <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Setup Needed
+                    </span>
+                    <span class="text-xs font-bold text-pink-600 group-hover:translate-x-0.5 transition">Configure →</span>
+                  `}
+                </div>
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- Quick Info Footer -->
+          <div class="mt-10 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-500">
+            <span class="px-3.5 py-1.5 rounded-full bg-white/80 border border-gray-200">
+              🏦 Central Treasury Reserve: <strong class="font-mono text-gray-800">${formatINR(state.settings.treasuryReserve)}</strong>
+            </span>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/80 border border-gray-200">
+              🎁 Reward Rate: <strong class="font-mono text-gray-800">${formatINR(state.settings.rewardRate)} / pt</strong>
+            </span>
+          </div>
+        </main>
+      `;
+    }
+
+    // Bank Head (Admin) Dashboard View
+    function renderBankHeadDashboard() {
+      const bankers = ['banker_1', 'banker_2', 'banker_3'].map(id => state.accounts[id]);
+      const totalBankerBalances = bankers.reduce((sum, b) => sum + (b.balance || 0), 0);
+      const totalActiveCreditLimits = bankers.reduce((sum, b) => sum + (b.creditCard?.status === 'active' ? b.creditCard.limit : 0), 0);
+      const totalLiquidity = state.settings.treasuryReserve + totalBankerBalances;
+
+      return `
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+          <!-- Top Welcome & Action Row -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800">Bank Head Control Center</span>
+                <span class="text-xs text-gray-500">Admin Authority</span>
+              </div>
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">Treasury & Liquidity Overview</h1>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button type="button" id="admin-p2p-btn" class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 shadow-2xs transition">
+                💸 Request Money
+              </button>
+              <button type="button" id="admin-demo-btn" class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 shadow-2xs transition">
+                ⚙️ Reset / Seed
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Metrics Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="glass-card rounded-3xl p-5 shadow-xs">
+              <p class="text-xs font-bold uppercase tracking-wider text-gray-400">Central Treasury Reserve</p>
+              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-gray-900 mt-1">${formatINR(state.settings.treasuryReserve)}</p>
+              <p class="text-xs text-emerald-600 font-semibold mt-1">Available for Banker Disbursement</p>
+            </div>
+            <div class="glass-card rounded-3xl p-5 shadow-xs">
+              <p class="text-xs font-bold uppercase tracking-wider text-gray-400">Total Family Liquidity</p>
+              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-gray-900 mt-1">${formatINR(totalLiquidity)}</p>
+              <p class="text-xs text-gray-500 mt-1">Banker Holdings: <span class="font-mono font-semibold text-gray-700">${formatINR(totalBankerBalances)}</span></p>
+            </div>
+            <div class="glass-card rounded-3xl p-5 shadow-xs">
+              <p class="text-xs font-bold uppercase tracking-wider text-gray-400">Active Credit Limits Issued</p>
+              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-gray-900 mt-1">${formatINR(totalActiveCreditLimits)}</p>
+              <p class="text-xs text-purple-600 font-semibold mt-1">Reward Rate: ${formatINR(state.settings.rewardRate)} / pt</p>
+            </div>
+          </div>
+
+          <!-- Banker Live Accounts Grid (with revealable passkeys & PINs) -->
+          <div>
+            <h2 class="text-base font-extrabold text-gray-900 mb-3">Family Banker Accounts & Credentials</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              ${bankers.map(b => {
+                const isRevealed = !!state.revealedSecrets[b.id];
+                return `
+                  <div class="glass-card rounded-3xl p-5 shadow-xs flex flex-col justify-between">
+                    <div>
+                      <div class="flex items-center justify-between gap-2 mb-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                          ${renderAvatar(b, 'w-11 h-11 text-xl')}
+                          <div class="min-w-0">
+                            <h3 class="font-extrabold text-gray-900 truncate">${escapeHTML(b.displayName)}</h3>
+                            <span class="text-xs font-semibold text-gray-500">${escapeHTML(b.role)}</span>
+                          </div>
+                        </div>
+                        <button type="button" data-toggle-secret="${b.id}" title="Toggle Passkey & PIN Visibility"
+                                class="toggle-secret-btn w-9 h-9 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-sm transition">
+                          ${isRevealed ? '🙈' : '👁️'}
+                        </button>
+                      </div>
+
+                      <div class="p-3.5 rounded-2xl bg-gradient-to-r from-orange-50 via-pink-50 to-purple-50 border border-pink-100/80 mb-3">
+                        <p class="text-[11px] font-bold uppercase text-gray-500">Live Balance</p>
+                        <p class="text-xl font-extrabold font-mono text-gray-900">${formatINR(b.balance)}</p>
+                      </div>
+
+                      <div class="grid grid-cols-2 gap-2 text-xs mb-3">
+                        <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                          <span class="text-gray-400 block text-[10px] font-bold uppercase">Passkey</span>
+                          <span class="font-mono font-bold text-gray-800">${b.isConfigured ? (isRevealed ? escapeHTML(b.passkey) : '••••••') : 'Not Set'}</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                          <span class="text-gray-400 block text-[10px] font-bold uppercase">Card / PIN</span>
+                          <span class="font-mono font-bold text-gray-800">${b.isConfigured ? `#${escapeHTML(b.cardNumber)} · ${isRevealed ? escapeHTML(b.pin) : '••••'}` : 'Not Set'}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between text-xs">
+                      <span class="font-semibold text-gray-600">
+                        💳 ${b.creditCard?.status === 'active' ? `Limit ${formatINR(b.creditCard.limit)}` : 'No Credit Card'}
+                      </span>
+                      <span class="font-bold text-amber-600">🎁 ${b.rewardPoints || 0} pts</span>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <!-- Treasury Controls: Add Funds, Reallocate Funds, Reward Rate -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <!-- 1. Add Funds from Treasury -->
+            <div class="glass-card rounded-3xl p-5 shadow-xs">
+              <h3 class="text-base font-extrabold text-gray-900 mb-1">Disburse Treasury Funds</h3>
+              <p class="text-xs text-gray-500 mb-4">Credit INR from Central Reserve to any banker.</p>
+              <form id="admin-add-funds-form" class="space-y-3">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Recipient Banker</label>
+                  <select id="add-funds-target" class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm bg-white">
+                    ${bankers.map(b => `<option value="${b.id}">${escapeHTML(b.displayName)} (${escapeHTML(b.role)})</option>`).join('')}
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Amount (₹ INR)</label>
+                  <input type="number" id="add-funds-amount" required min="1" step="0.01" placeholder="2500.00"
+                         class="w-full px-3 py-2.5 rounded-xl border border-gray-300 font-mono text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Verify Bank Head Passkey</label>
+                  <input type="password" id="add-funds-passkey" required placeholder="Enter Admin Passkey"
+                         class="w-full px-3 py-2.5 rounded-xl border border-gray-300 text-sm" />
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 shadow-sm hover:opacity-95 transition">
+                  Credit Account
+                </button>
+              </form>
+            </div>
+
+            <!-- 2. Reallocate Funds Between Bankers -->
+            <div class="glass-card rounded-3xl p-5 shadow-xs">
+              <h3 class="text-base font-extrabold text-gray-900 mb-1">Reallocate Funds</h3>
+              <p class="text-xs text-gray-500 mb-4">Move funds directly between banker accounts.</p>
+              <form id="admin-reallocate-form" class="space-y-3">
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">From</label>
+                    <select id="realloc-from" class="w-full px-2.5 py-2.5 rounded-xl border border-gray-300 text-xs font-semibold bg-white">
+                      ${bankers.map(b => `<option value="${b.id}">${escapeHTML(b.displayName)}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">To</label>
+                    <select id="realloc-to" class="w-full px-2.5 py-2.5 rounded-xl border border-gray-300 text-xs font-semibold bg-white">
+                      ${bankers.map((b, i) => `<option value="${b.id}" ${i === 1 ? 'selected' : ''}>${escapeHTML(b.displayName)}</option>`).join('')}
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Transfer Amount (₹ INR)</label>
+                  <input type="number" id="realloc-amount" required min="1" step="0.01" placeholder="1000.00"
+                         class="w-full px-3 py-2.5 rounded-xl border border-gray-300 font-mono text-sm" />
+                </div>
+                <div class="pt-5">
+                  <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-sm text-white bg-gray-900 hover:bg-gray-800 shadow-sm transition">
+                    Execute Reallocation
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 3. Reward Exchange Rate Control -->
+            <div class="glass-card rounded-3xl p-5 shadow-xs flex flex-col justify-between">
+              <div>
+                <h3 class="text-base font-extrabold text-gray-900 mb-1">Reward Points Exchange Rate</h3>
+                <p class="text-xs text-gray-500 mb-4">Set cash value per reward point redeemed by bankers.</p>
+                <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 mb-4">
+                  <span class="text-xs font-bold text-amber-800 block">Current Live Rate</span>
+                  <span class="text-2xl font-extrabold font-mono text-amber-950">1 Pt = ${formatINR(state.settings.rewardRate)}</span>
+                </div>
+              </div>
+              <form id="admin-rate-form" class="space-y-3">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">New Rate (₹ per point)</label>
+                  <input type="number" id="reward-rate-input" required min="0.05" step="0.05" value="${state.settings.rewardRate}"
+                         class="w-full px-3 py-2.5 rounded-xl border border-gray-300 font-mono text-sm" />
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-sm text-pink-700 bg-pink-50 border border-pink-200 hover:bg-pink-100 transition">
+                  Update Exchange Rate
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Global Ledger -->
+          ${renderTransactionLedger(null)}
+        </main>
+      `;
+    }
+
+    // Banker Dashboard View
+    function renderBankerDashboard() {
+      const uid = state.activeAccountId;
+      const acc = state.accounts[uid];
+      const isPinRevealed = !!state.revealedSecrets[uid];
+      const cc = acc.creditCard;
+      const ccAvailable = cc && cc.status === 'active' ? Number((cc.limit - cc.used).toFixed(2)) : 0;
+      const pendingCCApp = state.requests.find(r => r.type === 'CREDIT_CARD_APP' && r.fromId === uid && r.status === 'pending');
+      const redeemableCash = Number(((acc.rewardPoints || 0) * state.settings.rewardRate).toFixed(2));
+
+      return `
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+          <!-- Header Row -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              ${renderAvatar(acc, 'w-14 h-14 text-2xl')}
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="px-3 py-0.5 rounded-full text-xs font-bold bg-pink-100 text-pink-700">${escapeHTML(acc.role)}</span>
+                  <span class="text-xs text-gray-500">Card #${escapeHTML(acc.cardNumber)}</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-0.5">${escapeHTML(acc.displayName)}</h1>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2.5">
+              <button type="button" id="banker-p2p-btn"
+                      class="px-4 py-2.5 rounded-2xl text-xs font-bold text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 shadow-sm hover:opacity-95 transition">
+                💸 Request Money
+              </button>
+              <button type="button" id="banker-chat-btn"
+                      class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-gray-200 text-gray-800 hover:bg-gray-50 shadow-2xs transition">
+                💬 Family Chat
+              </button>
+            </div>
+          </div>
+
+          <!-- Top Cards Row: Balance + Virtual Debit Card + Rewards Vault -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            <!-- 1. Main Account Balance -->
+            <div class="glass-card rounded-3xl p-6 shadow-xs flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Available Savings Balance</span>
+                <p class="text-3xl sm:text-4xl font-extrabold font-mono text-gray-900 mt-2">${formatINR(acc.balance)}</p>
+                <p class="text-xs text-gray-500 mt-2">Real-time synced across all Hiremath family devices.</p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
+                <span class="text-gray-500">Account Status</span>
+                <span class="px-2.5 py-1 rounded-full font-bold bg-emerald-50 text-emerald-700">Active · Verified</span>
+              </div>
+            </div>
+
+            <!-- 2. Virtual Debit / ATM Card -->
+            <div class="rounded-3xl p-6 text-white shadow-lg bg-gradient-to-br from-gray-900 via-gray-800 to-gray-950 relative overflow-hidden flex flex-col justify-between">
+              <div class="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-gradient-to-tr from-orange-500/30 to-pink-500/30 blur-xl"></div>
+              <div class="flex items-center justify-between relative z-10">
+                <span class="text-xs font-bold tracking-widest uppercase text-gray-300">Hiremath Debit</span>
+                <button type="button" id="banker-toggle-pin-btn" class="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[11px] font-semibold transition">
+                  ${isPinRevealed ? '🙈 Hide PIN' : '👁️ Show PIN'}
+                </button>
+              </div>
+
+              <div class="my-5 relative z-10">
+                <p class="text-[11px] uppercase tracking-wider text-gray-400">Terminal Card Number</p>
+                <p class="text-2xl font-mono font-bold tracking-widest mt-0.5">•••• •••• •••• ${escapeHTML(acc.cardNumber)}</p>
+              </div>
+
+              <div class="flex items-end justify-between relative z-10 text-xs">
+                <div>
+                  <span class="text-[10px] uppercase text-gray-400 block">Cardholder</span>
+                  <span class="font-bold tracking-wide">${escapeHTML(acc.displayName)}</span>
+                </div>
+                <div class="text-right">
+                  <span class="text-[10px] uppercase text-gray-400 block">ATM PIN</span>
+                  <span class="font-mono font-bold text-sm">${isPinRevealed ? escapeHTML(acc.pin) : '••••'}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Reward Points Wallet -->
+            <div class="glass-card rounded-3xl p-6 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Reward Points</span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800">
+                    1 Pt = ${formatINR(state.settings.rewardRate)}
+                  </span>
+                </div>
+                <div class="flex items-baseline gap-2 mt-2">
+                  <p class="text-3xl font-extrabold font-mono text-gray-900">${acc.rewardPoints || 0}</p>
+                  <span class="text-xs font-bold text-gray-500">pts</span>
+                </div>
+                <p class="text-xs text-gray-600 mt-1">
+                  Cash Redemption Value: <strong class="font-mono text-emerald-700">${formatINR(redeemableCash)}</strong>
+                </p>
+              </div>
+
+              <button type="button" id="banker-redeem-btn" ${!acc.rewardPoints || acc.rewardPoints <= 0 ? 'disabled' : ''}
+                      class="mt-5 w-full py-2.5 px-4 rounded-2xl text-xs font-bold transition ${acc.rewardPoints > 0 ? 'bg-amber-500 hover:bg-amber-600 text-white shadow-xs' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}">
+                🎁 Redeem Points for ${formatINR(redeemableCash)}
+              </button>
+            </div>
+          </div>
+
+          <!-- Virtual Credit Card Section -->
+          <div class="glass-card rounded-3xl p-6 shadow-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+              <div>
+                <h2 class="text-lg font-extrabold text-gray-900">Virtual Credit Card & Rewards</h2>
+                <p class="text-xs text-gray-500">Earn 1 Reward Point for every ₹25 spent on your family credit line.</p>
+              </div>
+              ${cc && cc.status === 'active' ? `
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800">
+                  ● Active Credit Line
+                </span>
+              ` : ''}
+            </div>
+
+            ${cc && cc.status === 'active' ? `
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                <!-- Interactive Virtual Credit Card Visual -->
+                <div class="rounded-3xl p-6 text-white shadow-lg bg-gradient-to-tr from-orange-500 via-pink-600 to-purple-700 flex flex-col justify-between min-h-[195px]">
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-extrabold uppercase tracking-wider bg-white/20 px-2.5 py-1 rounded-full">Hiremath Platinum</span>
+                    <span class="font-mono text-xs opacity-90">VC •••• ${escapeHTML(cc.cardNumber)}</span>
+                  </div>
+                  <div class="my-4">
+                    <p class="text-[11px] uppercase text-white/80">Available Credit</p>
+                    <p class="text-2xl sm:text-3xl font-extrabold font-mono">${formatINR(ccAvailable)}</p>
+                  </div>
+                  <div class="flex items-center justify-between text-xs border-t border-white/20 pt-3">
+                    <span>Limit: <strong class="font-mono">${formatINR(cc.limit)}</strong></span>
+                    <span>Dues: <strong class="font-mono">${formatINR(cc.used)}</strong></span>
+                  </div>
+                </div>
+
+                <!-- Simulate Credit Card Spend -->
+                <form id="cc-spend-form" class="p-4 rounded-2xl bg-gray-50 border border-gray-200/80 space-y-3">
+                  <h3 class="text-sm font-extrabold text-gray-900">Simulate Card Spend</h3>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Merchant / Purpose</label>
+                    <input type="text" id="cc-spend-merchant" required placeholder="e.g., Amazon, Book Store, Cafe"
+                           class="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs bg-white" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Spend Amount (₹ INR)</label>
+                    <input type="number" id="cc-spend-amount" required min="1" max="${ccAvailable}" step="0.01" placeholder="500.00"
+                           class="w-full px-3 py-2 rounded-xl border border-gray-300 font-mono text-xs bg-white" />
+                  </div>
+                  <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 shadow-xs hover:opacity-95 transition">
+                    Pay with Credit Card
+                  </button>
+                </form>
+
+                <!-- Settle Credit Card Dues -->
+                <form id="cc-repay-form" class="p-4 rounded-2xl bg-gray-50 border border-gray-200/80 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-extrabold text-gray-900">Pay Card Bill</h3>
+                    <span class="text-xs font-mono font-bold text-pink-600">Due: ${formatINR(cc.used)}</span>
+                  </div>
+                  <p class="text-xs text-gray-500">Repay dues directly from your main savings balance (${formatINR(acc.balance)}).</p>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Repayment Amount (₹ INR)</label>
+                    <input type="number" id="cc-repay-amount" required min="1" max="${cc.used}" step="0.01" value="${cc.used > 0 ? cc.used : ''}" placeholder="0.00"
+                           class="w-full px-3 py-2 rounded-xl border border-gray-300 font-mono text-xs bg-white" />
+                  </div>
+                  <button type="submit" ${cc.used <= 0 ? 'disabled' : ''}
+                          class="w-full py-2.5 rounded-xl font-bold text-xs transition ${cc.used > 0 ? 'bg-gray-900 text-white hover:bg-gray-800' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}">
+                    Settle Bill from Balance
+                  </button>
+                </form>
+              </div>
+            ` : pendingCCApp ? `
+              <div class="p-6 rounded-2xl bg-amber-50/70 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <span class="text-2xl">⏳</span>
+                  <div>
+                    <h3 class="text-sm font-extrabold text-amber-950">Credit Card Application Under Review</h3>
+                    <p class="text-xs text-amber-800 mt-0.5">Requested Limit: <strong class="font-mono">${formatINR(pendingCCApp.amount)}</strong> · Reason: ${escapeHTML(pendingCCApp.note)}</p>
+                  </div>
+                </div>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-200/80 text-amber-900">Awaiting Bank Head</span>
+              </div>
+            ` : `
+              <form id="cc-apply-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end bg-gray-50 p-5 rounded-2xl border border-gray-200/70">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Desired Credit Limit (₹ INR)</label>
+                  <input type="number" id="cc-apply-limit" required min="500" step="500" placeholder="10000"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 font-mono text-sm bg-white" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Purpose / Reason</label>
+                  <input type="text" id="cc-apply-reason" required placeholder="e.g., Online learning & emergencies"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm bg-white" />
+                </div>
+                <button type="submit" class="py-2.5 px-5 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 shadow-sm hover:opacity-95 transition">
+                  Apply for Credit Card
+                </button>
+              </form>
+            `}
+          </div>
+
+          <!-- Personal Transaction History -->
+          ${renderTransactionLedger(uid)}
+        </main>
+      `;
+    }
+
+    function renderTransactionLedger(filterAccountId) {
+      const txs = filterAccountId
+        ? state.transactions.filter(t => t.fromId === filterAccountId || t.toId === filterAccountId)
+        : state.transactions;
+
+      return `
+        <div class="glass-card rounded-3xl p-6 shadow-xs">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-extrabold text-gray-900">${filterAccountId ? 'My Transaction History' : 'Live Family Ledger'}</h3>
+            <span class="text-xs font-semibold text-gray-500">${txs.length} record${txs.length === 1 ? '' : 's'}</span>
+          </div>
+
+          ${txs.length === 0 ? `
+            <div class="py-8 text-center text-xs text-gray-500 bg-gray-50/70 rounded-2xl border border-dashed border-gray-200">
+              No transactions recorded yet. Activity will sync here in real time.
+            </div>
+          ` : `
+            <div class="divide-y divide-gray-100">
+              ${txs.slice(0, 15).map(tx => {
+                const isIncoming = filterAccountId && tx.toId === filterAccountId;
+                const isOutgoing = filterAccountId && tx.fromId === filterAccountId;
+                return `
+                  <div class="py-3 flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                      <p class="text-sm font-bold text-gray-900 truncate">${escapeHTML(tx.note)}</p>
+                      <p class="text-[11px] text-gray-400 mt-0.5">${formatTime(tx.createdAt)}</p>
+                    </div>
+                    <span class="font-mono text-sm font-extrabold shrink-0 ${isIncoming ? 'text-emerald-600' : isOutgoing ? 'text-gray-900' : 'text-gray-800'}">
+                      ${isIncoming ? '+' : isOutgoing ? '-' : ''}${formatINR(tx.amount)}
+                    </span>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    // Standalone Virtual ATM / POS Card Terminal View
+    function renderTerminalView() {
+      const session = state.terminalSession;
+      const authedAcc = session.authenticatedAccountId ? state.accounts[session.authenticatedAccountId] : null;
+
+      return `
+        <main class="flex-1 max-w-xl w-full mx-auto px-4 py-8 sm:py-12 flex flex-col justify-center">
+          <div class="rounded-3xl bg-gray-950 text-white p-6 sm:p-8 shadow-2xl border border-gray-800 relative overflow-hidden">
+            <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-gradient-to-tr from-orange-500/25 via-pink-500/25 to-purple-500/25 blur-2xl"></div>
+
+            <div class="flex items-center justify-between border-b border-gray-800 pb-4 mb-6 relative z-10">
+              <div class="flex items-center gap-2.5">
+                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-mono text-xs font-bold uppercase tracking-widest text-gray-300">Hiremath ATM / POS Terminal</span>
+              </div>
+              <button type="button" id="terminal-exit-btn" class="text-xs font-bold text-gray-400 hover:text-white transition">Exit ✕</button>
+            </div>
+
+            ${!authedAcc ? `
+              <div class="relative z-10">
+                <h2 class="text-xl sm:text-2xl font-extrabold mb-1">Insert Virtual Card</h2>
+                <p class="text-xs text-gray-400 mb-6">Enter any family member's 4-digit Card Number and 4-digit PIN.</p>
+
+                <form id="terminal-auth-form" class="space-y-4">
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">4-Digit Card Number</label>
+                    <input type="text" id="term-card-num" required pattern="\\d{4}" maxlength="4" inputmode="numeric" placeholder="e.g., 2002"
+                           class="w-full px-4 py-3.5 rounded-2xl bg-gray-900 border border-gray-700 font-mono text-lg tracking-widest text-white focus:outline-none focus:border-pink-500" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-1.5">4-Digit Security PIN</label>
+                    <input type="password" id="term-pin-num" required pattern="\\d{4}" maxlength="4" inputmode="numeric" placeholder="••••"
+                           class="w-full px-4 py-3.5 rounded-2xl bg-gray-900 border border-gray-700 font-mono text-lg tracking-widest text-white focus:outline-none focus:border-pink-500" />
+                  </div>
+                  <button type="submit" class="w-full py-3.5 rounded-2xl font-bold text-sm text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 shadow-lg hover:opacity-95 transition">
+                    Authenticate Card
+                  </button>
+                </form>
+              </div>
+            ` : `
+              <div class="relative z-10 space-y-6">
+                <div class="p-4 rounded-2xl bg-gray-900 border border-gray-800 flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    ${renderAvatar(authedAcc, 'w-11 h-11 text-xl')}
+                    <div>
+                      <p class="font-extrabold text-sm text-white">${escapeHTML(authedAcc.displayName)}</p>
+                      <p class="font-mono text-xs text-gray-400">Card #${escapeHTML(authedAcc.cardNumber)}</p>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-[10px] uppercase text-gray-400 block">Live Balance</span>
+                    <span class="font-mono text-lg font-extrabold text-emerald-400">${formatINR(authedAcc.balance)}</span>
+                  </div>
+                </div>
+
+                <form id="terminal-debit-form" class="space-y-4">
+                  <h3 class="text-sm font-bold text-gray-200">Initiate POS Debit / Cash Withdrawal</h3>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Amount (₹ INR)</label>
+                    <input type="number" id="term-debit-amount" required min="1" max="${authedAcc.balance}" step="0.01" placeholder="500.00"
+                           class="w-full px-4 py-3 rounded-2xl bg-gray-900 border border-gray-700 font-mono text-base text-white focus:outline-none focus:border-pink-500" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1">Merchant / Terminal Location</label>
+                    <input type="text" id="term-debit-merchant" required placeholder="e.g., Mall POS, Bookstore, Cash ATM"
+                           class="w-full px-4 py-3 rounded-2xl bg-gray-900 border border-gray-700 text-sm text-white focus:outline-none focus:border-pink-500" />
+                  </div>
+                  <p class="text-[11px] text-amber-300/90 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+                    ℹ️ POS debits are routed to the Bank Head's Notification Center for real-time approval before funds are deducted.
+                  </p>
+                  <div class="flex gap-3 pt-1">
+                    <button type="button" id="terminal-eject-btn" class="px-4 py-3 rounded-2xl text-xs font-bold bg-gray-800 hover:bg-gray-700 text-gray-300 transition">
+                      Eject Card
+                    </button>
+                    <button type="submit" class="flex-1 py-3 rounded-2xl font-bold text-sm text-white bg-gradient-to-r from-orange-500 via-pink-500 to-purple-600 shadow-lg hover:opacity-95 transition">
+                      Submit POS Debit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            `}
+          </div>
+        </main>
+      `;
+    }
+
+    // --- 11. MAIN RENDER & EVENT BINDING ---
+    function render() {
+      const appEl = document.getElementById('app');
+      if (!appEl) return;
+
+      if (!state.isCloudReady) return;
+
+      let contentHTML = '';
+      if (state.viewMode === 'terminal') {
+        contentHTML = renderTerminalView();
+      } else if (!state.activeAccountId) {
+        contentHTML = renderLandingScreen();
+      } else if (state.activeAccountId === 'bank_head') {
+        contentHTML = renderBankHeadDashboard();
+      } else {
+        contentHTML = renderBankerDashboard();
+      }
+
+      appEl.innerHTML = `
+        ${renderTopNav()}
+        ${contentHTML}
+      `;
+
+      bindEvents();
+    }
+
+    function bindEvents() {
+      // Top Nav events
+      const homeBtn = document.getElementById('nav-home-btn');
+      if (homeBtn) {
+        homeBtn.onclick = () => {
+          state.viewMode = 'portal';
+          render();
+        };
+      }
+
+      const termBtn = document.getElementById('nav-terminal-btn');
+      if (termBtn) {
+        termBtn.onclick = () => {
+          state.viewMode = state.viewMode === 'terminal' ? 'portal' : 'terminal';
+          render();
+        };
+      }
+
+      const switchBtn = document.getElementById('nav-switch-user-btn');
+      if (switchBtn) {
+        switchBtn.onclick = () => {
+          state.activeAccountId = null;
+          state.viewMode = 'portal';
+          state.isNotifOpen = false;
+          state.isChatOpen = false;
+          document.getElementById('drawer-root').innerHTML = '';
+          render();
+        };
+      }
+
+      const notifBtn = document.getElementById('nav-notif-btn');
+      if (notifBtn) notifBtn.onclick = () => toggleNotifDrawer();
+
+      const chatBtn = document.getElementById('nav-chat-btn');
+      if (chatBtn) chatBtn.onclick = () => toggleChatDrawer();
+
+      const navDemoBtn = document.getElementById('nav-demo-btn');
+      if (navDemoBtn) navDemoBtn.onclick = openDemoSettingsModal;
+
+      // Landing Account Cards
+      document.querySelectorAll('.account-select-card').forEach(card => {
+        card.onclick = () => openAccountEntryModal(card.dataset.accountId);
+      });
+
+      // Bank Head Dashboard events
+      const adminP2P = document.getElementById('admin-p2p-btn');
+      if (adminP2P) adminP2P.onclick = openP2PRequestModal;
+
+      const adminDemo = document.getElementById('admin-demo-btn');
+      if (adminDemo) adminDemo.onclick = openDemoSettingsModal;
+
+      document.querySelectorAll('.toggle-secret-btn').forEach(btn => {
+        btn.onclick = () => {
+          const targetId = btn.dataset.toggleSecret;
+          state.revealedSecrets[targetId] = !state.revealedSecrets[targetId];
+          render();
+        };
+      });
+
+      const addFundsForm = document.getElementById('admin-add-funds-form');
+      if (addFundsForm) {
+        addFundsForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const target = document.getElementById('add-funds-target').value;
+          const amount = document.getElementById('add-funds-amount').value;
+          const passkey = document.getElementById('add-funds-passkey').value;
+          const ok = await handleAddFundsFromTreasury(target, amount, passkey);
+          if (ok) addFundsForm.reset();
+        };
+      }
+
+      const reallocForm = document.getElementById('admin-reallocate-form');
+      if (reallocForm) {
+        reallocForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const fromId = document.getElementById('realloc-from').value;
+          const toId = document.getElementById('realloc-to').value;
+          const amount = document.getElementById('realloc-amount').value;
+          const ok = await handleReallocateFunds(fromId, toId, amount);
+          if (ok) reallocForm.reset();
+        };
+      }
+
+      const rateForm = document.getElementById('admin-rate-form');
+      if (rateForm) {
+        rateForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const rate = document.getElementById('reward-rate-input').value;
+          await handleUpdateRewardRate(rate);
+        };
+      }
+
+      // Banker Dashboard events
+      const bankerP2P = document.getElementById('banker-p2p-btn');
+      if (bankerP2P) bankerP2P.onclick = openP2PRequestModal;
+
+      const bankerChat = document.getElementById('banker-chat-btn');
+      if (bankerChat) bankerChat.onclick = () => toggleChatDrawer(true);
+
+      const bankerPinBtn = document.getElementById('banker-toggle-pin-btn');
+      if (bankerPinBtn) {
+        bankerPinBtn.onclick = () => {
+          const uid = state.activeAccountId;
+          state.revealedSecrets[uid] = !state.revealedSecrets[uid];
+          render();
+        };
+      }
+
+      const redeemBtn = document.getElementById('banker-redeem-btn');
+      if (redeemBtn) {
+        redeemBtn.onclick = () => handleRedeemRewards(state.activeAccountId);
+      }
+
+      const ccApplyForm = document.getElementById('cc-apply-form');
+      if (ccApplyForm) {
+        ccApplyForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const limit = document.getElementById('cc-apply-limit').value;
+          const reason = document.getElementById('cc-apply-reason').value;
+          await handleApplyCreditCard(state.activeAccountId, limit, reason);
+        };
+      }
+
+      const ccSpendForm = document.getElementById('cc-spend-form');
+      if (ccSpendForm) {
+        ccSpendForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const merchant = document.getElementById('cc-spend-merchant').value;
+          const amount = document.getElementById('cc-spend-amount').value;
+          await handleCreditCardSpend(state.activeAccountId, amount, merchant);
+          ccSpendForm.reset();
+        };
+      }
+
+      const ccRepayForm = document.getElementById('cc-repay-form');
+      if (ccRepayForm) {
+        ccRepayForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const amount = document.getElementById('cc-repay-amount').value;
+          await handlePayCreditCardBill(state.activeAccountId, amount);
+        };
+      }
+
+      // ATM / POS Terminal events
+      const termExit = document.getElementById('terminal-exit-btn');
+      if (termExit) {
+        termExit.onclick = () => {
+          state.viewMode = 'portal';
+          render();
+        };
+      }
+
+      const termAuthForm = document.getElementById('terminal-auth-form');
+      if (termAuthForm) {
+        termAuthForm.onsubmit = (e) => {
+          e.preventDefault();
+          const cardNum = document.getElementById('term-card-num').value.trim();
+          const pinNum = document.getElementById('term-pin-num').value.trim();
+
+          const matched = Object.values(state.accounts).find(
+            a => a.isConfigured && a.cardNumber === cardNum && a.pin === pinNum
+          );
+          if (!matched) {
+            showToast("Invalid 4-digit Card Number or PIN.", "error");
+            return;
+          }
+          state.terminalSession.authenticatedAccountId = matched.id;
+          showToast(`Card #${cardNum} authenticated (${matched.displayName})`, "success");
+          render();
+        };
+      }
+
+      const termEject = document.getElementById('terminal-eject-btn');
+      if (termEject) {
+        termEject.onclick = () => {
+          state.terminalSession.authenticatedAccountId = null;
+          render();
+        };
+      }
+
+      const termDebitForm = document.getElementById('terminal-debit-form');
+      if (termDebitForm) {
+        termDebitForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const amount = document.getElementById('term-debit-amount').value;
+          const merchant = document.getElementById('term-debit-merchant').value;
+          const ok = await handleCreatePOSDebit(state.terminalSession.authenticatedAccountId, amount, merchant);
+          if (ok) termDebitForm.reset();
+        };
+      }
+    }
+
+    // Boot Application
+    window.addEventListener('DOMContentLoaded', () => {
+      initFirebase();
+    });
+  </script>
+</body>
+</html>
