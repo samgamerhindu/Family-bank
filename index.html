@@ -17,15 +17,7 @@
             mono: ['JetBrains Mono', 'monospace'],
           },
           colors: {
-            canvas: '#F0F7FF',
-            skyTheme: {
-              50: '#F0F7FF',
-              100: '#E0EEFF',
-              500: '#3B82F6',
-              600: '#2563EB',
-              700: '#1D4ED8',
-              900: '#1E3A8A'
-            }
+            canvas: '#F7F7F7'
           }
         }
       }
@@ -33,13 +25,13 @@
   </script>
   <style>
     body {
-      background-color: #F0F7FF;
+      background-color: #F7F7F7;
       font-family: 'Inter', sans-serif;
-      color: #1E293B;
+      color: #1E1B2E;
       overflow-x: hidden;
     }
 
-    /* Ambient Adriatic Sky Blue & Coastal Wave Mesh Gradient */
+    /* Ambient Orange-to-Pink-to-Purple Mesh Gradient Waves */
     .mesh-bg {
       position: fixed;
       inset: 0;
@@ -51,38 +43,38 @@
       position: absolute;
       top: -12%;
       left: -8%;
-      width: 52vw;
-      height: 52vw;
-      max-width: 680px;
-      max-height: 680px;
+      width: 54vw;
+      height: 54vw;
+      max-width: 700px;
+      max-height: 700px;
       border-radius: 9999px;
-      background: radial-gradient(circle, rgba(59,130,246,0.28) 0%, rgba(147,197,253,0.22) 48%, rgba(59,130,246,0) 75%);
-      filter: blur(55px);
+      background: radial-gradient(circle, rgba(251, 146, 60, 0.28) 0%, rgba(244, 114, 182, 0.20) 50%, rgba(251, 146, 60, 0) 76%);
+      filter: blur(60px);
       animation: floatBlob1 18s ease-in-out infinite alternate;
     }
     .mesh-blob-2 {
       position: absolute;
-      top: 28%;
+      top: 25%;
       right: -10%;
-      width: 55vw;
-      height: 55vw;
-      max-width: 720px;
-      max-height: 720px;
+      width: 56vw;
+      height: 56vw;
+      max-width: 740px;
+      max-height: 740px;
       border-radius: 9999px;
-      background: radial-gradient(circle, rgba(96,165,250,0.26) 0%, rgba(37,99,235,0.20) 50%, rgba(59,130,246,0) 78%);
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.24) 0%, rgba(168, 85, 247, 0.22) 52%, rgba(168, 85, 247, 0) 78%);
       filter: blur(65px);
       animation: floatBlob2 22s ease-in-out infinite alternate;
     }
     .mesh-blob-3 {
       position: absolute;
       bottom: -15%;
-      left: 22%;
-      width: 60vw;
-      height: 45vw;
-      max-width: 800px;
-      max-height: 560px;
+      left: 20%;
+      width: 62vw;
+      height: 48vw;
+      max-width: 820px;
+      max-height: 580px;
       border-radius: 9999px;
-      background: radial-gradient(circle, rgba(191,219,254,0.35) 0%, rgba(59,130,246,0.18) 52%, rgba(255,255,255,0) 80%);
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.22) 0%, rgba(251, 146, 60, 0.16) 52%, rgba(255, 255, 255, 0) 80%);
       filter: blur(60px);
       animation: floatBlob3 20s ease-in-out infinite alternate;
     }
@@ -108,23 +100,33 @@
       background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: rgba(147, 197, 253, 0.6);
+      background: rgba(236, 72, 153, 0.35);
       border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(59, 130, 246, 0.8);
+      background: rgba(168, 85, 247, 0.65);
     }
 
     .glass-card {
       background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(191, 219, 254, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.92);
+      box-shadow: 0 4px 24px -4px rgba(131, 24, 67, 0.05);
+    }
+
+    .brand-gradient {
+      background: linear-gradient(135deg, #F97316 0%, #EC4899 52%, #9333EA 100%);
+    }
+    .brand-gradient-text {
+      background: linear-gradient(135deg, #EA580C 0%, #DB2777 50%, #7E22CE 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
-<body class="min-h-screen antialiased selection:bg-blue-500 selection:text-white">
-  <!-- Ambient Adriatic Sky Blue Mesh Gradient Background -->
+<body class="min-h-screen antialiased selection:bg-pink-500 selection:text-white">
+  <!-- Ambient Orange-to-Pink-to-Purple Mesh Gradient Waves -->
   <div class="mesh-bg" aria-hidden="true">
     <div class="mesh-blob-1"></div>
     <div class="mesh-blob-2"></div>
@@ -136,10 +138,9 @@
 
   <!-- Main Application Root -->
   <div id="app" class="relative z-10 min-h-screen flex flex-col">
-    <!-- Loading State -->
     <div class="flex-1 flex flex-col items-center justify-center p-6">
-      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500 via-sky-400 to-blue-700 animate-spin shadow-lg mb-4"></div>
-      <p class="text-sm font-semibold text-blue-900 tracking-wide">Connecting to Hiremath Family Vault...</p>
+      <div class="w-12 h-12 rounded-2xl brand-gradient animate-spin shadow-lg mb-4"></div>
+      <p class="text-sm font-semibold text-slate-800 tracking-wide">Connecting to Hiremath Family Vault...</p>
     </div>
   </div>
 
@@ -160,7 +161,6 @@
       setDoc,
       updateDoc,
       addDoc,
-      deleteDoc,
       onSnapshot,
       collection,
       getDocs,
@@ -194,6 +194,7 @@
       settings: {
         treasuryReserve: 500000,
         rewardRate: 0.50,
+        creditInterestRate: 5.0, // % interest rate on credit card payback
         bankName: 'Hiremath Family Bank'
       },
       accounts: {
@@ -202,6 +203,7 @@
           role: 'Bank Head',
           isAdmin: true,
           isConfigured: false,
+          isFrozen: false,
           displayName: 'Bank Head (Admin)',
           passkey: '',
           cardNumber: '',
@@ -210,6 +212,7 @@
           avatarValue: '👑',
           balance: 0,
           rewardPoints: 0,
+          savingsGoal: { title: 'Family Reserve Goal', target: 100000 },
           creditCard: null
         },
         banker_1: {
@@ -217,6 +220,7 @@
           role: 'Banker 1',
           isAdmin: false,
           isConfigured: false,
+          isFrozen: false,
           displayName: 'Banker 1',
           passkey: '',
           cardNumber: '',
@@ -225,6 +229,7 @@
           avatarValue: '🦁',
           balance: 0,
           rewardPoints: 0,
+          savingsGoal: { title: 'New Gadget / Bike', target: 25000 },
           creditCard: null
         },
         banker_2: {
@@ -232,6 +237,7 @@
           role: 'Banker 2',
           isAdmin: false,
           isConfigured: false,
+          isFrozen: false,
           displayName: 'Banker 2',
           passkey: '',
           cardNumber: '',
@@ -240,6 +246,7 @@
           avatarValue: '🦊',
           balance: 0,
           rewardPoints: 0,
+          savingsGoal: { title: 'Travel & Books', target: 15000 },
           creditCard: null
         },
         banker_3: {
@@ -247,6 +254,7 @@
           role: 'Banker 3',
           isAdmin: false,
           isConfigured: false,
+          isFrozen: false,
           displayName: 'Banker 3',
           passkey: '',
           cardNumber: '',
@@ -255,6 +263,7 @@
           avatarValue: '🐼',
           balance: 0,
           rewardPoints: 0,
+          savingsGoal: { title: 'Emergency Stash', target: 10000 },
           creditCard: null
         }
       },
@@ -264,10 +273,7 @@
       isNotifOpen: false,
       isChatOpen: false,
       terminalSession: {
-        authenticatedAccountId: null,
-        cardInput: '',
-        pinInput: '',
-        error: ''
+        authenticatedAccountId: null
       }
     };
 
@@ -304,12 +310,12 @@
 
     function renderAvatar(account, sizeClasses = 'w-12 h-12 text-2xl') {
       if (!account) {
-        return `<div class="${sizeClasses} rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-700">?</div>`;
+        return `<div class="${sizeClasses} rounded-full bg-pink-100 flex items-center justify-center font-bold text-pink-700">?</div>`;
       }
       if (account.avatarType === 'url' && account.avatarValue) {
         const fallbackEmoji = account.isAdmin ? '👑' : '👤';
         return `
-          <div class="${sizeClasses} rounded-full overflow-hidden bg-blue-100 border border-white shadow-sm flex items-center justify-center shrink-0">
+          <div class="${sizeClasses} rounded-full overflow-hidden bg-gradient-to-tr from-orange-100 via-pink-100 to-purple-100 border-2 border-white shadow-sm flex items-center justify-center shrink-0">
             <img src="${escapeHTML(account.avatarValue)}"
                  alt="${escapeHTML(account.displayName)}"
                  class="w-full h-full object-cover"
@@ -318,7 +324,7 @@
         `;
       }
       return `
-        <div class="${sizeClasses} rounded-full bg-gradient-to-tr from-blue-100 via-sky-100 to-blue-200 border border-white shadow-sm flex items-center justify-center shrink-0 select-none">
+        <div class="${sizeClasses} rounded-full bg-gradient-to-tr from-orange-100 via-pink-100 to-purple-100 border-2 border-white shadow-sm flex items-center justify-center shrink-0 select-none">
           <span>${escapeHTML(account.avatarValue || '👤')}</span>
         </div>
       `;
@@ -329,9 +335,9 @@
       if (!container) return;
 
       const styles = {
-        success: 'bg-blue-950 text-white border-blue-500/40',
-        error: 'bg-red-950 text-red-50 border-red-500/40',
-        info: 'bg-blue-900 text-white border-sky-400/40'
+        success: 'bg-slate-900 text-white border-emerald-400/40',
+        error: 'bg-rose-950 text-rose-50 border-rose-400/40',
+        info: 'bg-slate-900 text-white border-pink-400/40'
       };
       const icons = {
         success: '✅',
@@ -376,8 +382,14 @@
           await setDoc(settingsRef, {
             treasuryReserve: 500000,
             rewardRate: 0.50,
+            creditInterestRate: 5.0,
             bankName: 'Hiremath Family Bank'
           });
+        } else {
+          const data = settingsSnap.data();
+          if (data.creditInterestRate === undefined) {
+            await updateDoc(settingsRef, { creditInterestRate: 5.0 });
+          }
         }
 
         const defaultAccounts = [
@@ -386,6 +398,7 @@
             role: 'Bank Head',
             isAdmin: true,
             isConfigured: false,
+            isFrozen: false,
             displayName: 'Bank Head (Admin)',
             passkey: '',
             cardNumber: '',
@@ -394,6 +407,7 @@
             avatarValue: '👑',
             balance: 0,
             rewardPoints: 0,
+            savingsGoal: { title: 'Family Reserve Goal', target: 100000 },
             creditCard: null
           },
           {
@@ -401,6 +415,7 @@
             role: 'Banker 1',
             isAdmin: false,
             isConfigured: false,
+            isFrozen: false,
             displayName: 'Banker 1',
             passkey: '',
             cardNumber: '',
@@ -409,6 +424,7 @@
             avatarValue: '🦁',
             balance: 0,
             rewardPoints: 0,
+            savingsGoal: { title: 'New Gadget / Bike', target: 25000 },
             creditCard: null
           },
           {
@@ -416,6 +432,7 @@
             role: 'Banker 2',
             isAdmin: false,
             isConfigured: false,
+            isFrozen: false,
             displayName: 'Banker 2',
             passkey: '',
             cardNumber: '',
@@ -424,6 +441,7 @@
             avatarValue: '🦊',
             balance: 0,
             rewardPoints: 0,
+            savingsGoal: { title: 'Travel & Books', target: 15000 },
             creditCard: null
           },
           {
@@ -431,6 +449,7 @@
             role: 'Banker 3',
             isAdmin: false,
             isConfigured: false,
+            isFrozen: false,
             displayName: 'Banker 3',
             passkey: '',
             cardNumber: '',
@@ -439,6 +458,7 @@
             avatarValue: '🐼',
             balance: 0,
             rewardPoints: 0,
+            savingsGoal: { title: 'Emergency Stash', target: 10000 },
             creditCard: null
           }
         ];
@@ -475,7 +495,10 @@
           snapshot.forEach((docSnap) => {
             const data = docSnap.data();
             if (data && data.id) {
-              state.accounts[data.id] = data;
+              state.accounts[data.id] = {
+                ...state.accounts[data.id],
+                ...data
+              };
             }
           });
           state.isCloudReady = true;
@@ -529,20 +552,21 @@
     }
 
     async function initFirebase() {
-      if (!firebaseConfig) {
-        showToast("Firebase config missing. Running offline preview.", "error");
-        state.isCloudReady = true;
-        render();
-        return;
-      }
-
       try {
         app = initializeApp(firebaseConfig);
         auth = getAuth(app);
         db = getFirestore(app);
 
         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
+          try {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } catch (tokenErr) {
+            if (tokenErr.code === 'auth/custom-token-mismatch' || tokenErr.code === 'auth/invalid-custom-token') {
+              await signInAnonymously(auth);
+            } else {
+              throw tokenErr;
+            }
+          }
         } else {
           await signInAnonymously(auth);
         }
@@ -586,14 +610,15 @@
         batch.set(getPublicDocRef('hfb_settings', 'global'), {
           treasuryReserve: 500000,
           rewardRate: 0.50,
+          creditInterestRate: 5.0,
           bankName: 'Hiremath Family Bank'
         });
 
         const defaults = [
-          { id: 'bank_head', role: 'Bank Head', isAdmin: true, isConfigured: false, displayName: 'Bank Head (Admin)', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '👑', balance: 0, rewardPoints: 0, creditCard: null },
-          { id: 'banker_1', role: 'Banker 1', isAdmin: false, isConfigured: false, displayName: 'Banker 1', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🦁', balance: 0, rewardPoints: 0, creditCard: null },
-          { id: 'banker_2', role: 'Banker 2', isAdmin: false, isConfigured: false, displayName: 'Banker 2', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🦊', balance: 0, rewardPoints: 0, creditCard: null },
-          { id: 'banker_3', role: 'Banker 3', isAdmin: false, isConfigured: false, displayName: 'Banker 3', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🐼', balance: 0, rewardPoints: 0, creditCard: null }
+          { id: 'bank_head', role: 'Bank Head', isAdmin: true, isConfigured: false, isFrozen: false, displayName: 'Bank Head (Admin)', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '👑', balance: 0, rewardPoints: 0, savingsGoal: { title: 'Family Reserve Goal', target: 100000 }, creditCard: null },
+          { id: 'banker_1', role: 'Banker 1', isAdmin: false, isConfigured: false, isFrozen: false, displayName: 'Banker 1', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🦁', balance: 0, rewardPoints: 0, savingsGoal: { title: 'New Gadget / Bike', target: 25000 }, creditCard: null },
+          { id: 'banker_2', role: 'Banker 2', isAdmin: false, isConfigured: false, isFrozen: false, displayName: 'Banker 2', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🦊', balance: 0, rewardPoints: 0, savingsGoal: { title: 'Travel & Books', target: 15000 }, creditCard: null },
+          { id: 'banker_3', role: 'Banker 3', isAdmin: false, isConfigured: false, isFrozen: false, displayName: 'Banker 3', passkey: '', cardNumber: '', pin: '', avatarType: 'emoji', avatarValue: '🐼', balance: 0, rewardPoints: 0, savingsGoal: { title: 'Emergency Stash', target: 10000 }, creditCard: null }
         ];
         defaults.forEach(acc => batch.set(getPublicDocRef('hfb_accounts', acc.id), acc));
 
@@ -621,39 +646,47 @@
       try {
         const batch = writeBatch(db);
         batch.set(getPublicDocRef('hfb_settings', 'global'), {
-          treasuryReserve: 475000,
+          treasuryReserve: 470000,
           rewardRate: 0.50,
+          creditInterestRate: 5.0,
           bankName: 'Hiremath Family Bank'
         });
 
         const demoAccounts = [
           {
-            id: 'bank_head', role: 'Bank Head', isAdmin: true, isConfigured: true,
+            id: 'bank_head', role: 'Bank Head', isAdmin: true, isConfigured: true, isFrozen: false,
             displayName: 'Rajesh Hiremath', passkey: 'admin123', cardNumber: '1001', pin: '1111',
-            avatarType: 'emoji', avatarValue: '👑', balance: 0, rewardPoints: 0, creditCard: null
+            avatarType: 'emoji', avatarValue: '👑', balance: 0, rewardPoints: 0,
+            savingsGoal: { title: 'Family Reserve Goal', target: 100000 },
+            creditCard: null
           },
           {
-            id: 'banker_1', role: 'Banker 1', isAdmin: false, isConfigured: true,
+            id: 'banker_1', role: 'Banker 1', isAdmin: false, isConfigured: true, isFrozen: false,
             displayName: 'Aarav Hiremath', passkey: 'aarav1', cardNumber: '2002', pin: '2222',
             avatarType: 'emoji', avatarValue: '🦁', balance: 15000, rewardPoints: 240,
+            savingsGoal: { title: 'New Laptop Fund', target: 30000 },
             creditCard: {
               status: 'active',
               limit: 25000,
-              used: 3200,
+              used: 3360,
+              principalUsed: 3200,
+              interestAccrued: 160,
               cardNumber: '8842',
               approvedAt: new Date().toISOString()
             }
           },
           {
-            id: 'banker_2', role: 'Banker 2', isAdmin: false, isConfigured: true,
+            id: 'banker_2', role: 'Banker 2', isAdmin: false, isConfigured: true, isFrozen: false,
             displayName: 'Ananya Hiremath', passkey: 'ananya2', cardNumber: '3003', pin: '3333',
             avatarType: 'emoji', avatarValue: '🦊', balance: 10000, rewardPoints: 120,
+            savingsGoal: { title: 'Art & Design Kit', target: 15000 },
             creditCard: null
           },
           {
-            id: 'banker_3', role: 'Banker 3', isAdmin: false, isConfigured: true,
+            id: 'banker_3', role: 'Banker 3', isAdmin: false, isConfigured: true, isFrozen: false,
             displayName: 'Rohan Hiremath', passkey: 'rohan3', cardNumber: '4004', pin: '4444',
             avatarType: 'emoji', avatarValue: '🐼', balance: 5000, rewardPoints: 50,
+            savingsGoal: { title: 'Sports Gear', target: 12000 },
             creditCard: null
           }
         ];
@@ -683,15 +716,24 @@
       }
     }
 
-    async function saveAccountSetup(accountId, formData) {
+    async function saveAccountSetup(accountId, formData, isEditMode = false, currentPasskeyCheck = '') {
       if (!currentUser || !db) return;
+      const existingAcc = state.accounts[accountId];
+
+      if (isEditMode && existingAcc && existingAcc.isConfigured) {
+        if (currentPasskeyCheck !== existingAcc.passkey) {
+          showToast("Current passkey verification failed. Changes not saved.", "error");
+          return false;
+        }
+      }
+
       const existingAccs = Object.values(state.accounts);
       const duplicateCard = existingAccs.find(
         a => a.id !== accountId && a.isConfigured && a.cardNumber === formData.cardNumber
       );
       if (duplicateCard) {
         showToast(`Card #${formData.cardNumber} is already assigned to ${duplicateCard.displayName}. Choose another 4-digit number.`, "error");
-        return;
+        return false;
       }
 
       try {
@@ -706,15 +748,58 @@
         });
         state.activeAccountId = accountId;
         closeModal();
-        showToast(`Welcome aboard, ${formData.displayName}!`, "success");
+        showToast(isEditMode ? `Profile & credentials updated for ${formData.displayName}!` : `Welcome aboard, ${formData.displayName}!`, "success");
         render();
+        return true;
       } catch (err) {
         console.error(err);
         showToast("Failed to save profile: " + err.message, "error");
+        return false;
       }
     }
 
-    // NEW FEATURE: Bank Head Deduct Amount from Banker & Forward Device Notification
+    async function handleToggleAccountFreeze(targetAccountId) {
+      const target = state.accounts[targetAccountId];
+      if (!target) return;
+      const nextFrozen = !target.isFrozen;
+      try {
+        await updateDoc(getPublicDocRef('hfb_accounts', targetAccountId), {
+          isFrozen: nextFrozen
+        });
+        showToast(
+          nextFrozen
+            ? `🔒 Froze card & spending for ${target.displayName}`
+            : `🔓 Unfroze card & spending for ${target.displayName}`,
+          nextFrozen ? 'info' : 'success'
+        );
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to toggle freeze status: " + err.message, "error");
+      }
+    }
+
+    async function handleUpdateSavingsGoal(accountId, title, targetAmount) {
+      const target = parseFloat(targetAmount);
+      if (isNaN(target) || target <= 0) {
+        showToast("Enter a valid positive savings goal target.", "error");
+        return false;
+      }
+      try {
+        await updateDoc(getPublicDocRef('hfb_accounts', accountId), {
+          savingsGoal: {
+            title: title.trim() || 'My Savings Goal',
+            target: Number(target.toFixed(2))
+          }
+        });
+        showToast("Savings goal updated!", "success");
+        return true;
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to update savings goal: " + err.message, "error");
+        return false;
+      }
+    }
+
     async function handleBankHeadDeductFunds(targetAccountId, amount, reason, passkeyInput) {
       const bankHead = state.accounts.bank_head;
       if (passkeyInput !== bankHead.passkey) {
@@ -738,13 +823,11 @@
 
       try {
         const batch = writeBatch(db);
-        // Deduct from target banker's balance
         batch.update(getPublicDocRef('hfb_accounts', targetAccountId), {
           balance: Number((target.balance - val).toFixed(2))
         });
         await batch.commit();
 
-        // Log deduction transaction
         await logTransaction({
           type: 'ADMIN_DEDUCTION',
           fromId: targetAccountId,
@@ -753,7 +836,6 @@
           note: `Deduction by Bank Head: ${deductionReason}`
         });
 
-        // Forward a direct notification record into hfb_requests / notification feed for the device user
         await addDoc(getPublicCollectionRef('hfb_requests'), {
           type: 'ADMIN_NOTIFICATION',
           fromId: 'bank_head',
@@ -764,7 +846,6 @@
           createdAt: new Date().toISOString()
         });
 
-        // Also post an alert message in the group chat for complete visibility
         await addDoc(getPublicCollectionRef('hfb_messages'), {
           senderId: 'bank_head',
           type: 'text',
@@ -772,7 +853,7 @@
           createdAt: new Date().toISOString()
         });
 
-        showToast(`Successfully deducted ${formatINR(val)} from ${target.displayName} and forwarded device notification!`, "success");
+        showToast(`Deducted ${formatINR(val)} from ${target.displayName} and notified device!`, "success");
         return true;
       } catch (err) {
         console.error(err);
@@ -889,7 +970,29 @@
       }
     }
 
+    async function handleUpdateCreditInterestRate(newRate) {
+      const rate = parseFloat(newRate);
+      if (isNaN(rate) || rate < 0 || rate > 100) {
+        showToast("Enter a valid interest percentage between 0% and 100%.", "error");
+        return;
+      }
+      try {
+        await updateDoc(getPublicDocRef('hfb_settings', 'global'), {
+          creditInterestRate: Number(rate.toFixed(2))
+        });
+        showToast(`Credit payback interest rate updated to ${rate.toFixed(2)}%`, "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Failed to update interest rate: " + err.message, "error");
+      }
+    }
+
     async function handleApplyCreditCard(accountId, desiredLimit, reason) {
+      const acc = state.accounts[accountId];
+      if (acc?.isFrozen) {
+        showToast("Your account is currently frozen by the Bank Head.", "error");
+        return;
+      }
       const limit = parseFloat(desiredLimit);
       if (isNaN(limit) || limit < 500) {
         showToast("Minimum requested credit limit is ₹500.", "error");
@@ -923,22 +1026,35 @@
     async function handleCreditCardSpend(accountId, amount, merchant) {
       const acc = state.accounts[accountId];
       if (!acc || !acc.creditCard || acc.creditCard.status !== 'active') return;
+      if (acc.isFrozen) {
+        showToast("Account is frozen. Contact Bank Head to unlock spending.", "error");
+        return;
+      }
       const val = parseFloat(amount);
       if (isNaN(val) || val <= 0) {
         showToast("Enter a valid spend amount.", "error");
         return;
       }
-      const available = acc.creditCard.limit - acc.creditCard.used;
-      if (val > available) {
-        showToast(`Exceeds available credit limit (${formatINR(available)}).`, "error");
+
+      const interestRate = Number(state.settings.creditInterestRate) || 0;
+      const interestFee = Number(((val * interestRate) / 100).toFixed(2));
+      const totalPaybackCharge = Number((val + interestFee).toFixed(2));
+      const available = Number((acc.creditCard.limit - acc.creditCard.used).toFixed(2));
+
+      if (totalPaybackCharge > available) {
+        showToast(`Total charge with ${interestRate}% interest (${formatINR(totalPaybackCharge)}) exceeds available credit (${formatINR(available)}).`, "error");
         return;
       }
 
       const pointsEarned = Math.max(1, Math.floor(val / 25));
+      const prevPrincipal = acc.creditCard.principalUsed ?? acc.creditCard.used;
+      const prevInterest = acc.creditCard.interestAccrued ?? 0;
 
       try {
         await updateDoc(getPublicDocRef('hfb_accounts', accountId), {
-          'creditCard.used': Number((acc.creditCard.used + val).toFixed(2)),
+          'creditCard.used': Number((acc.creditCard.used + totalPaybackCharge).toFixed(2)),
+          'creditCard.principalUsed': Number((prevPrincipal + val).toFixed(2)),
+          'creditCard.interestAccrued': Number((prevInterest + interestFee).toFixed(2)),
           rewardPoints: (acc.rewardPoints || 0) + pointsEarned
         });
 
@@ -947,13 +1063,65 @@
           fromId: accountId,
           toId: 'merchant',
           amount: val,
-          note: `Credit Card Spend: ${merchant.trim() || 'POS Purchase'} (+${pointsEarned} pts)`
+          note: `Credit Card Spend: ${merchant.trim() || 'POS Purchase'} (+${formatINR(interestFee)} @ ${interestRate}% interest, +${pointsEarned} pts)`
         });
 
-        showToast(`Paid ${formatINR(val)} via Credit Card · Earned +${pointsEarned} Reward Pts!`, "success");
+        showToast(`Spent ${formatINR(val)} (+${formatINR(interestFee)} interest) · Earned +${pointsEarned} Pts!`, "success");
       } catch (err) {
         console.error(err);
         showToast("Transaction failed: " + err.message, "error");
+      }
+    }
+
+    // NEW FEATURE: Take out money from Credit Card -> Added directly to Bank Savings Balance with Interest
+    async function handleCreditCardCashAdvance(accountId, amount, purpose) {
+      const acc = state.accounts[accountId];
+      if (!acc || !acc.creditCard || acc.creditCard.status !== 'active') return;
+      if (acc.isFrozen) {
+        showToast("Account is frozen. Contact Bank Head to unlock.", "error");
+        return;
+      }
+      const val = parseFloat(amount);
+      if (isNaN(val) || val <= 0) {
+        showToast("Enter a valid cash withdrawal amount.", "error");
+        return;
+      }
+
+      const interestRate = Number(state.settings.creditInterestRate) || 0;
+      const interestFee = Number(((val * interestRate) / 100).toFixed(2));
+      const totalPaybackDue = Number((val + interestFee).toFixed(2));
+      const available = Number((acc.creditCard.limit - acc.creditCard.used).toFixed(2));
+
+      if (totalPaybackDue > available) {
+        showToast(`Total payback with ${interestRate}% interest (${formatINR(totalPaybackDue)}) exceeds available credit (${formatINR(available)}).`, "error");
+        return;
+      }
+
+      const prevPrincipal = acc.creditCard.principalUsed ?? acc.creditCard.used;
+      const prevInterest = acc.creditCard.interestAccrued ?? 0;
+
+      try {
+        await updateDoc(getPublicDocRef('hfb_accounts', accountId), {
+          balance: Number((acc.balance + val).toFixed(2)),
+          'creditCard.used': Number((acc.creditCard.used + totalPaybackDue).toFixed(2)),
+          'creditCard.principalUsed': Number((prevPrincipal + val).toFixed(2)),
+          'creditCard.interestAccrued': Number((prevInterest + interestFee).toFixed(2))
+        });
+
+        await logTransaction({
+          type: 'CREDIT_CASH_ADVANCE',
+          fromId: 'credit_card',
+          toId: accountId,
+          amount: val,
+          note: `Credit Card Cash-to-Bank Transfer: ${purpose.trim() || 'Instant Cash Advance'} (Payback due: ${formatINR(totalPaybackDue)} incl. ${interestRate}% interest)`
+        });
+
+        showToast(`Added ${formatINR(val)} to your Bank Balance! (Total payback: ${formatINR(totalPaybackDue)})`, "success");
+        return true;
+      } catch (err) {
+        console.error(err);
+        showToast("Cash advance failed: " + err.message, "error");
+        return false;
       }
     }
 
@@ -966,18 +1134,25 @@
         return;
       }
       if (val > acc.creditCard.used) {
-        showToast(`Repayment cannot exceed current dues (${formatINR(acc.creditCard.used)}).`, "error");
+        showToast(`Repayment cannot exceed current total dues (${formatINR(acc.creditCard.used)}).`, "error");
         return;
       }
       if (val > acc.balance) {
-        showToast("Insufficient main account balance.", "error");
+        showToast("Insufficient main bank balance.", "error");
         return;
       }
+
+      const newUsed = Number((acc.creditCard.used - val).toFixed(2));
+      const ratioRemaining = acc.creditCard.used > 0 ? newUsed / acc.creditCard.used : 0;
+      const prevPrincipal = acc.creditCard.principalUsed ?? acc.creditCard.used;
+      const prevInterest = acc.creditCard.interestAccrued ?? 0;
 
       try {
         await updateDoc(getPublicDocRef('hfb_accounts', accountId), {
           balance: Number((acc.balance - val).toFixed(2)),
-          'creditCard.used': Number((acc.creditCard.used - val).toFixed(2))
+          'creditCard.used': newUsed,
+          'creditCard.principalUsed': Number((prevPrincipal * ratioRemaining).toFixed(2)),
+          'creditCard.interestAccrued': Number((prevInterest * ratioRemaining).toFixed(2))
         });
 
         await logTransaction({
@@ -985,10 +1160,10 @@
           fromId: accountId,
           toId: 'credit_card',
           amount: val,
-          note: 'Virtual Credit Card Bill Settlement'
+          note: 'Virtual Credit Card Payback Settlement (Principal + Interest)'
         });
 
-        showToast(`Paid ${formatINR(val)} toward Credit Card bill!`, "success");
+        showToast(`Paid ${formatINR(val)} toward Credit Card payback!`, "success");
       } catch (err) {
         console.error(err);
         showToast("Payment failed: " + err.message, "error");
@@ -1111,6 +1286,10 @@
       }
       const acc = state.accounts[accountId];
       if (!acc) return false;
+      if (acc.isFrozen) {
+        showToast("This card is currently frozen by the Bank Head.", "error");
+        return false;
+      }
       if (val > acc.balance) {
         showToast(`Insufficient account balance (${formatINR(acc.balance)}).`, "error");
         return false;
@@ -1180,6 +1359,8 @@
               status: 'active',
               limit: finalLimit,
               used: 0,
+              principalUsed: 0,
+              interestAccrued: 0,
               cardNumber: randomVirtualCard,
               approvedAt: new Date().toISOString()
             }
@@ -1320,55 +1501,60 @@
       if (!acc) return;
 
       if (!acc.isConfigured) {
-        openFirstTimeSetupModal(accountId);
+        openProfileSettingsModal(accountId, false);
       } else {
         openPasskeyLoginModal(accountId);
       }
     }
 
-    function openFirstTimeSetupModal(accountId) {
+    // Universal Setup AND Edit Profile/Security Modal for ALL users (including Bank Head)
+    function openProfileSettingsModal(accountId, isEditMode = false) {
       const acc = state.accounts[accountId];
-      let selectedAvatarType = 'emoji';
-      let selectedEmoji = acc.avatarValue || '🦁';
+      if (!acc) return;
+      let selectedAvatarType = acc.avatarType || 'emoji';
+      let selectedEmoji = acc.avatarType === 'emoji' ? (acc.avatarValue || '🦁') : '🦁';
+      const initialUrl = acc.avatarType === 'url' ? (acc.avatarValue || '') : '';
 
       const root = document.getElementById('modal-root');
       root.innerHTML = `
-        <div class="fixed inset-0 bg-blue-950/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-blue-100 my-auto">
+        <div class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-pink-100 my-auto">
             <div class="flex items-center justify-between mb-5">
               <div>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-700 border border-blue-200">
-                  First-Time Account Setup
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-orange-500/15 via-pink-500/15 to-purple-500/15 text-pink-700 border border-pink-200">
+                  ${isEditMode ? 'Profile & Security Settings' : 'First-Time Account Setup'}
                 </span>
-                <h2 class="text-xl sm:text-2xl font-extrabold text-blue-950 mt-2">Configure ${escapeHTML(acc.role)}</h2>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-2">
+                  ${isEditMode ? `Edit ${escapeHTML(acc.displayName)}` : `Configure ${escapeHTML(acc.role)}`}
+                </h2>
               </div>
-              <button type="button" id="close-setup-btn" class="w-9 h-9 rounded-full bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-700 transition">✕</button>
+              <button type="button" id="close-setup-btn" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition">✕</button>
             </div>
 
             <form id="setup-form" class="space-y-4">
-              <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-200/70">
+              <div class="bg-slate-50/90 p-4 rounded-2xl border border-slate-200/80">
                 <div class="flex items-center justify-between mb-3">
-                  <label class="text-xs font-bold uppercase tracking-wider text-blue-900">Profile Avatar (PFP)</label>
-                  <div class="flex gap-1 bg-white p-1 rounded-xl border border-blue-200 text-xs font-semibold">
-                    <button type="button" id="tab-emoji" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white transition">Emoji</button>
-                    <button type="button" id="tab-url" class="px-2.5 py-1 rounded-lg text-blue-900 hover:text-blue-950 transition">Image URL / Upload</button>
+                  <label class="text-xs font-bold uppercase tracking-wider text-slate-700">Profile Avatar (PFP)</label>
+                  <div class="flex gap-1 bg-white p-1 rounded-xl border border-slate-200 text-xs font-semibold">
+                    <button type="button" id="tab-emoji" class="px-2.5 py-1 rounded-lg ${selectedAvatarType === 'emoji' ? 'brand-gradient text-white' : 'text-slate-700 hover:text-slate-950'} transition">Emoji</button>
+                    <button type="button" id="tab-url" class="px-2.5 py-1 rounded-lg ${selectedAvatarType === 'url' ? 'brand-gradient text-white' : 'text-slate-700 hover:text-slate-950'} transition">Image URL / Upload</button>
                   </div>
                 </div>
 
-                <div id="emoji-picker-panel" class="grid grid-cols-8 gap-2">
+                <div id="emoji-picker-panel" class="${selectedAvatarType === 'emoji' ? '' : 'hidden'} grid grid-cols-8 gap-2">
                   ${AVATAR_EMOJIS.map(em => `
-                    <button type="button" data-emoji="${em}" class="emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition ${em === selectedEmoji ? 'bg-blue-100 border-blue-500 scale-105' : 'bg-white border-blue-200 hover:bg-blue-50'}">
+                    <button type="button" data-emoji="${em}" class="emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition ${em === selectedEmoji ? 'bg-pink-100 border-pink-500 scale-105' : 'bg-white border-slate-200 hover:bg-pink-50'}">
                       ${em}
                     </button>
                   `).join('')}
                 </div>
 
-                <div id="url-picker-panel" class="hidden space-y-2.5">
-                  <input type="url" id="setup-avatar-url" placeholder="https://example.com/photo.jpg"
-                         class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />
-                  <div class="flex items-center justify-between text-xs text-blue-900">
+                <div id="url-picker-panel" class="${selectedAvatarType === 'url' ? '' : 'hidden'} space-y-2.5">
+                  <input type="url" id="setup-avatar-url" value="${escapeHTML(initialUrl)}" placeholder="https://example.com/photo.jpg"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white" />
+                  <div class="flex items-center justify-between text-xs text-slate-700">
                     <span>Or pick a photo from device:</span>
-                    <label class="cursor-pointer px-3 py-1.5 rounded-xl bg-white border border-blue-300 font-semibold text-blue-900 hover:bg-blue-50">
+                    <label class="cursor-pointer px-3 py-1.5 rounded-xl bg-white border border-slate-300 font-semibold text-slate-800 hover:bg-pink-50">
                       Choose Image
                       <input type="file" id="setup-avatar-file" accept="image/*" class="hidden" />
                     </label>
@@ -1378,34 +1564,42 @@
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Display Name</label>
-                  <input type="text" id="setup-name" required placeholder="e.g., Aarav Hiremath"
-                         class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Display Name</label>
+                  <input type="text" id="setup-name" required value="${isEditMode ? escapeHTML(acc.displayName) : ''}" placeholder="e.g., Aarav Hiremath"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Account Passkey</label>
-                  <input type="text" id="setup-passkey" required minlength="3" placeholder="Create secret passkey"
-                         class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">${isEditMode ? 'New Account Passkey' : 'Account Passkey'}</label>
+                  <input type="text" id="setup-passkey" required minlength="3" value="${isEditMode ? escapeHTML(acc.passkey) : ''}" placeholder="Create secret passkey"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
                 </div>
               </div>
 
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">4-Digit Card Number</label>
-                  <input type="text" id="setup-card" required pattern="\\d{4}" maxlength="4" inputmode="numeric" placeholder="e.g., 4821"
-                         class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">4-Digit Card Number</label>
+                  <input type="text" id="setup-card" required pattern="\\d{4}" maxlength="4" inputmode="numeric" value="${isEditMode ? escapeHTML(acc.cardNumber) : ''}" placeholder="e.g., 4821"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">4-Digit ATM/POS PIN</label>
-                  <input type="password" id="setup-pin" required pattern="\\d{4}" maxlength="4" inputmode="numeric" placeholder="••••"
-                         class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">4-Digit ATM/POS PIN</label>
+                  <input type="text" id="setup-pin" required pattern="\\d{4}" maxlength="4" inputmode="numeric" value="${isEditMode ? escapeHTML(acc.pin) : ''}" placeholder="e.g., 1234"
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
                 </div>
               </div>
 
+              ${isEditMode ? `
+                <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+                  <label class="block text-xs font-bold text-amber-950 mb-1">Verify Current Passkey to Save Changes</label>
+                  <input type="password" id="setup-current-passkey" required placeholder="Enter your current passkey"
+                         class="w-full px-3.5 py-2 rounded-xl border border-amber-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500" />
+                </div>
+              ` : ''}
+
               <div class="pt-2 flex items-center justify-end gap-3">
-                <button type="button" id="cancel-setup-btn" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-blue-900 hover:bg-blue-50 transition">Cancel</button>
-                <button type="submit" class="px-6 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md transition">
-                  Activate Account
+                <button type="button" id="cancel-setup-btn" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 transition">Cancel</button>
+                <button type="submit" class="px-6 py-2.5 rounded-xl text-sm font-bold text-white brand-gradient hover:opacity-95 shadow-md transition">
+                  ${isEditMode ? 'Save Changes' : 'Activate Account'}
                 </button>
               </div>
             </form>
@@ -1423,16 +1617,16 @@
 
       tabEmoji.onclick = () => {
         selectedAvatarType = 'emoji';
-        tabEmoji.className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white transition';
-        tabUrl.className = 'px-2.5 py-1 rounded-lg text-blue-900 hover:text-blue-950 transition';
+        tabEmoji.className = 'px-2.5 py-1 rounded-lg brand-gradient text-white transition';
+        tabUrl.className = 'px-2.5 py-1 rounded-lg text-slate-700 hover:text-slate-950 transition';
         emojiPanel.classList.remove('hidden');
         urlPanel.classList.add('hidden');
       };
 
       tabUrl.onclick = () => {
         selectedAvatarType = 'url';
-        tabUrl.className = 'px-2.5 py-1 rounded-lg bg-blue-600 text-white transition';
-        tabEmoji.className = 'px-2.5 py-1 rounded-lg text-blue-900 hover:text-blue-950 transition';
+        tabUrl.className = 'px-2.5 py-1 rounded-lg brand-gradient text-white transition';
+        tabEmoji.className = 'px-2.5 py-1 rounded-lg text-slate-700 hover:text-slate-950 transition';
         urlPanel.classList.remove('hidden');
         emojiPanel.classList.add('hidden');
       };
@@ -1441,9 +1635,9 @@
         btn.onclick = () => {
           selectedEmoji = btn.dataset.emoji;
           document.querySelectorAll('.emoji-choice').forEach(b => {
-            b.className = 'emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition bg-white border-blue-200 hover:bg-blue-50';
+            b.className = 'emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition bg-white border-slate-200 hover:bg-pink-50';
           });
-          btn.className = 'emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition bg-blue-100 border-blue-500 scale-105';
+          btn.className = 'emoji-choice h-10 rounded-xl text-xl flex items-center justify-center border transition bg-pink-100 border-pink-500 scale-105';
         };
       });
 
@@ -1478,6 +1672,7 @@
         const cardNumber = document.getElementById('setup-card').value;
         const pin = document.getElementById('setup-pin').value;
         const urlVal = document.getElementById('setup-avatar-url').value.trim();
+        const currentPasskey = isEditMode ? document.getElementById('setup-current-passkey').value : '';
 
         if (!/^\d{4}$/.test(cardNumber) || !/^\d{4}$/.test(pin)) {
           showToast("Card number and PIN must each be 4 digits.", "error");
@@ -1494,7 +1689,7 @@
           pin,
           avatarType: finalType,
           avatarValue
-        });
+        }, isEditMode, currentPasskey);
       };
     }
 
@@ -1502,24 +1697,24 @@
       const acc = state.accounts[accountId];
       const root = document.getElementById('modal-root');
       root.innerHTML = `
-        <div class="fixed inset-0 bg-blue-950/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-blue-100 text-center">
+        <div class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-pink-100 text-center">
             <div class="flex justify-end">
-              <button type="button" id="close-login-btn" class="w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-900">✕</button>
+              <button type="button" id="close-login-btn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700">✕</button>
             </div>
             <div class="flex justify-center mb-3">
               ${renderAvatar(acc, 'w-16 h-16 text-3xl')}
             </div>
-            <span class="inline-block px-3 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200 mb-1">
+            <span class="inline-block px-3 py-0.5 rounded-full text-xs font-bold bg-pink-50 text-pink-700 border border-pink-200 mb-1">
               ${escapeHTML(acc.role)}
             </span>
-            <h3 class="text-xl font-extrabold text-blue-950">${escapeHTML(acc.displayName)}</h3>
-            <p class="text-xs text-blue-950 mt-1 mb-5">Enter your secret account passkey to unlock vault</p>
+            <h3 class="text-xl font-extrabold text-slate-900">${escapeHTML(acc.displayName)}</h3>
+            <p class="text-xs text-slate-600 mt-1 mb-5">Enter your secret account passkey to unlock vault</p>
 
             <form id="login-form" class="space-y-4">
               <input type="password" id="login-passkey" required autofocus placeholder="Enter Passkey"
-                     class="w-full px-4 py-3 rounded-2xl border border-blue-300 text-center font-semibold tracking-wider text-blue-950 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              <button type="submit" class="w-full py-3 rounded-2xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 shadow-md transition">
+                     class="w-full px-4 py-3 rounded-2xl border border-slate-300 text-center font-semibold tracking-wider text-slate-900 focus:outline-none focus:ring-2 focus:ring-pink-500" />
+              <button type="submit" class="w-full py-3 rounded-2xl font-bold text-sm text-white brand-gradient hover:opacity-95 shadow-md transition">
                 Unlock Vault →
               </button>
             </form>
@@ -1549,38 +1744,38 @@
 
       const root = document.getElementById('modal-root');
       root.innerHTML = `
-        <div class="fixed inset-0 bg-blue-950/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-blue-100">
+        <div class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-pink-100">
             <div class="flex items-center justify-between mb-4">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Peer-to-Peer Transfer</span>
-                <h3 class="text-xl font-extrabold text-blue-950">Request Money</h3>
+                <span class="text-xs font-bold uppercase tracking-wider text-pink-600">Peer-to-Peer Transfer</span>
+                <h3 class="text-xl font-extrabold text-slate-900">Request Money</h3>
               </div>
-              <button type="button" id="close-p2p-btn" class="w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-900">✕</button>
+              <button type="button" id="close-p2p-btn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700">✕</button>
             </div>
 
             <form id="p2p-form" class="space-y-4">
               <div>
-                <label class="block text-xs font-semibold text-blue-900 mb-1">Request From</label>
-                <select id="p2p-target" class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 text-sm font-medium bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Request From</label>
+                <select id="p2p-target" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium bg-white focus:outline-none focus:ring-2 focus:ring-pink-500">
                   ${otherAccounts.map(a => `
                     <option value="${a.id}">${escapeHTML(a.displayName)} (${escapeHTML(a.role)})</option>
                   `).join('')}
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-semibold text-blue-900 mb-1">Amount (₹ INR)</label>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Amount (₹ INR)</label>
                 <input type="number" id="p2p-amount" required min="1" step="0.01" placeholder="500.00"
-                       class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
               </div>
               <div>
-                <label class="block text-xs font-semibold text-blue-900 mb-1">Reason / Note</label>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Reason / Note</label>
                 <input type="text" id="p2p-note" placeholder="e.g., Books, Lunch, Movie tickets"
-                       class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
               </div>
               <div class="flex justify-end gap-2 pt-2">
-                <button type="button" id="cancel-p2p-btn" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-blue-900 hover:bg-blue-50">Cancel</button>
-                <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-md">
+                <button type="button" id="cancel-p2p-btn" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100">Cancel</button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-bold text-white brand-gradient hover:opacity-95 shadow-md">
                   Send Request
                 </button>
               </div>
@@ -1601,23 +1796,71 @@
       };
     }
 
+    function openSavingsGoalModal() {
+      const uid = state.activeAccountId;
+      const acc = state.accounts[uid];
+      if (!acc) return;
+      const goal = acc.savingsGoal || { title: 'My Savings Goal', target: 10000 };
+
+      const root = document.getElementById('modal-root');
+      root.innerHTML = `
+        <div class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-pink-100">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-purple-600">Piggy Bank Jar</span>
+                <h3 class="text-xl font-extrabold text-slate-900">Set Savings Goal</h3>
+              </div>
+              <button type="button" id="close-goal-btn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700">✕</button>
+            </div>
+            <form id="goal-form" class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Goal Title</label>
+                <input type="text" id="goal-title-input" required value="${escapeHTML(goal.title)}" placeholder="e.g., New Bicycle, Gaming Console"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mb-1">Target Amount (₹ INR)</label>
+                <input type="number" id="goal-target-input" required min="100" step="100" value="${goal.target}"
+                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-purple-500" />
+              </div>
+              <div class="flex justify-end gap-2 pt-2">
+                <button type="button" id="cancel-goal-btn" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100">Cancel</button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl text-sm font-bold text-white brand-gradient shadow-md">Save Goal</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('close-goal-btn').onclick = closeModal;
+      document.getElementById('cancel-goal-btn').onclick = closeModal;
+      document.getElementById('goal-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('goal-title-input').value;
+        const target = document.getElementById('goal-target-input').value;
+        const ok = await handleUpdateSavingsGoal(uid, title, target);
+        if (ok) closeModal();
+      };
+    }
+
     function openDemoSettingsModal() {
       const root = document.getElementById('modal-root');
       root.innerHTML = `
-        <div class="fixed inset-0 bg-blue-950/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-blue-100">
+        <div class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-pink-100">
             <div class="flex items-center justify-between mb-4">
-              <h3 class="text-lg font-extrabold text-blue-950">Vault Administration & Testing</h3>
-              <button type="button" id="close-demo-btn" class="w-8 h-8 rounded-full bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-blue-900">✕</button>
+              <h3 class="text-lg font-extrabold text-slate-900">Vault Administration & Testing</h3>
+              <button type="button" id="close-demo-btn" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700">✕</button>
             </div>
-            <p class="text-xs text-blue-950 leading-relaxed mb-5">
-              Use these utilities to quickly populate all 4 Hiremath family accounts with realistic demo credentials, or wipe the cloud vault back to unconfigured ₹0.00 accounts.
+            <p class="text-xs text-slate-600 leading-relaxed mb-5">
+              Quickly populate all 4 Hiremath family accounts with realistic demo credentials, or reset the cloud vault back to unconfigured ₹0.00 accounts.
             </p>
             <div class="space-y-3">
-              <button type="button" id="btn-seed-demo" class="w-full py-3 px-4 rounded-2xl bg-blue-600 text-white font-bold text-sm shadow-md hover:bg-blue-700 transition">
+              <button type="button" id="btn-seed-demo" class="w-full py-3 px-4 rounded-2xl brand-gradient text-white font-bold text-sm shadow-md hover:opacity-95 transition">
                 ✨ Load Pre-Configured Demo Family
               </button>
-              <button type="button" id="btn-reset-demo" class="w-full py-3 px-4 rounded-2xl bg-red-50 text-red-700 border border-red-200 font-bold text-sm hover:bg-red-100 transition">
+              <button type="button" id="btn-reset-demo" class="w-full py-3 px-4 rounded-2xl bg-rose-50 text-rose-700 border border-rose-200 font-bold text-sm hover:bg-rose-100 transition">
                 🔄 Reset Vault to Factory Defaults (₹0.00)
               </button>
             </div>
@@ -1662,24 +1905,24 @@
       const recentResolved = state.requests.filter(r => r.status !== 'pending' && r.type !== 'ADMIN_NOTIFICATION').slice(0, 8);
 
       root.innerHTML = `
-        <div class="fixed inset-0 bg-blue-950/40 backdrop-blur-xs flex justify-end">
-          <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col border-l border-blue-200">
-            <div class="p-5 border-b border-blue-100 flex items-center justify-between bg-gradient-to-r from-blue-50 via-sky-50 to-blue-100">
+        <div class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs flex justify-end">
+          <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col border-l border-pink-100">
+            <div class="p-5 border-b border-pink-100 flex items-center justify-between bg-gradient-to-r from-orange-50 via-pink-50 to-purple-50">
               <div>
-                <h3 class="text-lg font-extrabold text-blue-950">Notification Center</h3>
-                <p class="text-xs text-blue-900">${pending.length} pending notification${pending.length === 1 ? '' : 's'}</p>
+                <h3 class="text-lg font-extrabold text-slate-900">Notification Center</h3>
+                <p class="text-xs text-slate-600">${pending.length} pending notification${pending.length === 1 ? '' : 's'}</p>
               </div>
-              <button type="button" id="close-notif-drawer" class="w-9 h-9 rounded-full bg-white border border-blue-200 hover:bg-blue-50 flex items-center justify-center text-blue-900">✕</button>
+              <button type="button" id="close-notif-drawer" class="w-9 h-9 rounded-full bg-white border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-700">✕</button>
             </div>
 
             <div class="flex-1 overflow-y-auto p-5 space-y-6">
               <div>
-                <h4 class="text-xs font-bold uppercase tracking-wider text-blue-900 mb-3">Action Required & Device Alerts</h4>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Action Required & Device Alerts</h4>
                 ${pending.length === 0 ? `
-                  <div class="p-6 rounded-2xl bg-blue-50/50 border border-dashed border-blue-200 text-center">
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-dashed border-slate-200 text-center">
                     <p class="text-2xl mb-1">🎉</p>
-                    <p class="text-sm font-semibold text-blue-950">All caught up!</p>
-                    <p class="text-xs text-blue-950 mt-0.5">No pending approvals or notifications in your queue.</p>
+                    <p class="text-sm font-semibold text-slate-900">All caught up!</p>
+                    <p class="text-xs text-slate-500 mt-0.5">No pending approvals or notifications in your queue.</p>
                   </div>
                 ` : `
                   <div class="space-y-3">
@@ -1689,10 +1932,10 @@
                           <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 shadow-xs space-y-2">
                             <div class="flex items-center justify-between">
                               <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-200 text-amber-900">Bank Head Alert</span>
-                              <span class="text-[11px] text-amber-950">${formatTime(req.createdAt)}</span>
+                              <span class="text-[11px] text-amber-900">${formatTime(req.createdAt)}</span>
                             </div>
                             <p class="text-sm font-bold text-amber-950">${escapeHTML(req.note)}</p>
-                            <p class="text-xs font-mono font-extrabold text-red-700">Deducted Amount: ${formatINR(req.amount)}</p>
+                            <p class="text-xs font-mono font-extrabold text-rose-700">Deducted Amount: ${formatINR(req.amount)}</p>
                             <div class="pt-2 flex justify-end">
                               <button type="button" data-action="acknowledge" data-req-id="${req.id}"
                                       class="notif-action-btn py-1.5 px-3 rounded-xl text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 transition">
@@ -1705,43 +1948,43 @@
 
                       const sender = state.accounts[req.fromId];
                       const badgeMap = {
-                        CREDIT_CARD_APP: { label: 'Credit Card App', cls: 'bg-blue-100 text-blue-800' },
-                        POS_DEBIT: { label: 'ATM / POS Debit', cls: 'bg-sky-100 text-sky-800' },
-                        P2P_REQUEST: { label: 'Money Request', cls: 'bg-blue-100 text-blue-950' },
-                        GROUP_REQUEST: { label: 'Group Ask All', cls: 'bg-blue-200 text-blue-950' }
+                        CREDIT_CARD_APP: { label: 'Credit Card App', cls: 'bg-purple-100 text-purple-800' },
+                        POS_DEBIT: { label: 'ATM / POS Debit', cls: 'bg-orange-100 text-orange-800' },
+                        P2P_REQUEST: { label: 'Money Request', cls: 'bg-pink-100 text-pink-800' },
+                        GROUP_REQUEST: { label: 'Group Ask All', cls: 'bg-fuchsia-100 text-fuchsia-900' }
                       };
-                      const badge = badgeMap[req.type] || { label: 'Request', cls: 'bg-blue-100 text-blue-800' };
+                      const badge = badgeMap[req.type] || { label: 'Request', cls: 'bg-pink-100 text-pink-800' };
 
                       return `
-                        <div class="p-4 rounded-2xl bg-white border border-blue-200 shadow-xs space-y-3">
+                        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-3">
                           <div class="flex items-start gap-3">
                             ${renderAvatar(sender, 'w-10 h-10 text-lg')}
                             <div class="flex-1 min-w-0">
                               <div class="flex items-center justify-between gap-2">
-                                <span class="font-bold text-sm text-blue-950 truncate">${escapeHTML(sender?.displayName || 'Family Member')}</span>
+                                <span class="font-bold text-sm text-slate-900 truncate">${escapeHTML(sender?.displayName || 'Family Member')}</span>
                                 <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold ${badge.cls}">${badge.label}</span>
                               </div>
-                              <p class="text-base font-extrabold font-mono text-blue-950 mt-0.5">${formatINR(req.amount)}</p>
-                              <p class="text-xs text-blue-950 mt-0.5">${escapeHTML(req.note)}</p>
-                              <p class="text-[11px] text-blue-950 mt-1">${formatTime(req.createdAt)}</p>
+                              <p class="text-base font-extrabold font-mono text-slate-900 mt-0.5">${formatINR(req.amount)}</p>
+                              <p class="text-xs text-slate-600 mt-0.5">${escapeHTML(req.note)}</p>
+                              <p class="text-[11px] text-slate-400 mt-1">${formatTime(req.createdAt)}</p>
                             </div>
                           </div>
 
                           ${req.type === 'CREDIT_CARD_APP' ? `
                             <div class="flex items-center gap-2 pt-1">
-                              <label class="text-xs font-semibold text-blue-900 shrink-0">Approved Limit ₹:</label>
+                              <label class="text-xs font-semibold text-slate-700 shrink-0">Approved Limit ₹:</label>
                               <input type="number" id="cc-limit-${req.id}" value="${req.amount}" min="500" step="500"
-                                     class="w-full px-2.5 py-1.5 rounded-xl border border-blue-300 font-mono text-xs" />
+                                     class="w-full px-2.5 py-1.5 rounded-xl border border-slate-300 font-mono text-xs" />
                             </div>
                           ` : ''}
 
                           <div class="grid grid-cols-2 gap-2 pt-1">
                             <button type="button" data-action="decline" data-req-id="${req.id}"
-                                    class="notif-action-btn py-2 px-3 rounded-xl text-xs font-bold text-blue-900 bg-blue-50 hover:bg-blue-100 transition">
+                                    class="notif-action-btn py-2 px-3 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 transition">
                               Decline
                             </button>
                             <button type="button" data-action="approve" data-req-id="${req.id}" data-req-type="${req.type}"
-                                    class="notif-action-btn py-2 px-3 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition">
+                                    class="notif-action-btn py-2 px-3 rounded-xl text-xs font-bold text-white brand-gradient hover:opacity-95 shadow-xs transition">
                               ${req.type === 'CREDIT_CARD_APP' ? 'Approve Card' : 'Accept & Pay'}
                             </button>
                           </div>
@@ -1754,17 +1997,17 @@
 
               ${recentResolved.length > 0 ? `
                 <div>
-                  <h4 class="text-xs font-bold uppercase tracking-wider text-blue-900 mb-3">Recent Decisions</h4>
+                  <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Recent Decisions</h4>
                   <div class="space-y-2">
                     ${recentResolved.map(r => {
                       const sender = state.accounts[r.fromId];
                       return `
-                        <div class="p-3 rounded-xl bg-blue-50/50 border border-blue-100 flex items-center justify-between text-xs">
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between text-xs">
                           <div class="min-w-0 pr-2">
-                            <p class="font-semibold text-blue-950 truncate">${escapeHTML(sender?.displayName)} · ${formatINR(r.amount)}</p>
-                            <p class="text-blue-950 truncate">${escapeHTML(r.note)}</p>
+                            <p class="font-semibold text-slate-900 truncate">${escapeHTML(sender?.displayName)} · ${formatINR(r.amount)}</p>
+                            <p class="text-slate-500 truncate">${escapeHTML(r.note)}</p>
                           </div>
-                          <span class="px-2.5 py-1 rounded-full font-bold capitalize shrink-0 ${r.status === 'approved' || r.status === 'acknowledged' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}">
+                          <span class="px-2.5 py-1 rounded-full font-bold capitalize shrink-0 ${r.status === 'approved' || r.status === 'acknowledged' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
                             ${r.status}
                           </span>
                         </div>
@@ -1812,9 +2055,9 @@
       const uid = state.activeAccountId;
 
       root.innerHTML = `
-        <div class="fixed inset-0 bg-blue-950/40 backdrop-blur-xs flex justify-end">
-          <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col border-l border-blue-200">
-            <div class="p-4 sm:p-5 border-b border-blue-100 flex items-center justify-between bg-blue-600 text-white">
+        <div class="fixed inset-0 bg-slate-950/40 backdrop-blur-xs flex justify-end">
+          <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col border-l border-pink-100">
+            <div class="p-4 sm:p-5 border-b border-pink-100 flex items-center justify-between brand-gradient text-white">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl">💬</div>
                 <div>
@@ -1825,12 +2068,12 @@
               <button type="button" id="close-chat-drawer" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white">✕</button>
             </div>
 
-            <div id="chat-messages-box" class="flex-1 overflow-y-auto p-4 space-y-3 bg-blue-50/30">
+            <div id="chat-messages-box" class="flex-1 overflow-y-auto p-4 space-y-3 bg-[#F7F7F7]">
               ${state.messages.length === 0 ? `
                 <div class="text-center py-12 px-4">
                   <p class="text-3xl mb-2">👋</p>
-                  <p class="text-sm font-bold text-blue-950">Start the Hiremath Family conversation</p>
-                  <p class="text-xs text-blue-950 mt-1">Send a message or tap "Ask All" below to broadcast a money request to everyone.</p>
+                  <p class="text-sm font-bold text-slate-900">Start the Hiremath Family conversation</p>
+                  <p class="text-xs text-slate-500 mt-1">Send a message or tap "Ask All" below to broadcast a money request to everyone.</p>
                 </div>
               ` : state.messages.map(msg => {
                 const sender = state.accounts[msg.senderId];
@@ -1842,24 +2085,24 @@
                   return `
                     <div class="flex items-start gap-2.5 ${isMine ? 'flex-row-reverse' : ''}">
                       ${renderAvatar(sender, 'w-8 h-8 text-sm')}
-                      <div class="max-w-[82%] rounded-2xl p-3.5 bg-white border-2 border-blue-200 shadow-sm">
+                      <div class="max-w-[82%] rounded-2xl p-3.5 bg-white border-2 border-pink-200 shadow-sm">
                         <div class="flex items-center justify-between gap-2 mb-1">
-                          <span class="text-xs font-bold text-blue-950">${escapeHTML(sender?.displayName || 'Family')}</span>
-                          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">ASK ALL REQUEST</span>
+                          <span class="text-xs font-bold text-slate-900">${escapeHTML(sender?.displayName || 'Family')}</span>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-100 text-pink-800">ASK ALL REQUEST</span>
                         </div>
-                        <p class="text-lg font-extrabold font-mono text-blue-950">${formatINR(msg.amount)}</p>
-                        <p class="text-xs text-blue-950 mt-0.5">${escapeHTML(msg.text)}</p>
-                        <div class="mt-2.5 pt-2 border-t border-blue-100 flex items-center justify-between gap-2">
-                          <span class="text-[10px] text-blue-950">${formatTime(msg.createdAt)}</span>
+                        <p class="text-lg font-extrabold font-mono text-slate-900">${formatINR(msg.amount)}</p>
+                        <p class="text-xs text-slate-600 mt-0.5">${escapeHTML(msg.text)}</p>
+                        <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                          <span class="text-[10px] text-slate-400">${formatTime(msg.createdAt)}</span>
                           ${msg.status === 'approved' ? `
                             <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
                               ✓ Paid by ${escapeHTML(payer?.displayName || 'Family')}
                             </span>
                           ` : msg.status === 'declined' ? `
-                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-red-100 text-red-800">Declined</span>
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800">Declined</span>
                           ` : canPay ? `
                             <button type="button" data-req-id="${msg.requestId}"
-                                    class="chat-pay-btn px-3 py-1.5 rounded-xl text-xs font-bold text-white bg-blue-600 shadow-xs hover:bg-blue-700 transition">
+                                    class="chat-pay-btn px-3 py-1.5 rounded-xl text-xs font-bold text-white brand-gradient shadow-xs hover:opacity-95 transition">
                               Pay ${formatINR(msg.amount)}
                             </button>
                           ` : `
@@ -1874,38 +2117,38 @@
                 return `
                   <div class="flex items-end gap-2.5 ${isMine ? 'flex-row-reverse' : ''}">
                     ${renderAvatar(sender, 'w-8 h-8 text-sm')}
-                    <div class="max-w-[78%] rounded-2xl px-3.5 py-2.5 shadow-2xs ${isMine ? 'bg-blue-600 text-white rounded-br-sm' : 'bg-white text-blue-950 border border-blue-200/80 rounded-bl-sm'}">
-                      ${!isMine ? `<p class="text-[11px] font-bold text-blue-600 mb-0.5">${escapeHTML(sender?.displayName || 'Member')}</p>` : ''}
+                    <div class="max-w-[78%] rounded-2xl px-3.5 py-2.5 shadow-2xs ${isMine ? 'brand-gradient text-white rounded-br-sm' : 'bg-white text-slate-900 border border-slate-200/80 rounded-bl-sm'}">
+                      ${!isMine ? `<p class="text-[11px] font-bold text-pink-600 mb-0.5">${escapeHTML(sender?.displayName || 'Member')}</p>` : ''}
                       <p class="text-sm leading-snug break-words">${escapeHTML(msg.text)}</p>
-                      <p class="text-[10px] mt-1 ${isMine ? 'text-blue-100 text-right' : 'text-blue-950'}">${formatTime(msg.createdAt)}</p>
+                      <p class="text-[10px] mt-1 ${isMine ? 'text-white/80 text-right' : 'text-slate-400'}">${formatTime(msg.createdAt)}</p>
                     </div>
                   </div>
                 `;
               }).join('')}
             </div>
 
-            <div class="p-3.5 bg-white border-t border-blue-200">
+            <div class="p-3.5 bg-white border-t border-slate-200">
               <div class="flex items-center justify-between mb-2">
                 <button type="button" id="toggle-ask-all-btn"
-                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition ${chatAskAllMode ? 'bg-blue-700 text-white shadow-xs' : 'bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100'}">
+                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition ${chatAskAllMode ? 'brand-gradient text-white shadow-xs' : 'bg-pink-50 text-pink-700 border border-pink-200 hover:bg-pink-100'}">
                   <span>💸</span>
                   <span>${chatAskAllMode ? 'Cancel Ask All' : 'Ask All (Broadcast Request)'}</span>
                 </button>
-                <span class="text-[11px] text-blue-950">Real-time sync</span>
+                <span class="text-[11px] text-slate-400">Real-time sync</span>
               </div>
 
               <form id="chat-form" class="space-y-2">
                 ${chatAskAllMode ? `
                   <div class="flex items-center gap-2">
-                    <span class="text-sm font-bold text-blue-950 pl-1">₹</span>
+                    <span class="text-sm font-bold text-slate-900 pl-1">₹</span>
                     <input type="number" id="chat-req-amount" required min="1" step="0.01" placeholder="Amount to request (INR)"
-                           class="w-full px-3 py-2 rounded-xl border border-blue-300 bg-blue-50/40 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                           class="w-full px-3 py-2 rounded-xl border border-pink-300 bg-pink-50/40 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
                   </div>
                 ` : ''}
                 <div class="flex items-center gap-2">
                   <input type="text" id="chat-input" placeholder="${chatAskAllMode ? 'What is this money request for?' : 'Message Hiremath family...'}"
-                         class="flex-1 px-3.5 py-2.5 rounded-2xl border border-blue-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                  <button type="submit" class="px-4 py-2.5 rounded-2xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 shadow-xs transition">
+                         class="flex-1 px-3.5 py-2.5 rounded-2xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500" />
+                  <button type="submit" class="px-4 py-2.5 rounded-2xl font-bold text-sm text-white brand-gradient hover:opacity-95 shadow-xs transition">
                     ${chatAskAllMode ? 'Broadcast' : 'Send'}
                   </button>
                 </div>
@@ -1951,17 +2194,17 @@
       const pendingCount = activeAcc ? getPendingNotificationsForActiveUser().length : 0;
 
       return `
-        <header class="sticky top-0 z-30 bg-white/85 backdrop-blur-md border-b border-blue-200/80">
+        <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200/70">
           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
             <div class="flex items-center gap-3">
               <button type="button" id="nav-home-btn" class="flex items-center gap-2.5 group text-left">
-                <div class="w-9 h-9 rounded-2xl bg-blue-600 flex items-center justify-center text-white font-extrabold shadow-sm group-hover:scale-105 transition">
+                <div class="w-9 h-9 rounded-2xl brand-gradient flex items-center justify-center text-white font-extrabold shadow-sm group-hover:scale-105 transition">
                   H
                 </div>
                 <div>
                   <div class="flex items-center gap-2">
-                    <span class="font-extrabold text-sm sm:text-base tracking-tight text-blue-950">Hiremath Family Bank</span>
-                    <span class="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    <span class="font-extrabold text-sm sm:text-base tracking-tight text-slate-900">Hiremath Family Bank</span>
+                    <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r from-orange-500/10 via-pink-500/10 to-purple-500/10 text-pink-700 border border-pink-200/80">
                       <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE SYNC
                     </span>
                   </div>
@@ -1969,42 +2212,48 @@
               </button>
             </div>
 
-            <div class="flex items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-2 sm:gap-2.5">
               <button type="button" id="nav-terminal-btn"
-                      class="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold border transition ${state.viewMode === 'terminal' ? 'bg-blue-950 text-white border-blue-950' : 'bg-white text-blue-900 border-blue-200 hover:bg-blue-50'}">
+                      class="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold border transition ${state.viewMode === 'terminal' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-800 border-slate-200 hover:bg-pink-50'}">
                 <span>🏧</span>
                 <span class="hidden sm:inline">${state.viewMode === 'terminal' ? 'Back to Portal' : 'ATM / POS Terminal'}</span>
                 <span class="sm:hidden">ATM</span>
               </button>
 
               ${activeAcc ? `
+                <button type="button" id="nav-edit-profile-btn" title="Edit Profile, Card, PIN & Passkey"
+                        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold bg-white text-slate-800 border border-slate-200 hover:bg-pink-50 transition">
+                  <span>⚙️</span>
+                  <span class="hidden lg:inline">Edit Profile</span>
+                </button>
+
                 <button type="button" id="nav-chat-btn"
-                        class="relative inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold bg-white text-blue-900 border border-blue-200 hover:bg-blue-50 transition">
+                        class="relative inline-flex items-center gap-1.5 px-3 py-2 rounded-full text-xs font-bold bg-white text-slate-800 border border-slate-200 hover:bg-pink-50 transition">
                   <span>💬</span>
                   <span class="hidden md:inline">Family Chat</span>
                 </button>
 
                 <button type="button" id="nav-notif-btn" aria-label="Notifications"
-                        class="relative w-10 h-10 rounded-full bg-white border border-blue-200 hover:bg-blue-50 flex items-center justify-center text-blue-900 transition">
+                        class="relative w-10 h-10 rounded-full bg-white border border-slate-200 hover:bg-pink-50 flex items-center justify-center text-slate-800 transition">
                   <span class="text-base">🔔</span>
                   ${pendingCount > 0 ? `
-                    <span class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-blue-600 text-white text-[11px] font-extrabold flex items-center justify-center shadow-xs">
+                    <span class="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full brand-gradient text-white text-[11px] font-extrabold flex items-center justify-center shadow-xs">
                       ${pendingCount}
                     </span>
                   ` : ''}
                 </button>
 
-                <div class="flex items-center gap-2 pl-2 pr-1.5 py-1 rounded-full bg-blue-50 border border-blue-200">
+                <div class="flex items-center gap-2 pl-2 pr-1.5 py-1 rounded-full bg-slate-100/90 border border-slate-200">
                   ${renderAvatar(activeAcc, 'w-7 h-7 text-sm')}
-                  <span class="hidden sm:inline text-xs font-bold text-blue-950 max-w-[100px] truncate">${escapeHTML(activeAcc.displayName)}</span>
+                  <span class="hidden sm:inline text-xs font-bold text-slate-900 max-w-[100px] truncate">${escapeHTML(activeAcc.displayName)}</span>
                   <button type="button" id="nav-switch-user-btn" title="Switch Account"
-                          class="px-2.5 py-1 rounded-full bg-white text-[11px] font-bold text-blue-950 hover:text-blue-600 shadow-2xs transition">
+                          class="px-2.5 py-1 rounded-full bg-white text-[11px] font-bold text-slate-900 hover:text-pink-600 shadow-2xs transition">
                     Switch
                   </button>
                 </div>
               ` : `
                 <button type="button" id="nav-demo-btn"
-                        class="px-3 py-2 rounded-full text-xs font-bold bg-white border border-blue-200 text-blue-900 hover:bg-blue-50 transition">
+                        class="px-3 py-2 rounded-full text-xs font-bold bg-white border border-slate-200 text-slate-800 hover:bg-pink-50 transition">
                   ⚙️ Vault Setup
                 </button>
               `}
@@ -2020,14 +2269,14 @@
       return `
         <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 flex flex-col justify-center">
           <div class="text-center max-w-2xl mx-auto mb-10">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-blue-200 shadow-2xs mb-4">
-              <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-              <span class="text-xs font-bold tracking-wide uppercase text-blue-900">Hiremath Family Financial Network</span>
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/90 border border-pink-200 shadow-2xs mb-4">
+              <span class="w-2 h-2 rounded-full brand-gradient"></span>
+              <span class="text-xs font-bold tracking-wide uppercase text-slate-800">Hiremath Family Financial Network</span>
             </div>
-            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-blue-950 leading-tight">
-              Family Banking, <span class="text-blue-600">Synchronized.</span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+              Family Banking, <span class="brand-gradient-text">Synchronized.</span>
             </h1>
-            <p class="text-sm sm:text-base text-blue-950 mt-3">
+            <p class="text-sm sm:text-base text-slate-600 mt-3">
               Select your family account below to access your vault, manage virtual cards, or approve pending family transactions.
             </p>
           </div>
@@ -2036,49 +2285,53 @@
             ${accountList.map(acc => `
               <button type="button" data-account-id="${acc.id}"
                       class="account-select-card group text-left glass-card rounded-3xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between relative overflow-hidden">
-                <div class="absolute top-0 inset-x-0 h-1.5 bg-blue-600 transition-all"></div>
+                <div class="absolute top-0 inset-x-0 h-1.5 brand-gradient transition-all"></div>
 
                 <div>
                   <div class="flex items-center justify-between mb-4">
                     ${renderAvatar(acc, 'w-14 h-14 text-2xl')}
-                    <span class="px-3 py-1 rounded-full text-xs font-bold ${acc.isAdmin ? 'bg-blue-100 text-blue-800' : 'bg-blue-50 text-blue-900'}">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold ${acc.isAdmin ? 'bg-purple-100 text-purple-800' : 'bg-orange-50 text-orange-800 border border-orange-200/70'}">
                       ${escapeHTML(acc.role)}
                     </span>
                   </div>
 
-                  <h2 class="text-lg font-extrabold text-blue-950 group-hover:text-blue-600 transition truncate">
+                  <h2 class="text-lg font-extrabold text-slate-900 group-hover:text-pink-600 transition truncate">
                     ${escapeHTML(acc.displayName)}
                   </h2>
-                  <p class="text-xs text-blue-950 mt-1">
+                  <p class="text-xs text-slate-500 mt-1">
                     ${acc.isConfigured
                       ? `Card •••• ${escapeHTML(acc.cardNumber)}`
                       : 'Unconfigured · Tap for first-time setup'}
                   </p>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-blue-100 flex items-center justify-between">
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
                   ${acc.isConfigured ? `
-                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800">
-                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Active Vault
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold ${acc.isFrozen ? 'text-rose-600' : 'text-emerald-700'}">
+                      <span class="w-2 h-2 rounded-full ${acc.isFrozen ? 'bg-rose-500' : 'bg-emerald-500'}"></span>
+                      ${acc.isFrozen ? 'Frozen' : 'Active Vault'}
                     </span>
-                    <span class="text-xs font-bold text-blue-950 group-hover:translate-x-0.5 transition">Sign In →</span>
+                    <span class="text-xs font-bold text-slate-900 group-hover:translate-x-0.5 transition">Sign In →</span>
                   ` : `
                     <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700">
                       <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Setup Needed
                     </span>
-                    <span class="text-xs font-bold text-blue-600 group-hover:translate-x-0.5 transition">Configure →</span>
+                    <span class="text-xs font-bold text-pink-600 group-hover:translate-x-0.5 transition">Configure →</span>
                   `}
                 </div>
               </button>
             `).join('')}
           </div>
 
-          <div class="mt-10 flex flex-wrap items-center justify-center gap-4 text-xs text-blue-950">
-            <span class="px-3.5 py-1.5 rounded-full bg-white/80 border border-blue-200">
-              🏦 Central Treasury Reserve: <strong class="font-mono text-blue-950">${formatINR(state.settings.treasuryReserve)}</strong>
+          <div class="mt-10 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-700">
+            <span class="px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200 shadow-2xs">
+              🏦 Central Treasury: <strong class="font-mono text-slate-900">${formatINR(state.settings.treasuryReserve)}</strong>
             </span>
-            <span class="px-3.5 py-1.5 rounded-full bg-white/80 border border-blue-200">
-              🎁 Reward Rate: <strong class="font-mono text-blue-950">${formatINR(state.settings.rewardRate)} / pt</strong>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200 shadow-2xs">
+              🎁 Reward Rate: <strong class="font-mono text-slate-900">${formatINR(state.settings.rewardRate)} / pt</strong>
+            </span>
+            <span class="px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200 shadow-2xs">
+              💳 Credit Payback Interest: <strong class="font-mono text-pink-700">${Number(state.settings.creditInterestRate || 0).toFixed(2)}%</strong>
             </span>
           </div>
         </main>
@@ -2086,6 +2339,7 @@
     }
 
     function renderBankHeadDashboard() {
+      const bankHead = state.accounts.bank_head;
       const bankers = ['banker_1', 'banker_2', 'banker_3'].map(id => state.accounts[id]);
       const totalBankerBalances = bankers.reduce((sum, b) => sum + (b.balance || 0), 0);
       const totalActiveCreditLimits = bankers.reduce((sum, b) => sum + (b.creditCard?.status === 'active' ? b.creditCard.limit : 0), 0);
@@ -2094,83 +2348,98 @@
       return `
         <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">Bank Head Control Center</span>
-                <span class="text-xs text-blue-950">Admin Authority</span>
+            <div class="flex items-center gap-3.5">
+              ${renderAvatar(bankHead, 'w-14 h-14 text-2xl')}
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="px-3 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-800">Bank Head Control Center</span>
+                  <span class="text-xs text-slate-500">Card #${escapeHTML(bankHead.cardNumber || '----')}</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">${escapeHTML(bankHead.displayName)}</h1>
               </div>
-              <h1 class="text-2xl sm:text-3xl font-extrabold text-blue-950 mt-1">Treasury & Liquidity Overview</h1>
             </div>
             <div class="flex flex-wrap items-center gap-2.5">
-              <button type="button" id="admin-p2p-btn" class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-blue-200 text-blue-950 hover:bg-blue-50 shadow-2xs transition">
+              <button type="button" id="admin-edit-profile-btn" class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-pink-200 text-pink-700 hover:bg-pink-50 shadow-2xs transition">
+                ✏️ Edit My Profile & PIN
+              </button>
+              <button type="button" id="admin-p2p-btn" class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-slate-200 text-slate-900 hover:bg-slate-50 shadow-2xs transition">
                 💸 Request Money
               </button>
-              <button type="button" id="admin-demo-btn" class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-blue-200 text-blue-950 hover:bg-blue-50 shadow-2xs transition">
+              <button type="button" id="admin-demo-btn" class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-slate-200 text-slate-900 hover:bg-slate-50 shadow-2xs transition">
                 ⚙️ Reset / Seed
               </button>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="glass-card rounded-3xl p-5 shadow-xs">
-              <p class="text-xs font-bold uppercase tracking-wider text-blue-950">Central Treasury Reserve</p>
-              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-blue-950 mt-1">${formatINR(state.settings.treasuryReserve)}</p>
+            <div class="glass-card rounded-3xl p-5">
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Central Treasury Reserve</p>
+              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-900 mt-1">${formatINR(state.settings.treasuryReserve)}</p>
               <p class="text-xs text-emerald-700 font-semibold mt-1">Available for Banker Disbursement</p>
             </div>
-            <div class="glass-card rounded-3xl p-5 shadow-xs">
-              <p class="text-xs font-bold uppercase tracking-wider text-blue-950">Total Family Liquidity</p>
-              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-blue-950 mt-1">${formatINR(totalLiquidity)}</p>
-              <p class="text-xs text-blue-950 mt-1">Banker Holdings: <span class="font-mono font-semibold text-blue-950">${formatINR(totalBankerBalances)}</span></p>
+            <div class="glass-card rounded-3xl p-5">
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Total Family Liquidity</p>
+              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-900 mt-1">${formatINR(totalLiquidity)}</p>
+              <p class="text-xs text-slate-600 mt-1">Banker Holdings: <span class="font-mono font-semibold text-slate-900">${formatINR(totalBankerBalances)}</span></p>
             </div>
-            <div class="glass-card rounded-3xl p-5 shadow-xs">
-              <p class="text-xs font-bold uppercase tracking-wider text-blue-950">Active Credit Limits Issued</p>
-              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-blue-950 mt-1">${formatINR(totalActiveCreditLimits)}</p>
-              <p class="text-xs text-blue-700 font-semibold mt-1">Reward Rate: ${formatINR(state.settings.rewardRate)} / pt</p>
+            <div class="glass-card rounded-3xl p-5">
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Credit & Rewards Policy</p>
+              <p class="text-2xl sm:text-3xl font-extrabold font-mono text-slate-900 mt-1">${Number(state.settings.creditInterestRate || 0).toFixed(2)}% <span class="text-sm font-sans font-bold text-pink-600">Interest</span></p>
+              <p class="text-xs text-purple-700 font-semibold mt-1">Active Credit: ${formatINR(totalActiveCreditLimits)} · 1 Pt = ${formatINR(state.settings.rewardRate)}</p>
             </div>
           </div>
 
           <div>
-            <h2 class="text-base font-extrabold text-blue-950 mb-3">Family Banker Accounts & Credentials</h2>
+            <h2 class="text-base font-extrabold text-slate-900 mb-3">Family Banker Accounts & Credentials</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
               ${bankers.map(b => {
                 const isRevealed = !!state.revealedSecrets[b.id];
                 return `
-                  <div class="glass-card rounded-3xl p-5 shadow-xs flex flex-col justify-between">
+                  <div class="glass-card rounded-3xl p-5 flex flex-col justify-between ${b.isFrozen ? 'ring-2 ring-rose-400/70' : ''}">
                     <div>
                       <div class="flex items-center justify-between gap-2 mb-3">
                         <div class="flex items-center gap-3 min-w-0">
                           ${renderAvatar(b, 'w-11 h-11 text-xl')}
                           <div class="min-w-0">
-                            <h3 class="font-extrabold text-blue-950 truncate">${escapeHTML(b.displayName)}</h3>
-                            <span class="text-xs font-semibold text-blue-950">${escapeHTML(b.role)}</span>
+                            <h3 class="font-extrabold text-slate-900 truncate">${escapeHTML(b.displayName)}</h3>
+                            <div class="flex items-center gap-1.5">
+                              <span class="text-xs font-semibold text-slate-500">${escapeHTML(b.role)}</span>
+                              ${b.isFrozen ? `<span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">FROZEN</span>` : ''}
+                            </div>
                           </div>
                         </div>
-                        <button type="button" data-toggle-secret="${b.id}" title="Toggle Passkey & PIN Visibility"
-                                class="toggle-secret-btn w-9 h-9 rounded-xl bg-blue-50 hover:bg-blue-100 flex items-center justify-center text-sm transition text-blue-900">
-                          ${isRevealed ? '🙈' : '👁️'}
-                        </button>
+                        <div class="flex items-center gap-1.5">
+                          <button type="button" data-freeze-account="${b.id}" title="${b.isFrozen ? 'Unfreeze Card' : 'Freeze Card'}"
+                                  class="freeze-account-btn w-9 h-9 rounded-xl ${b.isFrozen ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700 hover:bg-rose-50'} flex items-center justify-center text-sm transition">
+                            ${b.isFrozen ? '🔒' : '🔓'}
+                          </button>
+                          <button type="button" data-toggle-secret="${b.id}" title="Toggle Passkey & PIN Visibility"
+                                  class="toggle-secret-btn w-9 h-9 rounded-xl bg-pink-50 hover:bg-pink-100 flex items-center justify-center text-sm transition text-pink-800">
+                            ${isRevealed ? '🙈' : '👁️'}
+                          </button>
+                        </div>
                       </div>
 
-                      <div class="p-3.5 rounded-2xl bg-blue-50 border border-blue-100 mb-3">
-                        <p class="text-[11px] font-bold uppercase text-blue-950">Live Balance</p>
-                        <p class="text-xl font-extrabold font-mono text-blue-950">${formatINR(b.balance)}</p>
+                      <div class="p-3.5 rounded-2xl bg-gradient-to-r from-orange-50/80 via-pink-50/80 to-purple-50/80 border border-pink-100 mb-3">
+                        <p class="text-[11px] font-bold uppercase text-slate-600">Live Balance</p>
+                        <p class="text-xl font-extrabold font-mono text-slate-900">${formatINR(b.balance)}</p>
                       </div>
 
                       <div class="grid grid-cols-2 gap-2 text-xs mb-3">
-                        <div class="p-2.5 rounded-xl bg-blue-50/50 border border-blue-100">
-                          <span class="text-blue-950 block text-[10px] font-bold uppercase">Passkey</span>
-                          <span class="font-mono font-bold text-blue-950">${b.isConfigured ? (isRevealed ? escapeHTML(b.passkey) : '••••••') : 'Not Set'}</span>
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                          <span class="text-slate-500 block text-[10px] font-bold uppercase">Passkey</span>
+                          <span class="font-mono font-bold text-slate-900">${b.isConfigured ? (isRevealed ? escapeHTML(b.passkey) : '••••••') : 'Not Set'}</span>
                         </div>
-                        <div class="p-2.5 rounded-xl bg-blue-50/50 border border-blue-100">
-                          <span class="text-blue-950 block text-[10px] font-bold uppercase">Card / PIN</span>
-                          <span class="font-mono font-bold text-blue-950">${b.isConfigured ? `#${escapeHTML(b.cardNumber)} · ${isRevealed ? escapeHTML(b.pin) : '••••'}` : 'Not Set'}</span>
+                        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                          <span class="text-slate-500 block text-[10px] font-bold uppercase">Card / PIN</span>
+                          <span class="font-mono font-bold text-slate-900">${b.isConfigured ? `#${escapeHTML(b.cardNumber)} · ${isRevealed ? escapeHTML(b.pin) : '••••'}` : 'Not Set'}</span>
                         </div>
                       </div>
                     </div>
 
-                    <div class="pt-2.5 border-t border-blue-100 flex items-center justify-between text-xs">
-                      <span class="font-semibold text-blue-950">
-                        💳 ${b.creditCard?.status === 'active' ? `Limit ${formatINR(b.creditCard.limit)}` : 'No Credit Card'}
+                    <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs">
+                      <span class="font-semibold text-slate-700">
+                        💳 ${b.creditCard?.status === 'active' ? `Limit ${formatINR(b.creditCard.limit)} (Due ${formatINR(b.creditCard.used)})` : 'No Credit Card'}
                       </span>
                       <span class="font-bold text-amber-700">🎁 ${b.rewardPoints || 0} pts</span>
                     </div>
@@ -2180,86 +2449,136 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+          <!-- Admin Treasury, Reallocation, Deduction & Policy Controls -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <!-- 1. Add Funds from Treasury -->
-            <div class="glass-card rounded-3xl p-5 shadow-xs">
-              <h3 class="text-base font-extrabold text-blue-950 mb-1">Disburse Treasury Funds</h3>
-              <p class="text-xs text-blue-950 mb-4">Credit INR from Central Reserve to any banker.</p>
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 mb-1">Disburse Treasury</h3>
+                <p class="text-xs text-slate-500 mb-4">Credit INR from Central Reserve to any banker.</p>
+              </div>
               <form id="admin-add-funds-form" class="space-y-3">
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Recipient Banker</label>
-                  <select id="add-funds-target" class="w-full px-3 py-2.5 rounded-xl border border-blue-300 text-sm bg-white">
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Recipient Banker</label>
+                  <select id="add-funds-target" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white">
                     ${bankers.map(b => `<option value="${b.id}">${escapeHTML(b.displayName)} (${escapeHTML(b.role)})</option>`).join('')}
                   </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Amount (₹ INR)</label>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Amount (₹ INR)</label>
                   <input type="number" id="add-funds-amount" required min="1" step="0.01" placeholder="2500.00"
-                         class="w-full px-3 py-2.5 rounded-xl border border-blue-300 font-mono text-sm" />
+                         class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs" />
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Verify Bank Head Passkey</label>
-                  <input type="password" id="add-funds-passkey" required placeholder="Enter Admin Passkey"
-                         class="w-full px-3 py-2.5 rounded-xl border border-blue-300 text-sm" />
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Admin Passkey</label>
+                  <input type="password" id="add-funds-passkey" required placeholder="Verify Passkey"
+                         class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
                 </div>
-                <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-sm text-white bg-blue-600 shadow-sm hover:bg-blue-700 transition">
+                <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white brand-gradient shadow-sm hover:opacity-95 transition">
                   Credit Account
                 </button>
               </form>
             </div>
 
-            <!-- NEW FEATURE FORM: Bank Head Deduct Amount & Forward Device Notification -->
-            <div class="glass-card rounded-3xl p-5 shadow-xs border-amber-200">
-              <h3 class="text-base font-extrabold text-blue-950 mb-1">Deduct Funds & Notify Device</h3>
-              <p class="text-xs text-blue-950 mb-4">Deduct balance from any banker and push immediate alert notification.</p>
-              <form id="admin-deduct-form" class="space-y-3">
+            <!-- 2. Reallocate Funds Between Bankers -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 mb-1">Reallocate Funds</h3>
+                <p class="text-xs text-slate-500 mb-4">Transfer funds directly between banker accounts.</p>
+              </div>
+              <form id="admin-reallocate-form" class="space-y-3">
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Target Banker</label>
-                  <select id="deduct-target" class="w-full px-3 py-2.5 rounded-xl border border-blue-300 text-sm bg-white">
-                    ${bankers.map(b => `<option value="${b.id}">${escapeHTML(b.displayName)} (${escapeHTML(b.role)})</option>`).join('')}
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">From Banker</label>
+                  <select id="reallocate-from" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white">
+                    ${bankers.map(b => `<option value="${b.id}">${escapeHTML(b.displayName)} (${formatINR(b.balance)})</option>`).join('')}
                   </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Deduction Amount (₹ INR)</label>
-                  <input type="number" id="deduct-amount" required min="1" step="0.01" placeholder="500.00"
-                         class="w-full px-3 py-2.5 rounded-xl border border-blue-300 font-mono text-sm" />
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">To Banker</label>
+                  <select id="reallocate-to" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white">
+                    ${bankers.map((b, idx) => `<option value="${b.id}" ${idx === 1 ? 'selected' : ''}>${escapeHTML(b.displayName)}</option>`).join('')}
+                  </select>
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Reason / Note</label>
-                  <input type="text" id="deduct-reason" placeholder="e.g., Fine, Penalty, Fee"
-                         class="w-full px-3 py-2.5 rounded-xl border border-blue-300 text-sm" />
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Amount (₹ INR)</label>
+                  <input type="number" id="reallocate-amount" required min="1" step="0.01" placeholder="500.00"
+                         class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs" />
                 </div>
-                <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Verify Bank Head Passkey</label>
-                  <input type="password" id="deduct-passkey" required placeholder="Enter Admin Passkey"
-                         class="w-full px-3 py-2.5 rounded-xl border border-blue-300 text-sm" />
-                </div>
-                <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-sm text-white bg-amber-600 shadow-sm hover:bg-amber-700 transition">
-                  Deduct & Notify Device 🔔
+                <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition">
+                  Reallocate Now
                 </button>
               </form>
             </div>
 
-            <!-- 3. Reward Exchange Rate Control -->
-            <div class="glass-card rounded-3xl p-5 shadow-xs flex flex-col justify-between">
+            <!-- 3. Deduct Funds & Notify Device -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between">
               <div>
-                <h3 class="text-base font-extrabold text-blue-950 mb-1">Reward Points Exchange Rate</h3>
-                <p class="text-xs text-blue-950 mb-4">Set cash value per reward point redeemed by bankers.</p>
-                <div class="p-4 rounded-2xl bg-blue-50 border border-blue-200 mb-4">
-                  <span class="text-xs font-bold text-blue-950 block">Current Live Rate</span>
-                  <span class="text-2xl font-extrabold font-mono text-blue-950">1 Pt = ${formatINR(state.settings.rewardRate)}</span>
-                </div>
+                <h3 class="text-base font-extrabold text-slate-900 mb-1">Deduct & Notify</h3>
+                <p class="text-xs text-slate-500 mb-4">Deduct balance & push alert to banker's device.</p>
               </div>
-              <form id="admin-rate-form" class="space-y-3">
+              <form id="admin-deduct-form" class="space-y-2.5">
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">New Rate (₹ per point)</label>
-                  <input type="number" id="reward-rate-input" required min="0.05" step="0.05" value="${state.settings.rewardRate}"
-                         class="w-full px-3 py-2.5 rounded-xl border border-blue-300 font-mono text-sm" />
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Target Banker</label>
+                  <select id="deduct-target" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white">
+                    ${bankers.map(b => `<option value="${b.id}">${escapeHTML(b.displayName)}</option>`).join('')}
+                  </select>
                 </div>
-                <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-sm text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 transition">
-                  Update Exchange Rate
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Amount ₹</label>
+                    <input type="number" id="deduct-amount" required min="1" step="0.01" placeholder="200"
+                           class="w-full px-2.5 py-2 rounded-xl border border-slate-300 font-mono text-xs" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Admin Passkey</label>
+                    <input type="password" id="deduct-passkey" required placeholder="Passkey"
+                           class="w-full px-2.5 py-2 rounded-xl border border-slate-300 text-xs" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Reason</label>
+                  <input type="text" id="deduct-reason" placeholder="e.g., Late chore fine"
+                         class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white bg-amber-600 hover:bg-amber-700 shadow-sm transition">
+                  Deduct & Notify 🔔
                 </button>
               </form>
+            </div>
+
+            <!-- 4. Interest Rate & Reward Rate Controls -->
+            <div class="glass-card rounded-3xl p-5 flex flex-col justify-between space-y-4">
+              <form id="admin-interest-form" class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-extrabold text-slate-900">Credit Payback Interest</h3>
+                  <span class="px-2 py-0.5 rounded-full text-[11px] font-mono font-bold bg-pink-100 text-pink-800">${Number(state.settings.creditInterestRate || 0).toFixed(2)}%</span>
+                </div>
+                <p class="text-[11px] text-slate-500">Interest applied when bankers borrow or spend on credit cards.</p>
+                <div class="flex gap-2">
+                  <input type="number" id="credit-interest-input" required min="0" max="100" step="0.25" value="${state.settings.creditInterestRate ?? 5.0}"
+                         class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs" />
+                  <button type="submit" class="px-3.5 py-2 rounded-xl font-bold text-xs text-white brand-gradient shrink-0 hover:opacity-95 transition">
+                    Set %
+                  </button>
+                </div>
+              </form>
+
+              <div class="border-t border-slate-100 pt-3">
+                <form id="admin-rate-form" class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <h3 class="text-sm font-extrabold text-slate-900">Reward Point Value</h3>
+                    <span class="px-2 py-0.5 rounded-full text-[11px] font-mono font-bold bg-amber-100 text-amber-800">${formatINR(state.settings.rewardRate)}/pt</span>
+                  </div>
+                  <p class="text-[11px] text-slate-500">INR cash value per reward point redeemed.</p>
+                  <div class="flex gap-2">
+                    <input type="number" id="reward-rate-input" required min="0.05" step="0.05" value="${state.settings.rewardRate}"
+                           class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs" />
+                    <button type="submit" class="px-3.5 py-2 rounded-xl font-bold text-xs text-pink-700 bg-pink-50 border border-pink-200 shrink-0 hover:bg-pink-100 transition">
+                      Set ₹
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
 
@@ -2276,73 +2595,106 @@
       const ccAvailable = cc && cc.status === 'active' ? Number((cc.limit - cc.used).toFixed(2)) : 0;
       const pendingCCApp = state.requests.find(r => r.type === 'CREDIT_CARD_APP' && r.fromId === uid && r.status === 'pending');
       const redeemableCash = Number(((acc.rewardPoints || 0) * state.settings.rewardRate).toFixed(2));
+      const interestRate = Number(state.settings.creditInterestRate || 0);
+
+      const goal = acc.savingsGoal || { title: 'My Savings Goal', target: 10000 };
+      const goalPct = Math.min(100, Math.round(((acc.balance || 0) / Math.max(1, goal.target)) * 100));
 
       return `
         <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+          ${acc.isFrozen ? `
+            <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <span class="text-xl">🔒</span>
+                <div>
+                  <p class="text-sm font-extrabold text-rose-900">Account Spending Frozen by Bank Head</p>
+                  <p class="text-xs text-rose-700">Card debits and credit card transactions are temporarily paused.</p>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3.5">
               ${renderAvatar(acc, 'w-14 h-14 text-2xl')}
               <div>
                 <div class="flex items-center gap-2">
-                  <span class="px-3 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">${escapeHTML(acc.role)}</span>
-                  <span class="text-xs text-blue-950">Card #${escapeHTML(acc.cardNumber)}</span>
+                  <span class="px-3 py-0.5 rounded-full text-xs font-bold bg-pink-100 text-pink-800">${escapeHTML(acc.role)}</span>
+                  <span class="text-xs text-slate-500">Card #${escapeHTML(acc.cardNumber)}</span>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-blue-950 mt-0.5">${escapeHTML(acc.displayName)}</h1>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">${escapeHTML(acc.displayName)}</h1>
               </div>
             </div>
 
             <div class="flex flex-wrap items-center gap-2.5">
+              <button type="button" id="banker-edit-profile-btn"
+                      class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-slate-200 text-slate-800 hover:bg-pink-50 shadow-2xs transition">
+                ⚙️ Edit Profile & PIN
+              </button>
               <button type="button" id="banker-p2p-btn"
-                      class="px-4 py-2.5 rounded-2xl text-xs font-bold text-white bg-blue-600 shadow-sm hover:bg-blue-700 transition">
+                      class="px-4 py-2.5 rounded-2xl text-xs font-bold text-white brand-gradient shadow-sm hover:opacity-95 transition">
                 💸 Request Money
               </button>
               <button type="button" id="banker-chat-btn"
-                      class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-blue-200 text-blue-950 hover:bg-blue-50 shadow-2xs transition">
+                      class="px-4 py-2.5 rounded-2xl text-xs font-bold bg-white border border-slate-200 text-slate-900 hover:bg-pink-50 shadow-2xs transition">
                 💬 Family Chat
               </button>
             </div>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            <div class="glass-card rounded-3xl p-6 shadow-xs flex flex-col justify-between">
+            <!-- Savings Balance & Piggy Bank Goal -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col justify-between">
               <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-blue-950">Available Savings Balance</span>
-                <p class="text-3xl sm:text-4xl font-extrabold font-mono text-blue-950 mt-2">${formatINR(acc.balance)}</p>
-                <p class="text-xs text-blue-950 mt-2">Real-time synced across all Hiremath family devices.</p>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Available Bank Balance</span>
+                <p class="text-3xl sm:text-4xl font-extrabold font-mono text-slate-900 mt-2">${formatINR(acc.balance)}</p>
+                <p class="text-xs text-slate-500 mt-1">Real-time synced across all Hiremath family devices.</p>
               </div>
-              <div class="mt-6 pt-4 border-t border-blue-100 flex items-center justify-between text-xs">
-                <span class="text-blue-950">Account Status</span>
-                <span class="px-2.5 py-1 rounded-full font-bold bg-emerald-50 text-emerald-800">Active · Verified</span>
+
+              <div class="mt-5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/70">
+                <div class="flex items-center justify-between text-xs mb-1.5">
+                  <span class="font-bold text-slate-800">🎯 ${escapeHTML(goal.title)}</span>
+                  <button type="button" id="banker-edit-goal-btn" class="text-[11px] font-bold text-pink-600 hover:underline">Edit Goal</button>
+                </div>
+                <div class="w-full h-2.5 rounded-full bg-slate-200 overflow-hidden">
+                  <div class="h-full brand-gradient rounded-full transition-all duration-500" style="width: ${goalPct}%"></div>
+                </div>
+                <div class="flex items-center justify-between text-[11px] text-slate-600 mt-1.5 font-mono">
+                  <span>${goalPct}% reached</span>
+                  <span>Target: ${formatINR(goal.target)}</span>
+                </div>
               </div>
             </div>
 
-            <div class="rounded-3xl p-6 text-white shadow-lg bg-gradient-to-br from-blue-900 via-blue-950 to-slate-900 relative overflow-hidden flex flex-col justify-between">
-              <div class="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-blue-500/20 blur-xl"></div>
+            <!-- Debit Card -->
+            <div class="rounded-3xl p-6 text-white shadow-lg bg-gradient-to-br from-slate-900 via-purple-950 to-slate-900 relative overflow-hidden flex flex-col justify-between">
+              <div class="absolute -right-8 -top-8 w-36 h-36 rounded-full bg-pink-500/25 blur-xl"></div>
               <div class="flex items-center justify-between relative z-10">
-                <span class="text-xs font-bold tracking-widest uppercase text-blue-200">Hiremath Debit</span>
+                <span class="text-xs font-bold tracking-widest uppercase text-pink-200">Hiremath Debit</span>
                 <button type="button" id="banker-toggle-pin-btn" class="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 text-[11px] font-semibold transition">
                   ${isPinRevealed ? '🙈 Hide PIN' : '👁️ Show PIN'}
                 </button>
               </div>
 
               <div class="my-5 relative z-10">
-                <p class="text-[11px] uppercase tracking-wider text-blue-300">Terminal Card Number</p>
+                <p class="text-[11px] uppercase tracking-wider text-purple-200">Terminal Card Number</p>
                 <p class="text-2xl font-mono font-bold tracking-widest mt-0.5">•••• •••• •••• ${escapeHTML(acc.cardNumber)}</p>
               </div>
 
               <div class="flex items-end justify-between relative z-10 text-xs">
                 <div>
-                  <span class="text-[10px] uppercase text-blue-300 block">Cardholder</span>
+                  <span class="text-[10px] uppercase text-purple-200 block">Cardholder</span>
                   <span class="font-bold tracking-wide">${escapeHTML(acc.displayName)}</span>
                 </div>
                 <div class="text-right">
-                  <span class="text-[10px] uppercase text-blue-300 block">ATM PIN</span>
+                  <span class="text-[10px] uppercase text-purple-200 block">ATM PIN</span>
                   <span class="font-mono font-bold text-sm">${isPinRevealed ? escapeHTML(acc.pin) : '••••'}</span>
                 </div>
               </div>
             </div>
 
-            <div class="glass-card rounded-3xl p-6 shadow-xs flex flex-col justify-between">
+            <!-- Reward Points -->
+            <div class="glass-card rounded-3xl p-6 flex flex-col justify-between">
               <div>
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Reward Points</span>
@@ -2351,87 +2703,143 @@
                   </span>
                 </div>
                 <div class="flex items-baseline gap-2 mt-2">
-                  <p class="text-3xl font-extrabold font-mono text-blue-950">${acc.rewardPoints || 0}</p>
-                  <span class="text-xs font-bold text-blue-950">pts</span>
+                  <p class="text-3xl font-extrabold font-mono text-slate-900">${acc.rewardPoints || 0}</p>
+                  <span class="text-xs font-bold text-slate-500">pts</span>
                 </div>
-                <p class="text-xs text-blue-950 mt-1">
+                <p class="text-xs text-slate-600 mt-1">
                   Cash Redemption Value: <strong class="font-mono text-emerald-700">${formatINR(redeemableCash)}</strong>
                 </p>
               </div>
 
               <button type="button" id="banker-redeem-btn" ${!acc.rewardPoints || acc.rewardPoints <= 0 ? 'disabled' : ''}
-                      class="mt-5 w-full py-2.5 px-4 rounded-2xl text-xs font-bold transition ${acc.rewardPoints > 0 ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-xs' : 'bg-blue-50 text-blue-950 cursor-not-allowed'}">
+                      class="mt-5 w-full py-2.5 px-4 rounded-2xl text-xs font-bold transition ${acc.rewardPoints > 0 ? 'bg-amber-600 hover:bg-amber-700 text-white shadow-xs' : 'bg-slate-100 text-slate-400 cursor-not-allowed'}">
                 🎁 Redeem Points for ${formatINR(redeemableCash)}
               </button>
             </div>
           </div>
 
-          <div class="glass-card rounded-3xl p-6 shadow-xs">
+          <!-- Virtual Credit Card Section (With Cash Advance to Bank Balance & Payback Interest) -->
+          <div class="glass-card rounded-3xl p-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
               <div>
-                <h2 class="text-lg font-extrabold text-blue-950">Virtual Credit Card & Rewards</h2>
-                <p class="text-xs text-blue-950">Earn 1 Reward Point for every ₹25 spent on your family credit line.</p>
+                <h2 class="text-lg font-extrabold text-slate-900">Virtual Credit Card, Cash Advance & Payback</h2>
+                <p class="text-xs text-slate-600">
+                  Bank Head Credit Payback Interest Rate: <strong class="font-mono text-pink-700">${interestRate.toFixed(2)}%</strong> · Earn 1 Reward Point per ₹25 spent on purchases.
+                </p>
               </div>
               ${cc && cc.status === 'active' ? `
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-900">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-pink-100 text-pink-900">
                   ● Active Credit Line
                 </span>
               ` : ''}
             </div>
 
             ${cc && cc.status === 'active' ? `
-              <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-                <div class="rounded-3xl p-6 text-white shadow-lg bg-gradient-to-tr from-blue-700 via-sky-600 to-blue-900 flex flex-col justify-between min-h-[195px]">
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
+                <!-- Virtual Credit Card Visual -->
+                <div class="rounded-3xl p-5 text-white shadow-lg brand-gradient flex flex-col justify-between min-h-[210px]">
                   <div class="flex items-center justify-between">
                     <span class="text-xs font-extrabold uppercase tracking-wider bg-white/20 px-2.5 py-1 rounded-full">Hiremath Platinum</span>
                     <span class="font-mono text-xs opacity-90">VC •••• ${escapeHTML(cc.cardNumber)}</span>
                   </div>
-                  <div class="my-4">
+                  <div class="my-3">
                     <p class="text-[11px] uppercase text-white/80">Available Credit</p>
                     <p class="text-2xl sm:text-3xl font-extrabold font-mono">${formatINR(ccAvailable)}</p>
                   </div>
-                  <div class="flex items-center justify-between text-xs border-t border-white/20 pt-3">
-                    <span>Limit: <strong class="font-mono">${formatINR(cc.limit)}</strong></span>
-                    <span>Dues: <strong class="font-mono">${formatINR(cc.used)}</strong></span>
+                  <div class="space-y-1 text-xs border-t border-white/25 pt-2.5">
+                    <div class="flex justify-between">
+                      <span class="text-white/85">Total Limit:</span>
+                      <strong class="font-mono">${formatINR(cc.limit)}</strong>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-white/85">Payback Due (incl. ${interestRate}%):</span>
+                      <strong class="font-mono">${formatINR(cc.used)}</strong>
+                    </div>
                   </div>
                 </div>
 
-                <form id="cc-spend-form" class="p-4 rounded-2xl bg-blue-50/50 border border-blue-200/80 space-y-3">
-                  <h3 class="text-sm font-extrabold text-blue-950">Simulate Card Spend</h3>
+                <!-- Take Out Cash from Credit Card -> Adds directly to Bank Balance -->
+                <form id="cc-cash-advance-form" class="p-4 rounded-2xl bg-gradient-to-b from-orange-50/70 to-pink-50/70 border border-pink-200/80 flex flex-col justify-between space-y-3">
                   <div>
-                    <label class="block text-xs font-semibold text-blue-900 mb-1">Merchant / Purpose</label>
-                    <input type="text" id="cc-spend-merchant" required placeholder="e.g., Amazon, Book Store, Cafe"
-                           class="w-full px-3 py-2 rounded-xl border border-blue-300 text-xs bg-white" />
+                    <div class="flex items-center justify-between mb-1">
+                      <h3 class="text-sm font-extrabold text-slate-900">Take Out Cash to Bank</h3>
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-100 text-pink-800">+${interestRate}% Int.</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 mb-2.5">Withdraw from your credit card directly into your Bank Balance.</p>
+                    <div class="space-y-2">
+                      <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 mb-0.5">Withdrawal Amount (₹)</label>
+                        <input type="number" id="cc-advance-amount" required min="1" max="${ccAvailable}" step="0.01" placeholder="1000.00"
+                               class="w-full px-3 py-2 rounded-xl border border-pink-300 font-mono text-xs bg-white" />
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 mb-0.5">Reason / Note</label>
+                        <input type="text" id="cc-advance-purpose" placeholder="e.g., Urgent wallet top-up"
+                               class="w-full px-3 py-2 rounded-xl border border-pink-300 text-xs bg-white" />
+                      </div>
+                    </div>
+                    <p id="cc-advance-preview" class="text-[11px] font-mono text-pink-800 mt-2 font-semibold">
+                      Payback due: ₹0.00 (incl. ${interestRate}% interest)
+                    </p>
                   </div>
+                  <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white brand-gradient shadow-xs hover:opacity-95 transition">
+                    Transfer to Bank Balance →
+                  </button>
+                </form>
+
+                <!-- Credit Card Merchant Purchase -->
+                <form id="cc-spend-form" class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between space-y-3">
                   <div>
-                    <label class="block text-xs font-semibold text-blue-900 mb-1">Spend Amount (₹ INR)</label>
-                    <input type="number" id="cc-spend-amount" required min="1" max="${ccAvailable}" step="0.01" placeholder="500.00"
-                           class="w-full px-3 py-2 rounded-xl border border-blue-300 font-mono text-xs bg-white" />
+                    <h3 class="text-sm font-extrabold text-slate-900 mb-1">Card Purchase Spend</h3>
+                    <p class="text-[11px] text-slate-600 mb-2.5">Pay merchants & earn reward points (+${interestRate}% payback interest).</p>
+                    <div class="space-y-2">
+                      <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 mb-0.5">Merchant / Purpose</label>
+                        <input type="text" id="cc-spend-merchant" required placeholder="e.g., Bookstore, Cafe"
+                               class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white" />
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-semibold text-slate-700 mb-0.5">Spend Amount (₹)</label>
+                        <input type="number" id="cc-spend-amount" required min="1" max="${ccAvailable}" step="0.01" placeholder="500.00"
+                               class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs bg-white" />
+                      </div>
+                    </div>
                   </div>
-                  <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white bg-blue-600 shadow-xs hover:bg-blue-700 transition">
+                  <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs text-white bg-slate-900 hover:bg-slate-800 shadow-xs transition">
                     Pay with Credit Card
                   </button>
                 </form>
 
-                <form id="cc-repay-form" class="p-4 rounded-2xl bg-blue-50/50 border border-blue-200/80 space-y-3">
-                  <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-extrabold text-blue-950">Pay Card Bill</h3>
-                    <span class="text-xs font-mono font-bold text-blue-600">Due: ${formatINR(cc.used)}</span>
-                  </div>
-                  <p class="text-xs text-blue-950">Repay dues directly from your main savings balance (${formatINR(acc.balance)}).</p>
+                <!-- Pay Back Credit Card Bill (Principal + Interest) -->
+                <form id="cc-repay-form" class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between space-y-3">
                   <div>
-                    <label class="block text-xs font-semibold text-blue-900 mb-1">Repayment Amount (₹ INR)</label>
-                    <input type="number" id="cc-repay-amount" required min="1" max="${cc.used}" step="0.01" value="${cc.used > 0 ? cc.used : ''}" placeholder="0.00"
-                           class="w-full px-3 py-2 rounded-xl border border-blue-300 font-mono text-xs bg-white" />
+                    <div class="flex items-center justify-between mb-1">
+                      <h3 class="text-sm font-extrabold text-slate-900">Pay Back Card Dues</h3>
+                      <span class="text-xs font-mono font-bold text-pink-600">${formatINR(cc.used)}</span>
+                    </div>
+                    <p class="text-[11px] text-slate-600 mb-2">
+                      Settle principal + ${interestRate}% interest from your Bank Balance (${formatINR(acc.balance)}).
+                    </p>
+                    ${(cc.principalUsed !== undefined && cc.interestAccrued !== undefined && cc.used > 0) ? `
+                      <div class="p-2 rounded-xl bg-white border border-slate-200 text-[11px] font-mono space-y-0.5 mb-2">
+                        <div class="flex justify-between text-slate-600"><span>Principal:</span><span>${formatINR(cc.principalUsed)}</span></div>
+                        <div class="flex justify-between text-pink-700"><span>Interest (${interestRate}%):</span><span>${formatINR(cc.interestAccrued)}</span></div>
+                      </div>
+                    ` : ''}
+                    <div>
+                      <label class="block text-[11px] font-semibold text-slate-700 mb-0.5">Payback Amount (₹)</label>
+                      <input type="number" id="cc-repay-amount" required min="1" max="${cc.used}" step="0.01" value="${cc.used > 0 ? cc.used : ''}" placeholder="0.00"
+                             class="w-full px-3 py-2 rounded-xl border border-slate-300 font-mono text-xs bg-white" />
+                    </div>
                   </div>
                   <button type="submit" ${cc.used <= 0 ? 'disabled' : ''}
-                          class="w-full py-2.5 rounded-xl font-bold text-xs transition ${cc.used > 0 ? 'bg-blue-950 text-white hover:bg-blue-900' : 'bg-blue-100 text-blue-950 cursor-not-allowed'}">
-                    Settle Bill from Balance
+                          class="w-full py-2.5 rounded-xl font-bold text-xs transition ${cc.used > 0 ? 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-xs' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}">
+                    Pay Back from Balance
                   </button>
                 </form>
               </div>
             ` : pendingCCApp ? `
-              <div class="p-6 rounded-2xl bg-amber-50/70 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div class="p-6 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
                   <span class="text-2xl">⏳</span>
                   <div>
@@ -2442,18 +2850,18 @@
                 <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-200/80 text-amber-900">Awaiting Bank Head</span>
               </div>
             ` : `
-              <form id="cc-apply-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end bg-blue-50/50 p-5 rounded-2xl border border-blue-200/70">
+              <form id="cc-apply-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end bg-slate-50 p-5 rounded-2xl border border-slate-200/80">
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Desired Credit Limit (₹ INR)</label>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Desired Credit Limit (₹ INR)</label>
                   <input type="number" id="cc-apply-limit" required min="500" step="500" placeholder="10000"
-                         class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 font-mono text-sm bg-white" />
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-sm bg-white" />
                 </div>
                 <div>
-                  <label class="block text-xs font-semibold text-blue-900 mb-1">Purpose / Reason</label>
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Purpose / Reason</label>
                   <input type="text" id="cc-apply-reason" required placeholder="e.g., Online learning & emergencies"
-                         class="w-full px-3.5 py-2.5 rounded-xl border border-blue-300 text-sm bg-white" />
+                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white" />
                 </div>
-                <button type="submit" class="py-2.5 px-5 rounded-xl font-bold text-sm text-white bg-blue-600 shadow-sm hover:bg-blue-700 transition">
+                <button type="submit" class="py-2.5 px-5 rounded-xl font-bold text-sm text-white brand-gradient shadow-sm hover:opacity-95 transition">
                   Apply for Credit Card
                 </button>
               </form>
@@ -2471,28 +2879,28 @@
         : state.transactions;
 
       return `
-        <div class="glass-card rounded-3xl p-6 shadow-xs">
+        <div class="glass-card rounded-3xl p-6">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-base font-extrabold text-blue-950">${filterAccountId ? 'My Transaction History' : 'Live Family Ledger'}</h3>
-            <span class="text-xs font-semibold text-blue-950">${txs.length} record${txs.length === 1 ? '' : 's'}</span>
+            <h3 class="text-base font-extrabold text-slate-900">${filterAccountId ? 'My Transaction History' : 'Live Family Ledger'}</h3>
+            <span class="text-xs font-semibold text-slate-500">${txs.length} record${txs.length === 1 ? '' : 's'}</span>
           </div>
 
           ${txs.length === 0 ? `
-            <div class="py-8 text-center text-xs text-blue-950 bg-blue-50/50 rounded-2xl border border-dashed border-blue-200">
+            <div class="py-8 text-center text-xs text-slate-500 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
               No transactions recorded yet. Activity will sync here in real time.
             </div>
           ` : `
-            <div class="divide-y divide-blue-100">
+            <div class="divide-y divide-slate-100">
               ${txs.slice(0, 15).map(tx => {
                 const isIncoming = filterAccountId && tx.toId === filterAccountId;
                 const isOutgoing = filterAccountId && tx.fromId === filterAccountId;
                 return `
                   <div class="py-3 flex items-center justify-between gap-3">
                     <div class="min-w-0">
-                      <p class="text-sm font-bold text-blue-950 truncate">${escapeHTML(tx.note)}</p>
-                      <p class="text-[11px] text-blue-950 mt-0.5">${formatTime(tx.createdAt)}</p>
+                      <p class="text-sm font-bold text-slate-900 truncate">${escapeHTML(tx.note)}</p>
+                      <p class="text-[11px] text-slate-400 mt-0.5">${formatTime(tx.createdAt)}</p>
                     </div>
-                    <span class="font-mono text-sm font-extrabold shrink-0 ${isIncoming ? 'text-emerald-700' : isOutgoing ? 'text-blue-950' : 'text-blue-900'}">
+                    <span class="font-mono text-sm font-extrabold shrink-0 ${isIncoming ? 'text-emerald-700' : isOutgoing ? 'text-rose-700' : 'text-slate-900'}">
                       ${isIncoming ? '+' : isOutgoing ? '-' : ''}${formatINR(tx.amount)}
                     </span>
                   </div>
@@ -2510,74 +2918,74 @@
 
       return `
         <main class="flex-1 max-w-xl w-full mx-auto px-4 py-8 sm:py-12 flex flex-col justify-center">
-          <div class="rounded-3xl bg-blue-950 text-white p-6 sm:p-8 shadow-2xl border border-blue-900 relative overflow-hidden">
-            <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-blue-500/20 blur-2xl"></div>
+          <div class="rounded-3xl bg-slate-950 text-white p-6 sm:p-8 shadow-2xl border border-slate-800 relative overflow-hidden">
+            <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-pink-500/20 blur-2xl"></div>
 
-            <div class="flex items-center justify-between border-b border-blue-900 pb-4 mb-6 relative z-10">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6 relative z-10">
               <div class="flex items-center gap-2.5">
                 <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-mono text-xs font-bold uppercase tracking-widest text-blue-200">Hiremath ATM / POS Terminal</span>
+                <span class="font-mono text-xs font-bold uppercase tracking-widest text-pink-200">Hiremath ATM / POS Terminal</span>
               </div>
-              <button type="button" id="terminal-exit-btn" class="text-xs font-bold text-blue-300 hover:text-white transition">Exit ✕</button>
+              <button type="button" id="terminal-exit-btn" class="text-xs font-bold text-slate-400 hover:text-white transition">Exit ✕</button>
             </div>
 
             ${!authedAcc ? `
               <div class="relative z-10">
                 <h2 class="text-xl sm:text-2xl font-extrabold mb-1">Insert Virtual Card</h2>
-                <p class="text-xs text-blue-300 mb-6">Enter any family member's 4-digit Card Number and 4-digit PIN.</p>
+                <p class="text-xs text-slate-400 mb-6">Enter any family member's 4-digit Card Number and 4-digit PIN.</p>
 
                 <form id="terminal-auth-form" class="space-y-4">
                   <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-blue-300 mb-1.5">4-Digit Card Number</label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">4-Digit Card Number</label>
                     <input type="text" id="term-card-num" required pattern="\\d{4}" maxlength="4" inputmode="numeric" placeholder="e.g., 2002"
-                           class="w-full px-4 py-3.5 rounded-2xl bg-blue-900 border border-blue-800 font-mono text-lg tracking-widest text-white focus:outline-none focus:border-blue-400" />
+                           class="w-full px-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 font-mono text-lg tracking-widest text-white focus:outline-none focus:border-pink-400" />
                   </div>
                   <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-blue-300 mb-1.5">4-Digit Security PIN</label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">4-Digit Security PIN</label>
                     <input type="password" id="term-pin-num" required pattern="\\d{4}" maxlength="4" inputmode="numeric" placeholder="••••"
-                           class="w-full px-4 py-3.5 rounded-2xl bg-blue-900 border border-blue-800 font-mono text-lg tracking-widest text-white focus:outline-none focus:border-blue-400" />
+                           class="w-full px-4 py-3.5 rounded-2xl bg-slate-900 border border-slate-700 font-mono text-lg tracking-widest text-white focus:outline-none focus:border-pink-400" />
                   </div>
-                  <button type="submit" class="w-full py-3.5 rounded-2xl font-bold text-sm text-white bg-blue-600 shadow-lg hover:bg-blue-700 transition">
+                  <button type="submit" class="w-full py-3.5 rounded-2xl font-bold text-sm text-white brand-gradient shadow-lg hover:opacity-95 transition">
                     Authenticate Card
                   </button>
                 </form>
               </div>
             ` : `
               <div class="relative z-10 space-y-6">
-                <div class="p-4 rounded-2xl bg-blue-900 border border-blue-800 flex items-center justify-between">
+                <div class="p-4 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
                   <div class="flex items-center gap-3">
                     ${renderAvatar(authedAcc, 'w-11 h-11 text-xl')}
                     <div>
                       <p class="font-extrabold text-sm text-white">${escapeHTML(authedAcc.displayName)}</p>
-                      <p class="font-mono text-xs text-blue-300">Card #${escapeHTML(authedAcc.cardNumber)}</p>
+                      <p class="font-mono text-xs text-slate-400">Card #${escapeHTML(authedAcc.cardNumber)}</p>
                     </div>
                   </div>
                   <div class="text-right">
-                    <span class="text-[10px] uppercase text-blue-300 block">Live Balance</span>
+                    <span class="text-[10px] uppercase text-slate-400 block">Live Balance</span>
                     <span class="font-mono text-lg font-extrabold text-emerald-400">${formatINR(authedAcc.balance)}</span>
                   </div>
                 </div>
 
                 <form id="terminal-debit-form" class="space-y-4">
-                  <h3 class="text-sm font-bold text-blue-200">Initiate POS Debit / Cash Withdrawal</h3>
+                  <h3 class="text-sm font-bold text-pink-200">Initiate POS Debit / Cash Withdrawal</h3>
                   <div>
-                    <label class="block text-xs font-semibold text-blue-300 mb-1">Amount (₹ INR)</label>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Amount (₹ INR)</label>
                     <input type="number" id="term-debit-amount" required min="1" max="${authedAcc.balance}" step="0.01" placeholder="500.00"
-                           class="w-full px-4 py-3 rounded-2xl bg-blue-900 border border-blue-800 font-mono text-base text-white focus:outline-none focus:border-blue-400" />
+                           class="w-full px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 font-mono text-base text-white focus:outline-none focus:border-pink-400" />
                   </div>
                   <div>
-                    <label class="block text-xs font-semibold text-blue-300 mb-1">Merchant / Terminal Location</label>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Merchant / Terminal Location</label>
                     <input type="text" id="term-debit-merchant" required placeholder="e.g., Mall POS, Bookstore, Cash ATM"
-                           class="w-full px-4 py-3 rounded-2xl bg-blue-900 border border-blue-800 text-sm text-white focus:outline-none focus:border-blue-400" />
+                           class="w-full px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-pink-400" />
                   </div>
-                  <p class="text-[11px] text-blue-200 bg-blue-800/50 border border-blue-700/50 rounded-xl p-3">
+                  <p class="text-[11px] text-slate-300 bg-slate-900/90 border border-slate-800 rounded-xl p-3">
                     ℹ️ POS debits are routed to the Bank Head's Notification Center for real-time approval before funds are deducted.
                   </p>
                   <div class="flex gap-3 pt-1">
-                    <button type="button" id="terminal-eject-btn" class="px-4 py-3 rounded-2xl text-xs font-bold bg-blue-900 hover:bg-blue-800 text-blue-200 transition">
+                    <button type="button" id="terminal-eject-btn" class="px-4 py-3 rounded-2xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-300 transition">
                       Eject Card
                     </button>
-                    <button type="submit" class="flex-1 py-3 rounded-2xl font-bold text-sm text-white bg-blue-600 shadow-lg hover:bg-blue-700 transition">
+                    <button type="submit" class="flex-1 py-3 rounded-2xl font-bold text-sm text-white brand-gradient shadow-lg hover:opacity-95 transition">
                       Submit POS Debit
                     </button>
                   </div>
@@ -2632,6 +3040,11 @@
         };
       }
 
+      const navEditBtn = document.getElementById('nav-edit-profile-btn');
+      if (navEditBtn && state.activeAccountId) {
+        navEditBtn.onclick = () => openProfileSettingsModal(state.activeAccountId, true);
+      }
+
       const switchBtn = document.getElementById('nav-switch-user-btn');
       if (switchBtn) {
         switchBtn.onclick = () => {
@@ -2657,6 +3070,9 @@
         card.onclick = () => openAccountEntryModal(card.dataset.accountId);
       });
 
+      const adminEditBtn = document.getElementById('admin-edit-profile-btn');
+      if (adminEditBtn) adminEditBtn.onclick = () => openProfileSettingsModal('bank_head', true);
+
       const adminP2P = document.getElementById('admin-p2p-btn');
       if (adminP2P) adminP2P.onclick = openP2PRequestModal;
 
@@ -2671,6 +3087,10 @@
         };
       });
 
+      document.querySelectorAll('.freeze-account-btn').forEach(btn => {
+        btn.onclick = () => handleToggleAccountFreeze(btn.dataset.freezeAccount);
+      });
+
       const addFundsForm = document.getElementById('admin-add-funds-form');
       if (addFundsForm) {
         addFundsForm.onsubmit = async (e) => {
@@ -2683,7 +3103,18 @@
         };
       }
 
-      // Bank Head Deduct Funds Form Binding
+      const reallocateForm = document.getElementById('admin-reallocate-form');
+      if (reallocateForm) {
+        reallocateForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const fromId = document.getElementById('reallocate-from').value;
+          const toId = document.getElementById('reallocate-to').value;
+          const amount = document.getElementById('reallocate-amount').value;
+          const ok = await handleReallocateFunds(fromId, toId, amount);
+          if (ok) reallocateForm.reset();
+        };
+      }
+
       const deductForm = document.getElementById('admin-deduct-form');
       if (deductForm) {
         deductForm.onsubmit = async (e) => {
@@ -2697,6 +3128,15 @@
         };
       }
 
+      const interestForm = document.getElementById('admin-interest-form');
+      if (interestForm) {
+        interestForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const rate = document.getElementById('credit-interest-input').value;
+          await handleUpdateCreditInterestRate(rate);
+        };
+      }
+
       const rateForm = document.getElementById('admin-rate-form');
       if (rateForm) {
         rateForm.onsubmit = async (e) => {
@@ -2705,6 +3145,12 @@
           await handleUpdateRewardRate(rate);
         };
       }
+
+      const bankerEditBtn = document.getElementById('banker-edit-profile-btn');
+      if (bankerEditBtn) bankerEditBtn.onclick = () => openProfileSettingsModal(state.activeAccountId, true);
+
+      const bankerGoalBtn = document.getElementById('banker-edit-goal-btn');
+      if (bankerGoalBtn) bankerGoalBtn.onclick = openSavingsGoalModal;
 
       const bankerP2P = document.getElementById('banker-p2p-btn');
       if (bankerP2P) bankerP2P.onclick = openP2PRequestModal;
@@ -2733,6 +3179,28 @@
           const limit = document.getElementById('cc-apply-limit').value;
           const reason = document.getElementById('cc-apply-reason').value;
           await handleApplyCreditCard(state.activeAccountId, limit, reason);
+        };
+      }
+
+      const ccAdvanceInput = document.getElementById('cc-advance-amount');
+      const ccAdvancePreview = document.getElementById('cc-advance-preview');
+      if (ccAdvanceInput && ccAdvancePreview) {
+        ccAdvanceInput.oninput = () => {
+          const val = parseFloat(ccAdvanceInput.value) || 0;
+          const rate = Number(state.settings.creditInterestRate || 0);
+          const total = val + (val * rate) / 100;
+          ccAdvancePreview.textContent = `Payback due: ${formatINR(total)} (incl. ${rate}% interest)`;
+        };
+      }
+
+      const ccAdvanceForm = document.getElementById('cc-cash-advance-form');
+      if (ccAdvanceForm) {
+        ccAdvanceForm.onsubmit = async (e) => {
+          e.preventDefault();
+          const amount = document.getElementById('cc-advance-amount').value;
+          const purpose = document.getElementById('cc-advance-purpose').value;
+          const ok = await handleCreditCardCashAdvance(state.activeAccountId, amount, purpose);
+          if (ok) ccAdvanceForm.reset();
         };
       }
 
